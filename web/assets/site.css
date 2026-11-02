@@ -1,0 +1,54 @@
+/* Monee's plain pages: privacy, terms, support, deleting an account.
+   Manrope for text, Bricolage Grotesque for titles (both SIL Open Font
+   License, assets/fonts). Violet on soft white. No letter spacing anywhere. */
+@font-face{font-family:"Manrope";font-weight:400 800;font-style:normal;font-display:swap;src:url(/assets/fonts/manrope.woff2) format("woff2")}
+@font-face{font-family:"Bricolage Grotesque";font-weight:500 800;font-style:normal;font-display:swap;src:url(/assets/fonts/bricolage.woff2) format("woff2")}
+:root{
+  --deep:#1E1240; --brand:#6D4AE8; --brand2:#5634C7; --v1:#EEE8FE; --v2:#D9CDFC;
+  --paper:#F8F7FC; --ink:#17122B; --ink2:#6B6585; --line:#E6E2F0; --white:#fff;
+  --f:"Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+  --fh:"Bricolage Grotesque","Manrope",system-ui,sans-serif;
+  --r:22px; --e:cubic-bezier(.2,.8,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box;letter-spacing:0}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font:500 16px/1.6 var(--f);color:var(--ink);background:var(--paper);letter-spacing:0;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--fh);font-weight:600;letter-spacing:0;line-height:1.15;margin:0;text-wrap:balance}
+a{color:var(--brand2)}
+img{max-width:100%;height:auto}
+::selection{background:var(--v2);color:var(--deep)}
+:focus-visible{outline:3px solid var(--brand);outline-offset:3px;border-radius:10px}
+
+.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;max-width:1100px;margin:0 auto;
+  padding:calc(env(safe-area-inset-top) + 18px) 20px 10px}
+.brand{display:inline-flex;align-items:center;gap:10px;font:600 20px/1 var(--fh);color:var(--ink);text-decoration:none}
+.brand img{border-radius:10px;box-shadow:0 6px 14px -8px rgba(86,52,199,.7)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 22px;border-radius:999px;white-space:nowrap;
+  background:var(--deep);color:#fff;font:700 15px/1 var(--f);text-decoration:none;transition:transform .25s var(--e),background .2s}
+.btn:hover{transform:translateY(-1px);background:#2B1A5C}
+.btn--light{background:#fff;color:var(--deep);box-shadow:0 0 0 1px var(--line)}
+.btn--light:hover{background:#fff}
+.btn--small{min-height:40px;padding:0 16px;font-size:14px}
+
+/* plain pages */
+.doc{max-width:760px;margin:0 auto;padding:24px 20px 64px}
+.doc h1{font-size:36px;color:var(--deep);margin:12px 0 8px}
+.doc h2{font-size:21px;color:var(--deep);margin:30px 0 8px}
+.doc p{margin:0 0 12px}
+.doc .lead{color:var(--ink2);font-size:17px}
+.doc ul{margin:0 0 12px;padding-left:22px}
+.doc li{margin:6px 0}
+.doc li::marker{color:var(--brand)}
+.doc b{font-weight:800}
+
+.foot{max-width:1100px;margin:0 auto;padding:22px 20px calc(env(safe-area-inset-bottom) + 28px);border-top:1px solid var(--line);color:var(--ink2);font-size:14px}
+.foot p{margin:6px 0;display:flex;flex-wrap:wrap;gap:6px 18px}
+.foot p+p{display:block}
+.foot a{color:var(--ink2)}
+.foot a:hover{color:var(--ink)}
+
+@media (max-width:640px){
+  .doc h1{font-size:30px}
+  .doc h2{font-size:19px;margin-top:26px}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important}}

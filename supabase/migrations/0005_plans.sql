@@ -124,9 +124,10 @@ begin
   insert into public.instalment_plans (months, total, first_at) values (months, total, first_at) returning id into plan;
   part := trunc(total / months, 2);
   for i in 1 .. months loop
-    q := p - 'id' - 'splits' || jsonb_build_object(
+    q := p - 'id' - 'splits' - 'to_amount' || jsonb_build_object(
       'at', first_at + (i - 1) * interval '1 month',
       'amount', case when i = 1 then total - part * (months - 1) else part end,
+      'fee', case when i = 1 then coalesce(nullif(p ->> 'fee', '')::numeric, 0) else 0 end,
       'plan_id', plan, 'plan_no', i);
     ids := ids || (public.save_txn(q) -> 'id');
   end loop;

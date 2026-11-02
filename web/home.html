@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Monee: your money, in one book</title>
+<meta name="description" content="Track income, expenses, accounts, cards and budgets in any currency. The same book on your phone, tablet and computer. Free, with no ads.">
+<meta name="theme-color" content="#1E1240">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="/assets/brand/touch-180.png">
+<link rel="canonical" href="https://monee.skifi.co/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Monee">
+<meta property="og:url" content="https://monee.skifi.co/">
+<meta property="og:title" content="Monee: your money, in one book">
+<meta property="og:description" content="Income, expenses, accounts, cards and budgets in any currency. On your phone and your computer.">
+<meta property="og:image" content="https://monee.skifi.co/assets/brand/icon-128.png">
+<meta property="og:image:width" content="128">
+<meta property="og:image:height" content="128">
+<meta name="twitter:card" content="summary">
+<link rel="preload" href="/assets/fonts/bricolage.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/manrope.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/home.css">
+<script src="/assets/home.js"></script>
+</head>
+<body>
+<svg width="0" height="0" aria-hidden="true" style="position:absolute"><defs>
+<linearGradient id="logoG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6D4AE8"/><stop offset="1" stop-color="#5634C7"/></linearGradient>
+<symbol id="logo" viewBox="0 0 1000 1000"><rect width="1000" height="1000" rx="240" fill="url(#logoG)" stroke="none"/><g transform="translate(190 203.64) scale(.62)"><path d="M245 760V488c0-96 60-150 127-150 70 0 128 54 128 150v272M500 488c0-96 60-150 128-150 68 0 127 54 127 150v272" fill="none" stroke="#fff" stroke-width="112" stroke-linecap="round" stroke-linejoin="round"/><circle cx="755" cy="196" r="64" fill="#fff" stroke="none"/></g></symbol>
+<symbol id="i-m" viewBox="0 0 1000 1000"><g transform="translate(0 22)"><path d="M245 760V488c0-96 60-150 127-150 70 0 128 54 128 150v272M500 488c0-96 60-150 128-150 68 0 127 54 127 150v272" fill="none" stroke="currentColor" stroke-width="112" stroke-linecap="round" stroke-linejoin="round"/><circle cx="755" cy="196" r="64" fill="currentColor" stroke="none"/></g></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+<symbol id="i-prev" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+<symbol id="i-next" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9Z"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+<symbol id="i-filter" viewBox="0 0 24 24"><path d="M3 5h18l-7 8.5V19l-4 2v-7.5Z"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6h12M9 12h12M9 18h12"/><path d="M4 6h.01M4 12h.01M4 18h.01"/></symbol>
+<symbol id="i-pie" viewBox="0 0 24 24"><path d="M21.2 15.9A10 10 0 1 1 8 2.8"/><path d="M22 12A10 10 0 0 0 12 2v10Z"/></symbol>
+<symbol id="i-wallet" viewBox="0 0 24 24"><path d="M19 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2"/><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"/></symbol>
+<symbol id="i-grid" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/></symbol>
+<symbol id="i-repeat" viewBox="0 0 24 24"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+<symbol id="i-unlock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2.5"/><path d="M8 11V7a4 4 0 0 1 7.7-1.5"/></symbol>
+<symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M2.5 12h19"/><path d="M12 2.5a14.5 14.5 0 0 1 0 19 14.5 14.5 0 0 1 0-19Z"/></symbol>
+<symbol id="i-sheet" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h8M12 11v8"/></symbol>
+<symbol id="i-laptop" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="11" rx="2"/><path d="M2 19h20"/></symbol>
+<symbol id="i-phone" viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></symbol>
+<symbol id="i-keys" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2.5"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/></symbol>
+<symbol id="i-food" viewBox="0 0 24 24"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></symbol>
+<symbol id="i-car" viewBox="0 0 24 24"><path d="M19 17h2v-4l-2.4-5.3A2 2 0 0 0 16.8 6H7.2a2 2 0 0 0-1.8 1.2L3 13v4h2"/><circle cx="7.5" cy="17" r="2"/><circle cx="16.5" cy="17" r="2"/><path d="M9.5 17h5M3 13h18"/></symbol>
+<symbol id="i-bag" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></symbol>
+<symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></symbol>
+<symbol id="i-coffee" viewBox="0 0 24 24"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><path d="M6 2v2M10 2v2M14 2v2"/></symbol>
+<symbol id="i-pill" viewBox="0 0 24 24"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></symbol>
+<symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z"/></symbol>
+<symbol id="i-card" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2.5"/><path d="M2 10h20M6 15h4"/></symbol>
+<symbol id="i-bank" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21v-9M9.7 21v-9M14.3 21v-9M19 21v-9"/><path d="M12 2.5 21 8H3Z"/></symbol>
+<symbol id="i-cash" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2.5"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/></symbol>
+<symbol id="i-piggy" viewBox="0 0 24 24"><path d="M19 5c-1.5 0-2.8 1.4-3 2-3.5-1.5-11-.3-11 5 0 1.8 0 3 2 4.5V20h4v-2h3v2h4v-4c1-.5 1.7-1 2-2h2v-4h-2c0-1-.5-1.5-1-2V5Z"/><path d="M2 9v1c0 1.1.9 2 2 2h1"/><path d="M16 11h.01"/></symbol>
+<symbol id="i-loan" viewBox="0 0 24 24"><path d="M3 10h18"/><path d="M12 3 21 8v2H3V8Z"/><path d="M12 13v8M15.5 14.5h-4.75a1.75 1.75 0 0 0 0 3.5h2.5a1.75 1.75 0 0 1 0 3.5H8.5"/></symbol>
+<symbol id="i-pen" viewBox="0 0 24 24"><path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-crown" viewBox="0 0 24 24"><path d="m2 7 5 5 5-8 5 8 5-5-2 12H4Z"/></symbol>
+<symbol id="i-back" viewBox="0 0 24 24"><path d="M10 7 5 12l5 5M5 12h14"/></symbol>
+<symbol id="i-gift" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5C11 3 12 8 12 8s1-5 4.5-5a2.5 2.5 0 0 1 0 5"/></symbol>
+<symbol id="i-apple" viewBox="0 0 24 24"><path fill="currentColor" d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></symbol>
+<symbol id="i-gplay" viewBox="0 0 24 24"><path fill="#00C3FF" d="M3.6 2.3c-.3.3-.5.8-.5 1.4v16.6c0 .6.2 1.1.5 1.4l9.3-9.7Z"/><path fill="#00E676" d="M16.1 8.6 5.2 2.4c-.6-.3-1.2-.4-1.6-.1l9.3 9.7Z"/><path fill="#FF3D44" d="M3.6 21.7c.4.3 1 .2 1.6-.1l10.9-6.2-3.2-3.4Z"/><path fill="#FFD500" d="m16.1 15.4 3.6-2c1-.6 1-1.5 0-2.1l-3.6-2.1-3.2 2.8Z"/></symbol>
+</defs></svg>
+
+<header class="nav" id="nav">
+  <div class="nav__in">
+    <a class="brand" href="/" aria-label="Monee home"><svg class="brand__logo" aria-hidden="true"><use href="#logo"/></svg><span>Monee</span></a>
+    <nav class="nav__links" aria-label="Sections">
+      <a href="#features">Features</a>
+      <a href="#web">Web app</a>
+      <a href="#move">Moving over</a>
+      <a href="#faq">Questions</a>
+    </nav>
+    <a class="btn btn--ink btn--sm" href="/app/">Open Monee</a>
+  </div>
+</header>
+
+<main>
+<!-- ============================================================ hero -->
+<section class="hero" aria-labelledby="hero-h">
+  <div class="hero__glow" aria-hidden="true"></div>
+  <div class="wrap hero__grid">
+    <div class="hero__copy">
+      <h1 id="hero-h" class="rise">Your money, in one book.</h1>
+      <p class="lead rise">Track income, expenses, accounts, cards and budgets. The same book on your phone and your computer.</p>
+      <div class="hero__get rise">
+      <div class="stores">
+        <a class="store" data-store="play" href="https://play.google.com/store/apps/details?id=co.skifi.monee" target="_blank" rel="noopener" aria-label="Get it on Google Play"><svg aria-hidden="true"><use href="#i-gplay"/></svg><span class="store__txt"><small>GET IT ON</small><b>Google Play</b></span></a>
+        <a class="store" data-store="ios" href="#get" aria-label="Download on the App Store"><svg aria-hidden="true"><use href="#i-apple"/></svg><span class="store__txt"><small>Download on the</small><b>App Store</b></span></a>
+      </div>
+      </div>
+      <p class="hero__links rise">
+        <a class="hero__link" href="/app/">Open the web app<svg class="ic" aria-hidden="true"><use href="#i-next"/></svg></a>
+      </p>
+      <p class="hero__facts rise">
+        <span><svg class="ic" aria-hidden="true"><use href="#i-gift"/></svg>Free, with no ads</span>
+        <span><svg class="ic" aria-hidden="true"><use href="#i-globe"/></svg>Any currency</span>
+        <span><svg class="ic" aria-hidden="true"><use href="#i-laptop"/></svg>Phone and computer</span>
+      </p>
+    </div>
+
+    <div class="stage" aria-hidden="true">
+      <div class="phone phone--hero">
+        <div class="phone__screen">
+          <div class="scr">
+            <div class="scr__top"></div>
+            <div class="scr__bar">
+              <div class="scr__month"><i class="scr__cb"><svg><use href="#i-prev"/></svg></i><b data-mshort>Nov 2026</b><i class="scr__cb"><svg><use href="#i-next"/></svg></i></div>
+              <div class="scr__icons"><svg><use href="#i-star"/></svg><svg><use href="#i-search"/></svg><svg><use href="#i-filter"/></svg></div>
+            </div>
+            <div class="scr__tabs"><span class="on">Daily</span><span>Calendar</span><span>Monthly</span><span>Total</span><span>Note</span></div>
+            <div class="scr__sum">
+              <div><small>Income</small><b class="m-in" id="hIn">12,783.00</b></div>
+              <div><small>Expenses</small><b class="m-out" id="hOut">3,761.37</b></div>
+              <div><small>Total</small><b id="hTot">9,021.63</b></div>
+            </div>
+            <div class="scr__listwrap">
+              <div class="scr__list" id="hList">
+                <div class="day">
+                  <div class="day__h"><b class="day__n" data-dn="0">03</b><span class="day__wd" data-dw="0">Tue</span><small data-dm="0">11.2026</small><span class="day__in" id="hDayIn">783.00</span><span class="day__out" id="hDayOut">367.00</span></div>
+                  <div class="tx" data-s="d"><i class="tx__ic c-food"><svg><use href="#i-coffee"/></svg></i><div class="tx__t"><b>Food</b><small>Coffee</small></div><div class="tx__a"><b class="m-out">SAR 14.00</b><small>Cash</small></div></div>
+                  <div class="tx" data-s="c"><i class="tx__ic c-shop"><svg><use href="#i-bag"/></svg></i><div class="tx__t"><b>Shopping</b><small>Clothes</small></div><div class="tx__a"><b class="m-out">SAR 240.00</b><small>Credit card</small></div></div>
+                  <div class="tx" data-s="b"><i class="tx__ic c-home"><svg><use href="#i-home"/></svg></i><div class="tx__t"><b>Rent</b><small>Flat in Kochi</small></div><div class="tx__a"><b class="m-in">₹18,000.00</b><small>India bank</small></div></div>
+                  <div class="tx" data-s="a"><i class="tx__ic c-car"><svg><use href="#i-car"/></svg></i><div class="tx__t"><b>Transport</b><small>Fuel</small></div><div class="tx__a"><b class="m-out">SAR 95.00</b><small>Credit card</small></div></div>
+                  <div class="tx"><i class="tx__ic c-food"><svg><use href="#i-food"/></svg></i><div class="tx__t"><b>Food</b><small>Breakfast</small></div><div class="tx__a"><b class="m-out">SAR 18.00</b><small>Cash</small></div></div>
+                </div>
+                <div class="day">
+                  <div class="day__h"><b class="day__n" data-dn="1">02</b><span class="day__wd" data-dw="1">Mon</span><small data-dm="1">11.2026</small><span class="day__in">0.00</span><span class="day__out">119.87</span></div>
+                  <div class="tx"><i class="tx__ic c-health"><svg><use href="#i-pill"/></svg></i><div class="tx__t"><b>Health</b><small>Pharmacy</small></div><div class="tx__a"><b class="m-out">BHD 4.500</b><small>Bahrain cash</small></div></div>
+                  <div class="tx"><i class="tx__ic c-bills"><svg><use href="#i-bolt"/></svg></i><div class="tx__t"><b>Bills</b><small>Phone</small></div><div class="tx__a"><b class="m-out">SAR 75.00</b><small>Bank</small></div></div>
+                </div>
+                <div class="day">
+                  <div class="day__h"><b class="day__n" data-dn="2">01</b><span class="day__wd" data-dw="2">Sun</span><small data-dm="2">11.2026</small><span class="day__in">0.00</span><span class="day__out">244.40</span></div>
+                  <div class="tx"><i class="tx__ic c-food"><svg><use href="#i-food"/></svg></i><div class="tx__t"><b>Food</b><small>Groceries</small></div><div class="tx__a"><b class="m-out">SAR 212.40</b><small>Credit card</small></div></div>
+                  <div class="tx"><i class="tx__ic c-car"><svg><use href="#i-car"/></svg></i><div class="tx__t"><b>Transport</b><small>Taxi</small></div><div class="tx__a"><b class="m-out">SAR 32.00</b><small>Cash</small></div></div>
+                </div>
+              </div>
+            </div>
+            <i class="scr__fab"><svg><use href="#i-plus"/></svg></i>
+            <div class="scr__nav"><span class="on"><svg><use href="#i-list"/></svg>Trans</span><span><svg><use href="#i-pie"/></svg>Stats</span><span><svg><use href="#i-wallet"/></svg>Accounts</span><span><svg><use href="#i-grid"/></svg>More</span></div>
+          </div>
+          <div class="sb"><b>9:41</b><span class="sb__sys"><svg viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg class="wifi" viewBox="0 0 16 12"><path d="M1.4 4.7a9.6 9.6 0 0 1 13.2 0M3.9 7.4a6 6 0 0 1 8.2 0M6.5 10.1a2.3 2.3 0 0 1 3 0" stroke-width="1.9" stroke-linecap="round"/></svg><svg class="bat" viewBox="0 0 27 13"><rect x=".6" y=".6" width="22.8" height="11.8" rx="3.4" fill="none" stroke="currentColor" stroke-opacity=".4" stroke-width="1.2"/><rect x="2.4" y="2.4" width="19.2" height="8.2" rx="2"/><path d="M25 4.4v4.2a2.3 2.3 0 0 0 0-4.2z" opacity=".45"/></svg></span></div><i class="island"></i><i class="hi"></i>
+        </div>
+      </div>
+
+      <span class="coin coin--h1" data-depth="2.4"><svg><use href="#i-m"/></svg></span>
+      <span class="coin coin--light coin--h2" data-depth="1.6"><svg><use href="#i-m"/></svg></span>
+      <span class="coin coin--h3" data-depth="3"><svg><use href="#i-m"/></svg></span>
+
+      <div class="float float--rate">
+        <p class="float__head"><svg class="ic"><use href="#i-globe"/></svg>Exchange rate</p>
+        <b>1 BHD = 9.97 SAR</b>
+        <small>Kept with this entry</small>
+      </div>
+      <div class="float float--card">
+        <p class="float__head"><svg class="ic"><use href="#i-card"/></svg>Credit card</p>
+        <p class="float__cols"><span><small>Payable</small><b>1,240.00</b></span><span><small>Outstanding</small><b id="hCard">335.00</b></span></p>
+      </div>
+      <div class="float float--budget" id="hBudget">
+        <p class="float__head"><svg class="ic"><use href="#i-food"/></svg>Food budget</p>
+        <p class="float__nums"><b>SAR 768</b><span>of 1,200</span></p>
+        <div class="fbar"><i style="width:64%"></i><u style="left:58%"></u></div>
+        <p class="float__foot"><span>64% used</span><span>Today</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ features -->
+<section class="sec" id="features" aria-labelledby="f-h">
+  <div class="wrap">
+    <div class="sec__head sec__head--deco reveal">
+      <span class="coin coin--f1" aria-hidden="true"><svg><use href="#i-m"/></svg></span>
+      <span class="coin coin--light coin--f2" aria-hidden="true"><svg><use href="#i-m"/></svg></span>
+      <p class="kicker">Features</p>
+      <h2 id="f-h">Everything a money book needs.</h2>
+    </div>
+
+    <div class="bento">
+      <article class="card card--big reveal">
+        <div class="card__copy">
+          <h3>Daily, calendar and monthly.</h3>
+          <p>Every entry by day. Each day's income and spending on a calendar. The whole year, month by month.</p>
+        </div>
+        <div class="viz viz--views" aria-hidden="true">
+          <div class="vtabs" id="vTabs"><span class="on">Daily</span><span>Calendar</span><span>Monthly</span></div>
+          <div class="vpanes">
+            <div class="vpane on">
+              <div class="vday">
+                <div class="vday__h"><b data-dn="0">03</b><span data-dw="0">Tue</span><small data-dm="0">11.2026</small><em class="m-in">783.00</em><em class="m-out">367.00</em></div>
+                <div class="vtx"><i class="tx__ic c-food"><svg><use href="#i-coffee"/></svg></i><span><b>Food</b><small>Coffee</small></span><span class="vtx__a"><b class="m-out">SAR 14.00</b><small>Cash</small></span></div>
+                <div class="vtx"><i class="tx__ic c-shop"><svg><use href="#i-bag"/></svg></i><span><b>Shopping</b><small>Clothes</small></span><span class="vtx__a"><b class="m-out">SAR 240.00</b><small>Credit card</small></span></div>
+                <div class="vtx"><i class="tx__ic c-home"><svg><use href="#i-home"/></svg></i><span><b>Rent</b><small>Flat in Kochi</small></span><span class="vtx__a"><b class="m-in">₹18,000.00</b><small>India bank</small></span></div>
+                <div class="vtx"><i class="tx__ic c-car"><svg><use href="#i-car"/></svg></i><span><b>Transport</b><small>Fuel</small></span><span class="vtx__a"><b class="m-out">SAR 95.00</b><small>Credit card</small></span></div>
+              </div>
+            </div>
+            <div class="vpane">
+              <div class="vcal" id="vCal">
+                <span class="su">S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span class="sa">S</span>
+                <i><b>1</b><em class="m-in">12k</em></i><i><b>2</b><em>120</em></i><i class="now"><b>3</b><em>367</em></i><i><b>4</b></i><i><b>5</b></i><i><b>6</b></i><i><b>7</b></i>
+                <i><b>8</b></i><i><b>9</b></i><i><b>10</b></i><i><b>11</b></i><i><b>12</b></i><i><b>13</b></i><i><b>14</b></i>
+                <i><b>15</b><em class="up">75</em></i><i><b>16</b></i><i><b>17</b></i><i><b>18</b></i><i><b>19</b></i><i><b>20</b><em class="up">300</em></i><i><b>21</b></i>
+                <i><b>22</b></i><i><b>23</b></i><i><b>24</b></i><i><b>25</b></i><i><b>26</b></i><i><b>27</b></i><i><b>28</b></i>
+                <i><b>29</b></i><i><b>30</b></i><i class="dim"><b>1</b><em>2.5k</em></i><i class="dim"><b>2</b></i><i class="dim"><b>3</b></i><i class="dim"><b>4</b></i><i class="dim"><b>5</b></i>
+              </div>
+            </div>
+            <div class="vpane">
+              <div class="vmon">
+                <div class="vmon__yr"><b data-year>2026</b><span><small>Income</small><em class="m-in">126,183.00</em></span><span><small>Expenses</small><em class="m-out">98,420.62</em></span></div>
+                <div class="vmon__r now"><b data-mo="0">Nov</b><em class="m-in">12,783.00</em><em class="m-out">3,761.37</em><em>9,021.63</em></div>
+                <div class="vmon__r"><b data-mo="1">Oct</b><em class="m-in">12,400.00</em><em class="m-out">9,862.40</em><em>2,537.60</em></div>
+                <div class="vmon__r"><b data-mo="2">Sep</b><em class="m-in">12,000.00</em><em class="m-out">10,214.75</em><em>1,785.25</em></div>
+                <div class="vmon__r"><b data-mo="3">Aug</b><em class="m-in">12,000.00</em><em class="m-out">11,906.10</em><em>93.90</em></div>
+                <div class="vmon__r"><b data-mo="4">Jul</b><em class="m-in">12,000.00</em><em class="m-out">10,377.80</em><em>1,622.20</em></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <div class="bento__more">
+      <article class="card reveal">
+        <div class="viz" aria-hidden="true">
+          <div class="vstats">
+            <div class="vpie"><i></i><span><small>Spent</small><b>3,761</b></span></div>
+            <ul class="vleg">
+              <li><u class="c-food">32%</u><span>Food</span></li>
+              <li><u class="c-home">24%</u><span>Rent</span></li>
+              <li><u class="c-car">14%</u><span>Transport</span></li>
+              <li><u class="c-shop">12%</u><span>Shopping</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="card__copy"><h3>See where it goes.</h3><p>Spending by category in a pie. Tap one to see it month by month.</p></div>
+      </article>
+
+      <article class="card reveal">
+        <div class="viz" aria-hidden="true">
+          <div class="vbud" style="--today:58%">
+            <span class="vbud__today">Today</span>
+            <div class="vbud__r"><p><b>Food</b><span>768 of 1,200</span></p><div class="vbud__bar"><i style="--p:64%"></i></div></div>
+            <div class="vbud__r"><p><b>Transport</b><span>410 of 500</span></p><div class="vbud__bar"><i style="--p:82%"></i></div></div>
+            <div class="vbud__r is-over"><p><b>Shopping</b><span>40 over</span></p><div class="vbud__bar"><i style="--p:100%"></i></div></div>
+          </div>
+        </div>
+        <div class="card__copy"><h3>Budgets with a today line.</h3><p>One for each category. The line shows how far into the month you are.</p></div>
+      </article>
+
+      <article class="card reveal">
+        <div class="viz" aria-hidden="true">
+          <div class="vcur">
+            <div class="vcur__r"><u>SAR</u><span>Bank</span><b>8,420.00</b></div>
+            <div class="vcur__r"><u>INR</u><span>India bank</span><b>₹2,40,000.00</b></div>
+            <div class="vcur__r"><u>BHD</u><span>Bahrain cash</span><b>312.500</b></div>
+            <p class="vcur__tot"><span>Total in SAR</span><b>21,975.63</b></p>
+          </div>
+        </div>
+        <div class="card__copy"><h3>SAR, INR and BHD in one book.</h3><p>Each account keeps its own currency. The rate is kept with every entry, and you can change it.</p></div>
+      </article>
+
+      <article class="card reveal">
+        <div class="viz" aria-hidden="true">
+          <div class="vrep">
+            <div class="vrep__r"><i><svg><use href="#i-repeat"/></svg></i><span><b>Rent</b><small>Monthly, on the 1st</small></span><em class="m-out">2,500.00</em></div>
+            <div class="vinst">
+              <div class="vrep__r"><i><svg><use href="#i-phone"/></svg></i><span><b>New phone</b><small>Instalment 4 of 12</small></span><em class="m-out">300.00</em></div>
+              <div class="vinst__seg"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+              <p class="vinst__left">2,400.00 left</p>
+            </div>
+          </div>
+        </div>
+        <div class="card__copy"><h3>Repeats and instalments.</h3><p>Rent goes in on its day by itself. A big buy is split over the months.</p></div>
+      </article>
+
+      <article class="card reveal">
+        <div class="viz" aria-hidden="true">
+          <div class="vshare">
+            <div class="vshare__r"><i class="vav" style="--a:#6D4AE8">F</i><span><b>Faisal</b><small>Started the book</small></span><u><svg><use href="#i-crown"/></svg>Owner</u></div>
+            <div class="vshare__r"><i class="vav" style="--a:#D9468F">N</i><span><b>Noor</b><small>Adds and edits</small></span><u><svg><use href="#i-pen"/></svg>Editor</u></div>
+            <div class="vshare__r"><i class="vav" style="--a:#14A3A3">A</i><span><b>Adam</b><small>Can only look</small></span><u><svg><use href="#i-eye"/></svg>Viewer</u></div>
+          </div>
+        </div>
+        <div class="card__copy"><h3>Share it with family.</h3><p>Add people as editors or viewers. Everyone sees the same book.</p></div>
+      </article>
+
+      <article class="card card--wide reveal">
+        <div class="card__copy"><h3>Every account, one total.</h3><p>Cash, bank, wallets, cards, savings and loans. Cards show what is payable and what is outstanding.</p></div>
+        <div class="viz" aria-hidden="true">
+          <div class="vacc">
+            <div class="vacc__strip"><span><small>Assets</small><b>34,585.50</b></span><span><small>Liabilities</small><b class="m-out">19,975.00</b></span><span><small>Total</small><b>14,610.50</b></span></div>
+            <div class="vacc__cols">
+              <div class="vacc__col">
+                <div class="vacc__g vacc__x"><p class="vacc__gh"><i><svg><use href="#i-cash"/></svg></i><b>Cash</b><em>725.50</em></p>
+                  <p class="vacc__a"><span>Cash</span><b>640.00</b></p><p class="vacc__a"><span>Phone wallet</span><b>85.50</b></p></div>
+                <div class="vacc__g"><p class="vacc__gh"><i><svg><use href="#i-bank"/></svg></i><b>Bank</b><em>18,860.00</em></p>
+                  <p class="vacc__a vacc__x"><span>Bank</span><b>8,420.00</b></p><p class="vacc__a vacc__x"><span>India bank</span><b>₹2,40,000.00</b></p></div>
+              </div>
+              <div class="vacc__col">
+                <div class="vacc__g"><p class="vacc__gh"><i><svg><use href="#i-card"/></svg></i><b>Card</b><em class="m-out">1,575.00</em></p>
+                  <div class="vacc__card"><span>Credit card</span><p><small>Payable</small><b>1,240.00</b></p><p><small>Outstanding</small><b class="m-out">335.00</b></p></div></div>
+                <div class="vacc__g vacc__x"><p class="vacc__gh"><i><svg><use href="#i-piggy"/></svg></i><b>Savings</b><em>15,000.00</em></p></div>
+                <div class="vacc__g vacc__x"><p class="vacc__gh"><i><svg><use href="#i-loan"/></svg></i><b>Loan</b><em class="m-out">18,400.00</em></p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card reveal">
+        <div class="viz" aria-hidden="true">
+          <div class="vpin" id="vPin">
+            <p class="vpin__top"><i><svg><use href="#i-lock"/></svg></i><span data-pin-t>Enter passcode</span></p>
+            <p class="vpin__dots"><i></i><i></i><i></i><i></i></p>
+            <div class="vpin__keys"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></div>
+          </div>
+        </div>
+        <div class="card__copy"><h3>Locked with a passcode.</h3><p>Choose when it asks again: right away, or after a few minutes.</p></div>
+      </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ the web app -->
+<section class="big" id="web" aria-labelledby="w-h">
+  <div class="wrap big__grid">
+    <div class="big__copy reveal">
+      <p class="pill pill--glass"><svg class="ic" aria-hidden="true"><use href="#i-laptop"/></svg>The web app</p>
+      <h2 id="w-h">Same book, bigger screen.</h2>
+      <p class="lead">Open Monee in any browser on your computer. It takes the place of a PC manager, with nothing to install.</p>
+      <ul class="ticks">
+        <li><i><svg class="ic" aria-hidden="true"><use href="#i-phone"/></svg></i>The same entries on phone, tablet and computer</li>
+        <li><i><svg class="ic" aria-hidden="true"><use href="#i-keys"/></svg></i>Add a month of receipts with a full keyboard</li>
+        <li><i><svg class="ic" aria-hidden="true"><use href="#i-sheet"/></svg></i>Export to Excel when you need it</li>
+      </ul>
+      <div class="big__ctl"><a class="btn btn--glow" href="/app/">Open the web app</a></div>
+    </div>
+    <div class="lap reveal" aria-hidden="true">
+      <span class="coin coin--w1"><svg><use href="#i-m"/></svg></span>
+      <span class="coin coin--light coin--w2"><svg><use href="#i-m"/></svg></span>
+      <div class="lap__lid">
+        <div class="lap__scr">
+          <div class="wapp">
+            <div class="wapp__side">
+              <p class="wapp__brand"><svg><use href="#logo"/></svg>Monee</p>
+              <p class="wapp__nav on"><svg><use href="#i-list"/></svg>Trans</p>
+              <p class="wapp__nav"><svg><use href="#i-pie"/></svg>Stats</p>
+              <p class="wapp__nav"><svg><use href="#i-wallet"/></svg>Accounts</p>
+              <p class="wapp__nav"><svg><use href="#i-grid"/></svg>More</p>
+              <p class="wapp__book"><small>Book</small><b>Family</b></p>
+            </div>
+            <div class="wapp__main">
+              <div class="wapp__top">
+                <div class="wapp__month"><i><svg><use href="#i-prev"/></svg></i><b data-mshort>Nov 2026</b><i><svg><use href="#i-next"/></svg></i></div>
+                <div class="wapp__tools"><svg><use href="#i-star"/></svg><svg><use href="#i-search"/></svg><svg><use href="#i-filter"/></svg><span class="wapp__add"><svg><use href="#i-plus"/></svg>Add</span></div>
+              </div>
+              <div class="wapp__tabs"><span class="on">Daily</span><span>Calendar</span><span>Monthly</span><span>Total</span><span>Note</span></div>
+              <div class="wapp__body">
+                <div class="wapp__left">
+                  <div class="wapp__sum"><span><small>Income</small><b class="m-in">12,783.00</b></span><span><small>Expenses</small><b class="m-out" id="wOut">3,947.77</b></span><span><small>Total</small><b id="wTot">8,835.23</b></span></div>
+                  <div class="wday">
+                    <div class="wday__h"><b data-dn="0">03</b><span data-dw="0">Tue</span><small data-dm="0">11.2026</small><em class="m-in">783.00</em><em class="m-out" id="wDay">553.40</em></div>
+                    <div class="wtx" id="wNew"><i class="tx__ic c-food"><svg><use href="#i-food"/></svg></i><span><b>Food</b><small>Groceries</small></span><span class="wtx__acc">Credit card</span><span class="wtx__note">Weekly shop</span><b class="m-out">SAR 186.40</b></div>
+                    <div class="wtx"><i class="tx__ic c-food"><svg><use href="#i-coffee"/></svg></i><span><b>Food</b><small>Coffee</small></span><span class="wtx__acc">Cash</span><span class="wtx__note"></span><b class="m-out">SAR 14.00</b></div>
+                    <div class="wtx"><i class="tx__ic c-shop"><svg><use href="#i-bag"/></svg></i><span><b>Shopping</b><small>Clothes</small></span><span class="wtx__acc">Credit card</span><span class="wtx__note">Shoes for Adam</span><b class="m-out">SAR 240.00</b></div>
+                    <div class="wtx"><i class="tx__ic c-home"><svg><use href="#i-home"/></svg></i><span><b>Rent</b><small>Flat in Kochi</small></span><span class="wtx__acc">India bank</span><span class="wtx__note">November</span><b class="m-in">₹18,000.00</b></div>
+                    <div class="wtx"><i class="tx__ic c-car"><svg><use href="#i-car"/></svg></i><span><b>Transport</b><small>Fuel</small></span><span class="wtx__acc">Credit card</span><span class="wtx__note"></span><b class="m-out">SAR 95.00</b></div>
+                    <div class="wtx"><i class="tx__ic c-food"><svg><use href="#i-food"/></svg></i><span><b>Food</b><small>Breakfast</small></span><span class="wtx__acc">Cash</span><span class="wtx__note"></span><b class="m-out">SAR 18.00</b></div>
+                  </div>
+                  <div class="wday">
+                    <div class="wday__h"><b data-dn="1">02</b><span data-dw="1">Mon</span><small data-dm="1">11.2026</small><em class="m-in">0.00</em><em class="m-out">119.87</em></div>
+                    <div class="wtx"><i class="tx__ic c-health"><svg><use href="#i-pill"/></svg></i><span><b>Health</b><small>Pharmacy</small></span><span class="wtx__acc">Bahrain cash</span><span class="wtx__note">Manama trip</span><b class="m-out">BHD 4.500</b></div>
+                    <div class="wtx"><i class="tx__ic c-bills"><svg><use href="#i-bolt"/></svg></i><span><b>Bills</b><small>Phone</small></span><span class="wtx__acc">Bank</span><span class="wtx__note"></span><b class="m-out">SAR 75.00</b></div>
+                  </div>
+                </div>
+                <div class="wapp__right">
+                  <div class="wcard">
+                    <p class="wcard__h">Budget</p>
+                    <div class="wbud" style="--today:58%"><p><b>Food</b><span id="wFood">954 of 1,200</span></p><div class="wbud__bar"><i id="wFoodBar" style="--p:80%"></i></div></div>
+                    <div class="wbud" style="--today:58%"><p><b>Transport</b><span>410 of 500</span></p><div class="wbud__bar"><i style="--p:82%"></i></div></div>
+                    <div class="wbud is-over" style="--today:58%"><p><b>Shopping</b><span>40 over</span></p><div class="wbud__bar"><i style="--p:100%"></i></div></div>
+                  </div>
+                  <div class="wcard">
+                    <p class="wcard__h">Spending</p>
+                    <div class="wpie"><i></i></div>
+                    <p class="wleg"><span><u class="c-food"></u>Food</span><b>32%</b></p>
+                    <p class="wleg"><span><u class="c-home"></u>Rent</span><b>24%</b></p>
+                    <p class="wleg"><span><u class="c-car"></u>Transport</span><b>14%</b></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="lap__base"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ moving over -->
+<section class="sec sec--lilac" id="move" aria-labelledby="m-h">
+  <div class="wrap split">
+    <div class="split__visual reveal" aria-hidden="true">
+      <span class="coin coin--light coin--m1"><svg><use href="#i-m"/></svg></span>
+      <span class="coin coin--m2"><svg><use href="#i-m"/></svg></span>
+      <div class="phone phone--imp">
+        <div class="phone__screen">
+          <div class="scr">
+            <div class="scr__top"></div>
+            <div class="scr__bar scr__bar--page"><i class="scr__cb"><svg><use href="#i-back"/></svg></i><div><small>More</small><b>Import</b></div></div>
+            <div class="imp" id="imp">
+              <div class="imp__file"><i><svg><use href="#i-sheet"/></svg></i><div><b>Backup 2026-11-03.xlsx</b><small>Excel backup from Money Manager</small></div></div>
+              <div class="imp__prog">
+                <p><b id="impN">3,218</b><span>entries read</span></p>
+                <div class="imp__bar"><i id="impBar" style="width:100%"></i></div>
+              </div>
+              <div class="imp__list">
+                <p class="imp__r is-done"><span>Accounts</span><b>14</b><i><svg><use href="#i-check"/></svg></i></p>
+                <p class="imp__r is-done"><span>Categories</span><b>41</b><i><svg><use href="#i-check"/></svg></i></p>
+                <p class="imp__r is-done"><span>Currencies</span><b>3</b><i><svg><use href="#i-check"/></svg></i></p>
+                <p class="imp__r is-done"><span>Entries</span><b>3,218</b><i><svg><use href="#i-check"/></svg></i></p>
+              </div>
+              <div class="imp__done is-on" id="impDone"><i><svg><use href="#i-check"/></svg></i><span><b>Your book is ready</b><small>Everything is in Trans</small></span></div>
+              <span class="imp__btn is-on" id="impBtn">Open my book</span>
+            </div>
+            <div class="scr__nav"><span><svg><use href="#i-list"/></svg>Trans</span><span><svg><use href="#i-pie"/></svg>Stats</span><span><svg><use href="#i-wallet"/></svg>Accounts</span><span class="on"><svg><use href="#i-grid"/></svg>More</span></div>
+          </div>
+          <div class="sb"><b>9:41</b><span class="sb__sys"><svg viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg class="wifi" viewBox="0 0 16 12"><path d="M1.4 4.7a9.6 9.6 0 0 1 13.2 0M3.9 7.4a6 6 0 0 1 8.2 0M6.5 10.1a2.3 2.3 0 0 1 3 0" stroke-width="1.9" stroke-linecap="round"/></svg><svg class="bat" viewBox="0 0 27 13"><rect x=".6" y=".6" width="22.8" height="11.8" rx="3.4" fill="none" stroke="currentColor" stroke-opacity=".4" stroke-width="1.2"/><rect x="2.4" y="2.4" width="19.2" height="8.2" rx="2"/><path d="M25 4.4v4.2a2.3 2.3 0 0 0 0-4.2z" opacity=".45"/></svg></span></div><i class="island"></i><i class="hi"></i>
+        </div>
+      </div>
+    </div>
+    <div class="split__copy reveal">
+      <p class="kicker">Moving over</p>
+      <h2 id="m-h">Bring your Money Manager book.</h2>
+      <p class="lead">Already keep your money in Money Manager? Your accounts, categories and entries can come with you.</p>
+      <ol class="steps">
+        <li><i>1</i><span>Make an Excel backup in Money Manager</span></li>
+        <li><i>2</i><span>In Monee, open More, then Import</span></li>
+        <li><i>3</i><span>Pick the file, and your book fills in</span></li>
+      </ol>
+      <div class="split__cta"><a class="btn btn--ink" href="#get">Get Monee</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ questions -->
+<section class="sec" id="faq" aria-labelledby="q-h">
+  <div class="wrap faq">
+    <div class="sec__head reveal">
+      <p class="kicker">Questions</p>
+      <h2 id="q-h">Good to know.</h2>
+    </div>
+    <div class="faq__list reveal">
+      <details><summary>Is Monee free?<i aria-hidden="true"></i></summary><p>Yes. Monee is free and has no ads, for now.</p></details>
+      <details><summary>Where is my data kept?<i aria-hidden="true"></i></summary><p>On SkiFi's own server. Your book stays in step across your phone, tablet and computer. We never sell it.</p></details>
+      <details><summary>Can I move from Money Manager?<i aria-hidden="true"></i></summary><p>Yes. Export its Excel backup, then open More, then Import in Monee and pick the file.</p></details>
+      <details><summary>Which currencies can I use?<i aria-hidden="true"></i></summary><p>Any. Pick one main currency for your totals and give each account its own. The rate is kept with each entry, and you can change it.</p></details>
+      <details><summary>Can my family see it?<i aria-hidden="true"></i></summary><p>If you want. Share the book and choose who can edit it and who can only view it.</p></details>
+      <details><summary>Can I use it on my computer?<i aria-hidden="true"></i></summary><p>Yes. Open monee.skifi.co/app in any browser and sign in. It is the same book as on your phone.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ last call -->
+<section class="sec sec--tight" id="get">
+  <div class="wrap">
+    <div class="cta reveal">
+      <div class="cta__glow" aria-hidden="true"></div>
+      <span class="coin coin--c1" aria-hidden="true"><svg><use href="#i-m"/></svg></span>
+      <span class="coin coin--light coin--c2" aria-hidden="true"><svg><use href="#i-m"/></svg></span>
+      <span class="coin coin--c3" aria-hidden="true"><svg><use href="#i-m"/></svg></span>
+      <span class="coin coin--light coin--c4" aria-hidden="true"><svg><use href="#i-m"/></svg></span>
+      <svg class="cta__icon" aria-hidden="true"><use href="#logo"/></svg>
+      <h2>Know where it all goes.</h2>
+      <p>Get Monee on your phone, pick your main currency, and add your first account.</p>
+      <div class="stores">
+        <a class="store" data-store="play" href="https://play.google.com/store/apps/details?id=co.skifi.monee" target="_blank" rel="noopener" aria-label="Get it on Google Play"><svg aria-hidden="true"><use href="#i-gplay"/></svg><span class="store__txt"><small>GET IT ON</small><b>Google Play</b></span></a>
+        <a class="store" data-store="ios" href="#get" aria-label="Download on the App Store"><svg aria-hidden="true"><use href="#i-apple"/></svg><span class="store__txt"><small>Download on the</small><b>App Store</b></span></a>
+      </div>
+      <p class="cta__links">
+        <a class="cta__link" href="/app/">Open the web app<svg class="ic" aria-hidden="true"><use href="#i-next"/></svg></a>
+      </p>
+    </div>
+  </div>
+</section>
+</main>
+
+<div class="getbar" id="getbar" aria-hidden="true">
+  <svg class="getbar__logo" aria-hidden="true"><use href="#logo"/></svg>
+  <p><b>Monee</b><span>The money manager by SkiFi</span></p>
+  <a class="btn btn--glow btn--sm" href="#get" tabindex="-1">Get the app</a>
+</div>
+
+<footer class="foot">
+  <div class="wrap foot__in">
+    <a class="brand" href="/"><svg class="brand__logo" aria-hidden="true"><use href="#logo"/></svg><span>Monee</span></a>
+    <nav aria-label="Footer"><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/support">Support</a><a href="/delete-account">Delete an account</a><a href="mailto:contact@skifi.co">Contact</a></nav>
+    <p>Made by <a href="https://skifi.co" target="_blank" rel="noopener">SkiFi</a></p>
+  </div>
+</footer>
+</body>
+</html>

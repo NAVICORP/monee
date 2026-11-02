@@ -87,9 +87,9 @@ const int moneeDeepColour = 0xFF5634C7;
 def main():
     os.makedirs(os.path.join(ROOT, 'web/assets/brand'), exist_ok=True)
     with open(os.path.join(ROOT, 'web/assets/brand/monee-icon.svg'), 'w') as f:
-        f.write(svg(1000, **TILE, radius=ROUND).replace(' width="1000" height="1000"', ''))
+        f.write(svg(1000, **TILE, radius=ROUND).replace(' width="1000" height="1000"', '', 1))
     with open(os.path.join(ROOT, 'web/assets/brand/monee-mark.svg'), 'w') as f:
-        f.write(svg(1000, fg=MAIN, scale=1.0).replace(' width="1000" height="1000"', ''))
+        f.write(svg(1000, fg=MAIN, scale=1.0).replace(' width="1000" height="1000"', '', 1))
     with open(os.path.join(ROOT, 'app/lib/ui/brand_mark.dart'), 'w') as f:
         f.write(dart())
 
