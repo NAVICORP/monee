@@ -143,7 +143,7 @@ class TxnDayList extends StatelessWidget {
         const SizedBox(height: 6),
       ],
       if (footer != null) footer!,
-      const SizedBox(height: 96),
+      SizedBox(height: 96 + MediaQuery.paddingOf(context).bottom),
     ];
     final list = ListView(padding: EdgeInsets.zero, children: children);
     return onRefresh == null ? list : RefreshIndicator(onRefresh: onRefresh!, color: K.blue, child: list);

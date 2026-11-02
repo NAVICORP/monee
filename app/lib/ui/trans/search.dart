@@ -212,7 +212,7 @@ class _SearchPageState extends State<SearchPage> with ReloadOnChange {
     }
     if (_found.isEmpty) return const Center(child: EmptyState(icon: Icons.search_off_rounded, text: 'Nothing matches.'));
     return ListView.separated(
-      padding: const EdgeInsets.only(bottom: 32),
+      padding: EdgeInsets.only(bottom: 32 + MediaQuery.paddingOf(context).bottom),
       itemCount: _found.length,
       separatorBuilder: (_, __) => const Divider(height: 1, indent: Sp.page),
       itemBuilder: (_, i) => TxnRow(_found[i], showDate: true),

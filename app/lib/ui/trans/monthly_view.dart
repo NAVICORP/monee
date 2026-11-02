@@ -156,7 +156,7 @@ class _TransMonthlyViewState extends State<TransMonthlyView> with ReloadOnChange
     return RefreshIndicator(
       onRefresh: reload,
       color: K.blue,
-      child: ListView(physics: const AlwaysScrollableScrollPhysics(), padding: EdgeInsets.zero, children: [
+      child: ListView(physics: const AlwaysScrollableScrollPhysics(), padding: EdgeInsets.only(bottom: 96 + MediaQuery.paddingOf(context).bottom), children: [
         if (_error != null) Padding(padding: const EdgeInsets.fromLTRB(Sp.page, Sp.md, Sp.page, 0), child: Notice(_error!)),
         for (final m in _months) ...[
           _monthRow(b, m),

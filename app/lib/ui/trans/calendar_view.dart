@@ -118,7 +118,7 @@ class _TransCalendarViewState extends State<TransCalendarView> with ReloadOnChan
     return RefreshIndicator(
       onRefresh: reload,
       color: K.blue,
-      child: ListView(physics: const AlwaysScrollableScrollPhysics(), padding: EdgeInsets.zero, children: [
+      child: ListView(physics: const AlwaysScrollableScrollPhysics(), padding: EdgeInsets.only(bottom: 96 + MediaQuery.paddingOf(context).bottom), children: [
         Container(
           height: 28,
           decoration: const BoxDecoration(color: K.surface, border: Border(bottom: BorderSide(color: K.border))),

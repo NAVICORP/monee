@@ -16,6 +16,7 @@ import 'note_view.dart';
 import 'search.dart';
 import 'total_view.dart';
 import 'trans_common.dart';
+import '../glass.dart';
 
 /// The Trans tab: the period switcher with Bookmarks, Search and Filter, the
 /// Daily, Calendar, Monthly, Total and Note sub-tabs, the period's totals,
@@ -260,19 +261,7 @@ class _TransPageState extends State<TransPage> with ReloadOnChange {
     final edit = b.canEdit;
     return Scaffold(
       backgroundColor: K.paper,
-      floatingActionButton: edit
-          ? FloatingActionButton(
-              heroTag: 'monee-trans-add',
-              tooltip: 'Add',
-              onPressed: _add,
-              backgroundColor: K.blue,
-              foregroundColor: Colors.white,
-              elevation: 2,
-              highlightElevation: 4,
-              shape: const CircleBorder(),
-              child: const Icon(Icons.add_rounded, size: 28),
-            )
-          : null,
+      floatingActionButton: edit ? GlassFab(icon: Icons.add_rounded, tooltip: 'Add', onPressed: _add) : null,
       body: SafeArea(
         bottom: false,
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../core/book.dart';
 import '../core/format.dart';
+import 'glass.dart';
 import 'theme.dart';
 import 'widgets.dart';
 
@@ -215,39 +216,104 @@ class SummaryStrip extends StatelessWidget {
 
 /// A row of small pill tabs (Daily, Calendar, Monthly, Total, Note), scrolling
 /// sideways when they do not fit.
-class PillTabs extends StatelessWidget {
+class PillTabs extends StatefulWidget {
   const PillTabs({super.key, required this.labels, required this.index, required this.onChanged});
   final List<String> labels;
   final int index;
   final ValueChanged<int> onChanged;
 
   @override
+  State<PillTabs> createState() => _PillTabsState();
+}
+
+/// The pills sit in a frosted glass track; the chosen one is a violet glass
+/// drop that slides to the next pill with a small overshoot, like liquid.
+class _PillTabsState extends State<PillTabs> {
+  final _row = GlobalKey();
+  late List<GlobalKey> _keys = _make();
+  List<Rect>? _rects;
+
+  List<GlobalKey> _make() => [for (var i = 0; i < widget.labels.length; i++) GlobalKey()];
+
+  @override
+  void didUpdateWidget(PillTabs old) {
+    super.didUpdateWidget(old);
+    if (old.labels.length != widget.labels.length) {
+      _keys = _make();
+      _rects = null;
+    }
+  }
+
+  void _measure() {
+    if (!mounted) return;
+    final row = _row.currentContext?.findRenderObject() as RenderBox?;
+    if (row == null || !row.hasSize) return;
+    final rects = <Rect>[];
+    for (final k in _keys) {
+      final b = k.currentContext?.findRenderObject() as RenderBox?;
+      if (b == null || !b.hasSize) return;
+      rects.add(b.localToGlobal(Offset.zero, ancestor: row) & b.size);
+    }
+    final old = _rects;
+    if (old != null && old.length == rects.length && Iterable.generate(rects.length).every((i) => old[i] == rects[i])) return;
+    setState(() => _rects = rects);
+  }
+
+  @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) => _measure());
+    final rects = _rects;
+    final at = rects != null && widget.index < rects.length ? rects[widget.index] : null;
+    final still = MediaQuery.disableAnimationsOf(context);
     return SizedBox(
-      height: 44,
+      height: 48,
       child: ListView(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: Sp.page, vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: Sp.page, vertical: 5),
         children: [
-          for (var i = 0; i < labels.length; i++)
-            Padding(
-              padding: const EdgeInsets.only(right: 6),
-              child: Material(
-                color: i == index ? K.deep : K.surface,
-                shape: StadiumBorder(side: BorderSide(color: i == index ? K.deep : K.border)),
-                child: InkWell(
-                  customBorder: const StadiumBorder(),
-                  onTap: () {
-                    if (i != index) HapticFeedback.selectionClick();
-                    onChanged(i);
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 14),
-                    child: Center(child: Text(labels[i], style: T.label.copyWith(color: i == index ? Colors.white : K.ink2))),
-                  ),
+          Glass(
+            padding: const EdgeInsets.all(3),
+            child: Stack(children: [
+              if (at != null)
+                AnimatedPositioned(
+                  duration: still ? Duration.zero : const Duration(milliseconds: 380),
+                  curve: Curves.easeOutBack,
+                  left: at.left,
+                  top: at.top,
+                  width: at.width,
+                  height: at.height,
+                  child: const IgnorePointer(child: Glass(tone: GlassTone.violet, shadow: false, child: SizedBox.expand())),
                 ),
-              ),
-            ),
+              Row(key: _row, mainAxisSize: MainAxisSize.min, children: [
+                for (var i = 0; i < widget.labels.length; i++)
+                  Semantics(
+                    button: true,
+                    selected: i == widget.index,
+                    child: GestureDetector(
+                      key: _keys[i],
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () {
+                        if (i != widget.index) HapticFeedback.selectionClick();
+                        widget.onChanged(i);
+                      },
+                      child: Container(
+                        height: 32,
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.symmetric(horizontal: 14),
+                        // Before the drop is placed (the very first frame), the
+                        // chosen pill is coloured on its own.
+                        decoration: at == null && i == widget.index ? const BoxDecoration(color: K.blue, borderRadius: BorderRadius.all(Radius.circular(999))) : null,
+                        child: AnimatedDefaultTextStyle(
+                          duration: const Duration(milliseconds: 200),
+                          style: T.label.copyWith(color: i == widget.index ? Colors.white : K.ink2),
+                          child: Text(widget.labels[i]),
+                        ),
+                      ),
+                    ),
+                  ),
+              ]),
+            ]),
+          ),
         ],
       ),
     );
