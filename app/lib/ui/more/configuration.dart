@@ -46,7 +46,7 @@ class ConfigurationPage extends StatelessWidget {
         LinkGroup([
           LinkRow(Icons.calendar_view_day_outlined, 'Start screen', tap(() => _startScreen(context, b)),
               value: b.startScreen == 'calendar' ? 'Calendar' : 'Daily'),
-          LinkRow(Icons.event_outlined, 'Monthly start day', tap(() => _monthStart(context, b)), value: 'Every ${b.monthStartDay}'),
+          LinkRow(Icons.event_outlined, 'Monthly start day', tap(() => _monthStart(context, b)), value: 'Day ${b.monthStartDay}'),
           LinkRow(Icons.view_week_outlined, 'Weekly start day', tap(() => _weekStart(context, b)), value: _weekdays[b.weekStart % 7]),
           LinkRow(Icons.date_range_outlined, 'Financial year starts', tap(() => _fyStart(context, b)), value: kMonths[(b.fyStartMonth - 1) % 12]),
           SwitchTile(
@@ -113,7 +113,7 @@ class ConfigurationPage extends StatelessWidget {
 
   Future<void> _monthStart(BuildContext context, Book b) async {
     final p = await showPicker<int>(context, title: 'Months start on', selected: b.monthStartDay, options: [
-      for (var d = 1; d <= 31; d++) PickOption(d, 'Every $d', sub: d > 28 ? 'Shorter months start on their last day' : null),
+      for (var d = 1; d <= 31; d++) PickOption(d, 'Day $d', sub: d > 28 ? 'Shorter months start on their last day' : null),
     ]);
     if (p == null || p.value == b.monthStartDay || !context.mounted) return;
     await saveBook(context, {'month_start_day': p.value}, done: 'Months start on day ${p.value}');

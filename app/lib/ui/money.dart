@@ -144,33 +144,36 @@ class PeriodBar extends StatelessWidget {
     return SizedBox(
       height: 52,
       child: Row(children: [
-        IconButton(
-          tooltip: 'Before',
-          icon: const Icon(Icons.chevron_left_rounded, color: K.ink2),
-          onPressed: () {
-            HapticFeedback.selectionClick();
-            onChanged(period.step(b, -1));
-          },
-        ),
-        Flexible(
-          child: InkWell(
-            borderRadius: BorderRadius.circular(10),
-            onTap: () => _pick(context),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
-              child: Text(period.label(b), maxLines: 1, overflow: TextOverflow.ellipsis, style: T.h3),
+        Expanded(
+          child: Row(children: [
+            IconButton(
+              tooltip: 'Before',
+              icon: const Icon(Icons.chevron_left_rounded, color: K.ink2),
+              onPressed: () {
+                HapticFeedback.selectionClick();
+                onChanged(period.step(b, -1));
+              },
             ),
-          ),
+            Flexible(
+              child: InkWell(
+                borderRadius: BorderRadius.circular(10),
+                onTap: () => _pick(context),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
+                  child: Text(period.label(b), maxLines: 1, overflow: TextOverflow.ellipsis, style: T.h3),
+                ),
+              ),
+            ),
+            IconButton(
+              tooltip: 'After',
+              icon: const Icon(Icons.chevron_right_rounded, color: K.ink2),
+              onPressed: () {
+                HapticFeedback.selectionClick();
+                onChanged(period.step(b, 1));
+              },
+            ),
+          ]),
         ),
-        IconButton(
-          tooltip: 'After',
-          icon: const Icon(Icons.chevron_right_rounded, color: K.ink2),
-          onPressed: () {
-            HapticFeedback.selectionClick();
-            onChanged(period.step(b, 1));
-          },
-        ),
-        const Spacer(),
         ...trailing,
         const SizedBox(width: 4),
       ]),
@@ -286,7 +289,7 @@ class PercentPill extends StatelessWidget {
       constraints: const BoxConstraints(minWidth: 46),
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(8)),
-      child: Text('${percent.round()}%', textAlign: TextAlign.center, style: T.tiny.copyWith(color: Colors.white, fontWeight: FontWeight.w800)),
+      child: Text('${percent < 10 && percent != percent.roundToDouble() ? percent.toStringAsFixed(1) : percent.round()}%', textAlign: TextAlign.center, style: T.tiny.copyWith(color: Colors.white, fontWeight: FontWeight.w800)),
     );
   }
 }
@@ -316,7 +319,7 @@ class BudgetBar extends StatelessWidget {
               alignment: Alignment.centerRight,
               child: Padding(
                 padding: const EdgeInsets.only(right: 8),
-                child: Text('${percent.round()}%', style: T.tiny.copyWith(color: over || percent > 80 ? Colors.white : K.ink2, fontWeight: FontWeight.w800)),
+                child: Text('${percent < 10 && percent != percent.roundToDouble() ? percent.toStringAsFixed(1) : percent.round()}%', style: T.tiny.copyWith(color: over || percent > 80 ? Colors.white : K.ink2, fontWeight: FontWeight.w800)),
               ),
             ),
           ),

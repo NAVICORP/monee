@@ -87,7 +87,8 @@ class _PiePainter extends CustomPainter {
               ..color = s.color
               ..style = PaintingStyle.stroke
               ..strokeWidth = 1.2);
-        final pct = (100 * s.value / total);
+        // Rounded to one place first, as the server's percent is, so the label matches the list's pill.
+        final pct = (1000 * s.value / total).round() / 10;
         final tp = TextPainter(
           text: TextSpan(children: [
             TextSpan(text: s.label, style: T.tiny.copyWith(color: K.ink, fontWeight: FontWeight.w700)),

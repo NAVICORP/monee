@@ -46,7 +46,8 @@ Future<bool> openEntry(
     if (pick == null || !context.mounted) return false;
     keepDate = pick.value;
   }
-  final saved = await Navigator.of(context, rootNavigator: true).push<bool>(MaterialPageRoute<bool>(
+  // On the tab's own navigator, so the footer tabs stay in view.
+  final saved = await Navigator.of(context).push<bool>(MaterialPageRoute<bool>(
     fullscreenDialog: true,
     builder: (_) => _EntryPage(
       txn: txn,

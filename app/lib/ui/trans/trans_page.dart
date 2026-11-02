@@ -288,7 +288,12 @@ class _TransPageState extends State<TransPage> with ReloadOnChange {
           PillTabs(labels: _tabs, index: _tab, onChanged: _setTab),
           if (_filter.isNotEmpty) _filterBar(),
           SummaryStrip(income: _income, expense: _expense, total: _total, carry: _carry),
-          Expanded(child: _body(visible)),
+          Expanded(
+            child: LayoutBuilder(builder: (context, box) {
+              final w = box.maxWidth > 760 ? 760.0 : box.maxWidth;
+              return Center(child: SizedBox(width: w, height: box.maxHeight, child: _body(visible)));
+            }),
+          ),
         ]),
       ),
     );
