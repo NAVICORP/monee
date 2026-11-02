@@ -15,10 +15,12 @@
 <meta property="og:url" content="https://monee.skifi.co/">
 <meta property="og:title" content="Monee: your money, in one book">
 <meta property="og:description" content="Income, expenses, accounts, cards and budgets in any currency. On your phone and your computer.">
-<meta property="og:image" content="https://monee.skifi.co/assets/brand/icon-128.png">
-<meta property="og:image:width" content="128">
-<meta property="og:image:height" content="128">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://monee.skifi.co/assets/brand/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Monee: your money, in one book">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://monee.skifi.co/assets/brand/og.png">
 <link rel="preload" href="/assets/fonts/bricolage.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/manrope.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/home.css">
@@ -66,19 +68,21 @@
 <symbol id="i-back" viewBox="0 0 24 24"><path d="M10 7 5 12l5 5M5 12h14"/></symbol>
 <symbol id="i-gift" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5C11 3 12 8 12 8s1-5 4.5-5a2.5 2.5 0 0 1 0 5"/></symbol>
 <symbol id="i-apple" viewBox="0 0 24 24"><path fill="currentColor" d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></symbol>
+<filter id="lgWarp" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.011 0.016" numOctaves="2" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="14" xChannelSelector="R" yChannelSelector="G"/></filter>
 <symbol id="i-gplay" viewBox="0 0 24 24"><path fill="#00C3FF" d="M3.6 2.3c-.3.3-.5.8-.5 1.4v16.6c0 .6.2 1.1.5 1.4l9.3-9.7Z"/><path fill="#00E676" d="M16.1 8.6 5.2 2.4c-.6-.3-1.2-.4-1.6-.1l9.3 9.7Z"/><path fill="#FF3D44" d="M3.6 21.7c.4.3 1 .2 1.6-.1l10.9-6.2-3.2-3.4Z"/><path fill="#FFD500" d="m16.1 15.4 3.6-2c1-.6 1-1.5 0-2.1l-3.6-2.1-3.2 2.8Z"/></symbol>
 </defs></svg>
+<div class="amb amb--top" aria-hidden="true"><i class="b-lilac"></i><i class="b-violet"></i><i class="b-coral"></i></div>
 
 <header class="nav" id="nav">
-  <div class="nav__in">
+  <div class="nav__in lg lg--warp" data-adapt>
     <a class="brand" href="/" aria-label="Monee home"><svg class="brand__logo" aria-hidden="true"><use href="#logo"/></svg><span>Monee</span></a>
     <nav class="nav__links" aria-label="Sections">
-      <a href="#features">Features</a>
-      <a href="#web">Web app</a>
-      <a href="#move">Moving over</a>
-      <a href="#faq">Questions</a>
+      <a class="lg-press" href="#features">Features</a>
+      <a class="lg-press" href="#web">Web app</a>
+      <a class="lg-press" href="#move">Moving over</a>
+      <a class="lg-press" href="#faq">Questions</a>
     </nav>
-    <a class="btn btn--ink btn--sm" href="/app/">Open Monee</a>
+    <a class="btn btn--ink btn--sm lg lg--flat lg-press" href="/app/">Open Monee</a>
   </div>
 </header>
 
@@ -86,14 +90,15 @@
 <!-- ============================================================ hero -->
 <section class="hero" aria-labelledby="hero-h">
   <div class="hero__glow" aria-hidden="true"></div>
+  <div class="amb amb--hero" aria-hidden="true"><i class="b-deep"></i><i class="b-lilac"></i><i class="b-coral"></i><i class="b-amber"></i><i class="b-violet"></i></div>
   <div class="wrap hero__grid">
     <div class="hero__copy">
       <h1 id="hero-h" class="rise">Your money, in one book.</h1>
       <p class="lead rise">Track income, expenses, accounts, cards and budgets. The same book on your phone and your computer.</p>
       <div class="hero__get rise">
       <div class="stores">
-        <a class="store" data-store="play" href="https://play.google.com/store/apps/details?id=co.skifi.monee" target="_blank" rel="noopener" aria-label="Get it on Google Play"><svg aria-hidden="true"><use href="#i-gplay"/></svg><span class="store__txt"><small>GET IT ON</small><b>Google Play</b></span></a>
-        <a class="store" data-store="ios" href="#get" aria-label="Download on the App Store"><svg aria-hidden="true"><use href="#i-apple"/></svg><span class="store__txt"><small>Download on the</small><b>App Store</b></span></a>
+        <a class="store lg lg-press" data-store="play" href="https://play.google.com/store/apps/details?id=co.skifi.monee" target="_blank" rel="noopener" aria-label="Get it on Google Play"><svg aria-hidden="true"><use href="#i-gplay"/></svg><span class="store__txt"><small>GET IT ON</small><b>Google Play</b></span></a>
+        <a class="store lg lg-press" data-store="ios" href="#get" aria-label="Download on the App Store"><svg aria-hidden="true"><use href="#i-apple"/></svg><span class="store__txt"><small>Download on the</small><b>App Store</b></span></a>
       </div>
       </div>
       <p class="hero__links rise">
@@ -112,10 +117,10 @@
           <div class="scr">
             <div class="scr__top"></div>
             <div class="scr__bar">
-              <div class="scr__month"><i class="scr__cb"><svg><use href="#i-prev"/></svg></i><b data-mshort>Nov 2026</b><i class="scr__cb"><svg><use href="#i-next"/></svg></i></div>
-              <div class="scr__icons"><svg><use href="#i-star"/></svg><svg><use href="#i-search"/></svg><svg><use href="#i-filter"/></svg></div>
+              <div class="scr__month"><i class="scr__cb lg lg--flat"><svg><use href="#i-prev"/></svg></i><b data-mshort>Nov 2026</b><i class="scr__cb lg lg--flat"><svg><use href="#i-next"/></svg></i></div>
+              <div class="scr__icons lg lg--flat"><svg><use href="#i-star"/></svg><svg><use href="#i-search"/></svg><svg><use href="#i-filter"/></svg></div>
             </div>
-            <div class="scr__tabs"><span class="on">Daily</span><span>Calendar</span><span>Monthly</span><span>Total</span><span>Note</span></div>
+            <div class="scr__tabs lg lg--flat"><span class="on">Daily</span><span>Calendar</span><span>Monthly</span><span>Total</span><span>Note</span></div>
             <div class="scr__sum">
               <div><small>Income</small><b class="m-in" id="hIn">12,783.00</b></div>
               <div><small>Expenses</small><b class="m-out" id="hOut">3,761.37</b></div>
@@ -143,8 +148,8 @@
                 </div>
               </div>
             </div>
-            <i class="scr__fab"><svg><use href="#i-plus"/></svg></i>
-            <div class="scr__nav"><span class="on"><svg><use href="#i-list"/></svg>Trans</span><span><svg><use href="#i-pie"/></svg>Stats</span><span><svg><use href="#i-wallet"/></svg>Accounts</span><span><svg><use href="#i-grid"/></svg>More</span></div>
+            <i class="scr__fab lg lg--flat"><svg><use href="#i-plus"/></svg></i>
+            <div class="scr__nav lg"><span class="on"><svg><use href="#i-list"/></svg>Trans</span><span><svg><use href="#i-pie"/></svg>Stats</span><span><svg><use href="#i-wallet"/></svg>Accounts</span><span><svg><use href="#i-grid"/></svg>More</span></div>
           </div>
           <div class="sb"><b>9:41</b><span class="sb__sys"><svg viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg class="wifi" viewBox="0 0 16 12"><path d="M1.4 4.7a9.6 9.6 0 0 1 13.2 0M3.9 7.4a6 6 0 0 1 8.2 0M6.5 10.1a2.3 2.3 0 0 1 3 0" stroke-width="1.9" stroke-linecap="round"/></svg><svg class="bat" viewBox="0 0 27 13"><rect x=".6" y=".6" width="22.8" height="11.8" rx="3.4" fill="none" stroke="currentColor" stroke-opacity=".4" stroke-width="1.2"/><rect x="2.4" y="2.4" width="19.2" height="8.2" rx="2"/><path d="M25 4.4v4.2a2.3 2.3 0 0 0 0-4.2z" opacity=".45"/></svg></span></div><i class="island"></i><i class="hi"></i>
         </div>
@@ -154,16 +159,16 @@
       <span class="coin coin--light coin--h2" data-depth="1.6"><svg><use href="#i-m"/></svg></span>
       <span class="coin coin--h3" data-depth="3"><svg><use href="#i-m"/></svg></span>
 
-      <div class="float float--rate">
+      <div class="float float--rate lg lg--warp">
         <p class="float__head"><svg class="ic"><use href="#i-globe"/></svg>Exchange rate</p>
         <b>1 BHD = 9.97 SAR</b>
         <small>Kept with this entry</small>
       </div>
-      <div class="float float--card">
+      <div class="float float--card lg lg--warp">
         <p class="float__head"><svg class="ic"><use href="#i-card"/></svg>Credit card</p>
         <p class="float__cols"><span><small>Payable</small><b>1,240.00</b></span><span><small>Outstanding</small><b id="hCard">335.00</b></span></p>
       </div>
-      <div class="float float--budget" id="hBudget">
+      <div class="float float--budget lg lg--warp" id="hBudget">
         <p class="float__head"><svg class="ic"><use href="#i-food"/></svg>Food budget</p>
         <p class="float__nums"><b>SAR 768</b><span>of 1,200</span></p>
         <div class="fbar"><i style="width:64%"></i><u style="left:58%"></u></div>
@@ -185,12 +190,13 @@
 
     <div class="bento">
       <article class="card card--big reveal">
+        <div class="amb amb--card" aria-hidden="true"><i class="b-violet"></i><i class="b-pink"></i></div>
         <div class="card__copy">
           <h3>Daily, calendar and monthly.</h3>
           <p>Every entry by day. Each day's income and spending on a calendar. The whole year, month by month.</p>
         </div>
         <div class="viz viz--views" aria-hidden="true">
-          <div class="vtabs" id="vTabs"><span class="on">Daily</span><span>Calendar</span><span>Monthly</span></div>
+          <div class="vtabs lg lg--flat lg--dark" id="vTabs"><span class="on">Daily</span><span>Calendar</span><span>Monthly</span></div>
           <div class="vpanes">
             <div class="vpane on">
               <div class="vday">
@@ -330,17 +336,18 @@
 
 <!-- ============================================================ the web app -->
 <section class="big" id="web" aria-labelledby="w-h">
+  <div class="amb amb--big" aria-hidden="true"><i class="b-violet"></i><i class="b-coral"></i><i class="b-lilac"></i><i class="b-amber"></i></div>
   <div class="wrap big__grid">
     <div class="big__copy reveal">
-      <p class="pill pill--glass"><svg class="ic" aria-hidden="true"><use href="#i-laptop"/></svg>The web app</p>
+      <p class="pill pill--glass lg lg--dark"><svg class="ic" aria-hidden="true"><use href="#i-laptop"/></svg>The web app</p>
       <h2 id="w-h">Same book, bigger screen.</h2>
       <p class="lead">Open Monee in any browser on your computer. It takes the place of a PC manager, with nothing to install.</p>
       <ul class="ticks">
-        <li><i><svg class="ic" aria-hidden="true"><use href="#i-phone"/></svg></i>The same entries on phone, tablet and computer</li>
-        <li><i><svg class="ic" aria-hidden="true"><use href="#i-keys"/></svg></i>Add a month of receipts with a full keyboard</li>
-        <li><i><svg class="ic" aria-hidden="true"><use href="#i-sheet"/></svg></i>Export to Excel when you need it</li>
+        <li><i class="lg lg--flat lg--dark"><svg class="ic" aria-hidden="true"><use href="#i-phone"/></svg></i>The same entries on phone, tablet and computer</li>
+        <li><i class="lg lg--flat lg--dark"><svg class="ic" aria-hidden="true"><use href="#i-keys"/></svg></i>Add a month of receipts with a full keyboard</li>
+        <li><i class="lg lg--flat lg--dark"><svg class="ic" aria-hidden="true"><use href="#i-sheet"/></svg></i>Export to Excel when you need it</li>
       </ul>
-      <div class="big__ctl"><a class="btn btn--glow" href="/app/">Open the web app</a></div>
+      <div class="big__ctl"><a class="btn btn--glow lg lg-press" href="/app/">Open the web app</a></div>
     </div>
     <div class="lap reveal" aria-hidden="true">
       <span class="coin coin--w1"><svg><use href="#i-m"/></svg></span>
@@ -358,10 +365,10 @@
             </div>
             <div class="wapp__main">
               <div class="wapp__top">
-                <div class="wapp__month"><i><svg><use href="#i-prev"/></svg></i><b data-mshort>Nov 2026</b><i><svg><use href="#i-next"/></svg></i></div>
-                <div class="wapp__tools"><svg><use href="#i-star"/></svg><svg><use href="#i-search"/></svg><svg><use href="#i-filter"/></svg><span class="wapp__add"><svg><use href="#i-plus"/></svg>Add</span></div>
+                <div class="wapp__month"><i class="lg lg--flat"><svg><use href="#i-prev"/></svg></i><b data-mshort>Nov 2026</b><i class="lg lg--flat"><svg><use href="#i-next"/></svg></i></div>
+                <div class="wapp__tools"><svg><use href="#i-star"/></svg><svg><use href="#i-search"/></svg><svg><use href="#i-filter"/></svg><span class="wapp__add lg lg--flat"><svg><use href="#i-plus"/></svg>Add</span></div>
               </div>
-              <div class="wapp__tabs"><span class="on">Daily</span><span>Calendar</span><span>Monthly</span><span>Total</span><span>Note</span></div>
+              <div class="wapp__tabs lg lg--flat"><span class="on">Daily</span><span>Calendar</span><span>Monthly</span><span>Total</span><span>Note</span></div>
               <div class="wapp__body">
                 <div class="wapp__left">
                   <div class="wapp__sum"><span><small>Income</small><b class="m-in">12,783.00</b></span><span><small>Expenses</small><b class="m-out" id="wOut">3,947.77</b></span><span><small>Total</small><b id="wTot">8,835.23</b></span></div>
@@ -407,6 +414,7 @@
 
 <!-- ============================================================ moving over -->
 <section class="sec sec--lilac" id="move" aria-labelledby="m-h">
+  <div class="amb amb--move" aria-hidden="true"><i class="b-violet"></i><i class="b-coral"></i><i class="b-pink"></i><i class="b-amber"></i></div>
   <div class="wrap split">
     <div class="split__visual reveal" aria-hidden="true">
       <span class="coin coin--light coin--m1"><svg><use href="#i-m"/></svg></span>
@@ -415,7 +423,7 @@
         <div class="phone__screen">
           <div class="scr">
             <div class="scr__top"></div>
-            <div class="scr__bar scr__bar--page"><i class="scr__cb"><svg><use href="#i-back"/></svg></i><div><small>More</small><b>Import</b></div></div>
+            <div class="scr__bar scr__bar--page"><i class="scr__cb lg lg--flat"><svg><use href="#i-back"/></svg></i><div><small>More</small><b>Import</b></div></div>
             <div class="imp" id="imp">
               <div class="imp__file"><i><svg><use href="#i-sheet"/></svg></i><div><b>Backup 2026-11-03.xlsx</b><small>Excel backup from Money Manager</small></div></div>
               <div class="imp__prog">
@@ -429,9 +437,9 @@
                 <p class="imp__r is-done"><span>Entries</span><b>3,218</b><i><svg><use href="#i-check"/></svg></i></p>
               </div>
               <div class="imp__done is-on" id="impDone"><i><svg><use href="#i-check"/></svg></i><span><b>Your book is ready</b><small>Everything is in Trans</small></span></div>
-              <span class="imp__btn is-on" id="impBtn">Open my book</span>
+              <span class="imp__btn lg lg--flat is-on" id="impBtn">Open my book</span>
             </div>
-            <div class="scr__nav"><span><svg><use href="#i-list"/></svg>Trans</span><span><svg><use href="#i-pie"/></svg>Stats</span><span><svg><use href="#i-wallet"/></svg>Accounts</span><span class="on"><svg><use href="#i-grid"/></svg>More</span></div>
+            <div class="scr__nav lg"><span><svg><use href="#i-list"/></svg>Trans</span><span><svg><use href="#i-pie"/></svg>Stats</span><span><svg><use href="#i-wallet"/></svg>Accounts</span><span class="on"><svg><use href="#i-grid"/></svg>More</span></div>
           </div>
           <div class="sb"><b>9:41</b><span class="sb__sys"><svg viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg><svg class="wifi" viewBox="0 0 16 12"><path d="M1.4 4.7a9.6 9.6 0 0 1 13.2 0M3.9 7.4a6 6 0 0 1 8.2 0M6.5 10.1a2.3 2.3 0 0 1 3 0" stroke-width="1.9" stroke-linecap="round"/></svg><svg class="bat" viewBox="0 0 27 13"><rect x=".6" y=".6" width="22.8" height="11.8" rx="3.4" fill="none" stroke="currentColor" stroke-opacity=".4" stroke-width="1.2"/><rect x="2.4" y="2.4" width="19.2" height="8.2" rx="2"/><path d="M25 4.4v4.2a2.3 2.3 0 0 0 0-4.2z" opacity=".45"/></svg></span></div><i class="island"></i><i class="hi"></i>
         </div>
@@ -442,17 +450,18 @@
       <h2 id="m-h">Bring your Money Manager book.</h2>
       <p class="lead">Already keep your money in Money Manager? Your accounts, categories and entries can come with you.</p>
       <ol class="steps">
-        <li><i>1</i><span>Make an Excel backup in Money Manager</span></li>
-        <li><i>2</i><span>In Monee, open More, then Import</span></li>
-        <li><i>3</i><span>Pick the file, and your book fills in</span></li>
+        <li><i class="lg lg--flat">1</i><span>Make an Excel backup in Money Manager</span></li>
+        <li><i class="lg lg--flat">2</i><span>In Monee, open More, then Import</span></li>
+        <li><i class="lg lg--flat">3</i><span>Pick the file, and your book fills in</span></li>
       </ol>
-      <div class="split__cta"><a class="btn btn--ink" href="#get">Get Monee</a></div>
+      <div class="split__cta"><a class="btn btn--ink lg lg-press" href="#get">Get Monee</a></div>
     </div>
   </div>
 </section>
 
 <!-- ============================================================ questions -->
 <section class="sec" id="faq" aria-labelledby="q-h">
+  <div class="amb amb--faq" aria-hidden="true"><i class="b-violet"></i><i class="b-coral"></i></div>
   <div class="wrap faq">
     <div class="sec__head reveal">
       <p class="kicker">Questions</p>
@@ -474,6 +483,7 @@
   <div class="wrap">
     <div class="cta reveal">
       <div class="cta__glow" aria-hidden="true"></div>
+      <div class="amb amb--cta" aria-hidden="true"><i class="b-deep"></i><i class="b-coral"></i><i class="b-amber"></i><i class="b-lilac"></i></div>
       <span class="coin coin--c1" aria-hidden="true"><svg><use href="#i-m"/></svg></span>
       <span class="coin coin--light coin--c2" aria-hidden="true"><svg><use href="#i-m"/></svg></span>
       <span class="coin coin--c3" aria-hidden="true"><svg><use href="#i-m"/></svg></span>
@@ -482,8 +492,8 @@
       <h2>Know where it all goes.</h2>
       <p>Get Monee on your phone, pick your main currency, and add your first account.</p>
       <div class="stores">
-        <a class="store" data-store="play" href="https://play.google.com/store/apps/details?id=co.skifi.monee" target="_blank" rel="noopener" aria-label="Get it on Google Play"><svg aria-hidden="true"><use href="#i-gplay"/></svg><span class="store__txt"><small>GET IT ON</small><b>Google Play</b></span></a>
-        <a class="store" data-store="ios" href="#get" aria-label="Download on the App Store"><svg aria-hidden="true"><use href="#i-apple"/></svg><span class="store__txt"><small>Download on the</small><b>App Store</b></span></a>
+        <a class="store lg lg-press" data-store="play" href="https://play.google.com/store/apps/details?id=co.skifi.monee" target="_blank" rel="noopener" aria-label="Get it on Google Play"><svg aria-hidden="true"><use href="#i-gplay"/></svg><span class="store__txt"><small>GET IT ON</small><b>Google Play</b></span></a>
+        <a class="store lg lg-press" data-store="ios" href="#get" aria-label="Download on the App Store"><svg aria-hidden="true"><use href="#i-apple"/></svg><span class="store__txt"><small>Download on the</small><b>App Store</b></span></a>
       </div>
       <p class="cta__links">
         <a class="cta__link" href="/app/">Open the web app<svg class="ic" aria-hidden="true"><use href="#i-next"/></svg></a>
@@ -493,10 +503,10 @@
 </section>
 </main>
 
-<div class="getbar" id="getbar" aria-hidden="true">
+<div class="getbar lg lg--warp" id="getbar" data-adapt aria-hidden="true">
   <svg class="getbar__logo" aria-hidden="true"><use href="#logo"/></svg>
   <p><b>Monee</b><span>The money manager by SkiFi</span></p>
-  <a class="btn btn--glow btn--sm" href="#get" tabindex="-1">Get the app</a>
+  <a class="btn btn--glow btn--sm lg lg--flat lg-press" href="#get" tabindex="-1">Get the app</a>
 </div>
 
 <footer class="foot">
