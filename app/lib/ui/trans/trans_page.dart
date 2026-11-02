@@ -261,7 +261,15 @@ class _TransPageState extends State<TransPage> with ReloadOnChange {
     final edit = b.canEdit;
     return Scaffold(
       backgroundColor: K.paper,
-      floatingActionButton: edit ? GlassFab(icon: Icons.add_rounded, tooltip: 'Add', onPressed: _add) : null,
+      // Lifted clear of the floating glass footer: Flutter places a floating
+      // button by the phone's own inset only, so the footer's height is added.
+      floatingActionButton: edit
+          ? Padding(
+              padding: EdgeInsets.only(
+                  bottom: (MediaQuery.paddingOf(context).bottom - MediaQuery.viewPaddingOf(context).bottom).clamp(0.0, 400.0)),
+              child: GlassFab(icon: Icons.add_rounded, tooltip: 'Add', onPressed: _add),
+            )
+          : null,
       body: SafeArea(
         bottom: false,
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [

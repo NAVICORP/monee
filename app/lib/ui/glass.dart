@@ -66,7 +66,7 @@ class Glass extends StatelessWidget {
         GlassTone.light => const [Color(0xD6FFFFFF), Color(0x9EF7F3FF), Color(0xB8FFFFFF)],
         GlassTone.violet => const [Color(0xF28C6CF7), Color(0xF26D4AE8), Color(0xF7522FC2)],
         GlassTone.dark => const [Color(0x2EFFFFFF), Color(0x14FFFFFF), Color(0x1FFFFFFF)],
-        GlassTone.lilac => const [Color(0xF5F1EBFF), Color(0xDEE3D8FF), Color(0xEBEFE8FF)],
+        GlassTone.lilac => const [Color(0xF5ECE4FF), Color(0xE6DACCFF), Color(0xEDE9DFFF)],
         GlassTone.sheet => const [Color(0xF5FCFBFF), Color(0xEBF6F3FC), Color(0xF2FAF8FF)],
       };
 
