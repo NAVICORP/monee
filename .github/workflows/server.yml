@@ -1,0 +1,61 @@
+# The Monee server: the database rules (with their tests), the demo book and
+# the site, checked on every push that touches them. The server image itself
+# is built by Dokploy from GitHub (see the Dockerfile).
+name: Server
+
+on:
+  push:
+    branches: ["**"]
+    paths:
+      - "supabase/**"
+      - "tools/**"
+      - "server/**"
+      - "web/**"
+      - "app/**"
+      - "Dockerfile"
+      - "deploy/**"
+      - ".github/workflows/server.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: server-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    services:
+      db:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: monee
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      PGHOST: localhost
+      PGUSER: postgres
+      PGPASSWORD: test
+      PGDATABASE: monee
+    steps:
+      - uses: actions/checkout@v5
+      - name: The shared platform pieces (auth schema and roles, a copy from the app base)
+        run: psql -v ON_ERROR_STOP=1 -q -f supabase/tests/platform.sql
+      - name: Migrations
+        run: for f in supabase/migrations/*.sql; do echo "$f"; psql -v ON_ERROR_STOP=1 -q -1 -f "$f"; done
+      - name: Database tests
+        run: |
+          set -o pipefail
+          for t in supabase/tests/*_test.sql; do echo "== $t"; psql -v ON_ERROR_STOP=1 -q -f "$t" 2>&1 | grep -E "NOTICE|ERROR"; done
+      - name: The demo book loads, and its accounts add up
+        run: |
+          psql -v ON_ERROR_STOP=1 -q -f tools/demo.sql > /dev/null
+          psql -v ON_ERROR_STOP=1 -At -c "set request.jwt.claims = '{\"sub\":\"dddddddd-0000-0000-0000-000000000001\",\"role\":\"authenticated\"}'; select (public.accounts_overview() ->> 'total')::numeric > 0" | tee /dev/stderr | grep -q '^t$'
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+      - run: node --check server/site.mjs

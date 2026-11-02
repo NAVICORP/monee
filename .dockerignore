@@ -1,0 +1,10 @@
+.git
+.github
+app/build
+app/.dart_tool
+app/ios/Pods
+app/android/.gradle
+**/node_modules
+tools
+docs
+*.jks

@@ -1,0 +1,144 @@
+# Monee on one server: Postgres, the Monee API (with receipt photos on disk),
+# and the site in front of it.
+# Deployed with Dokploy as a Docker Compose service built from GitHub
+# (NAVICORP/monee, branch main, compose path ./deploy/docker-compose.yml,
+# autodeploy on push). The domain monee.skifi.co goes to service `site`,
+# port 8000.
+#
+# The image is built here from the Dockerfile (the Flutter web app first);
+# `api` builds it and `site` runs the same image.
+#
+# Passwords: the first start makes random ones inside the `secrets` volume.
+# Sign-in (WhatsApp codes, email codes, passwords) is SkAuth at
+# account.skifi.co, where Monee has to be listed as an app (id "monee").
+
+services:
+  secrets:
+    image: alpine:3.22
+    restart: "no"
+    volumes:
+      - secrets:/secrets
+    command:
+      - sh
+      - -c
+      - |
+        set -e
+        for f in db_password authenticator_password jwt_secret; do
+          if [ ! -s /secrets/$$f ]; then
+            head -c 48 /dev/urandom | base64 | tr -d '\n/+=' > /secrets/$$f
+          fi
+        done
+        chmod 644 /secrets/*
+
+  db:
+    image: ghcr.io/navicorp/farmi-life-db:latest
+    restart: unless-stopped
+    depends_on:
+      secrets:
+        condition: service_completed_successfully
+    environment:
+      POSTGRES_DB: monee
+      POSTGRES_PASSWORD_FILE: /secrets/db_password
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - secrets:/secrets:ro
+      - backups:/backups
+    shm_size: 128mb
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d monee"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  # The database API, the server functions and sign-in (passed on to SkAuth).
+  # The site reaches it as `monee-api`: plain `api` is also the name of other
+  # apps' services on Dokploy's shared network.
+  api:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    image: monee-app:latest
+    restart: unless-stopped
+    expose:
+      - "8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_NAME: monee
+      API_URL: https://monee.skifi.co
+      SITE_URL: https://monee.skifi.co
+      AUTH_MODE: app
+      AUTH_PROVIDER_URL: https://account.skifi.co
+      APP_ID: monee
+      WEB_DIR: ""
+    volumes:
+      - storage:/data/storage
+      - secrets:/secrets:ro
+    networks:
+      default:
+        aliases:
+          - monee-api
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8000/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+
+  # The plain pages, the web app, and the door to the API.
+  site:
+    image: monee-app:latest
+    pull_policy: never
+    restart: unless-stopped
+    command: ["node", "/srv/site/server/site.mjs"]
+    expose:
+      - "8000"
+    environment:
+      API_INTERNAL: http://monee-api:8000
+      SITE_URL: https://monee.skifi.co
+    depends_on:
+      - api
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8000/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # A database copy every night at 03:30 server time, the last 30 kept.
+  backup:
+    image: ghcr.io/navicorp/farmi-life-db:latest
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - secrets:/secrets:ro
+      - backups:/backups
+    entrypoint:
+      - sh
+      - -c
+      - |
+        export PGPASSWORD="$$(cat /secrets/db_password)"
+        while true; do
+          now=$$(date +%H%M)
+          if [ "$$now" = "0330" ]; then
+            f=/backups/monee-$$(date +%Y%m%d-%H%M).dump
+            pg_dump -h db -U postgres -d monee -Fc -f "$$f.part" && mv "$$f.part" "$$f" && echo "backup $$f"
+            ls -1t /backups/monee-*.dump 2>/dev/null | tail -n +31 | xargs -r rm -f
+            sleep 61
+          fi
+          sleep 30
+        done
+
+# Fixed names, so the data never depends on what Dokploy calls the project.
+volumes:
+  pgdata:
+    name: monee_pgdata
+  secrets:
+    name: monee_secrets
+  backups:
+    name: monee_backups
+  storage:
+    name: monee_storage
