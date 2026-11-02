@@ -67,6 +67,22 @@ mixin _Busy<W extends StatefulWidget> on State<W> {
 
 String _accounts(int n) => n == 1 ? '1 account' : '$n accounts';
 
+/// Why accounts cannot be deleted for good yet: a debit card spends from
+/// one of them, or a card pays itself automatically from one. Null when
+/// nothing is in the way.
+String? _blockers(Set<String> ids) {
+  for (final x in Me.instance.accounts) {
+    if (ids.contains(x.id)) continue;
+    if (x.linkedAccountId != null && ids.contains(x.linkedAccountId)) {
+      return 'The debit card ${x.name} spends from it. Link that card to another account, or delete the card for good first.';
+    }
+    if (x.autoPay && x.billingAccountId != null && ids.contains(x.billingAccountId)) {
+      return 'The card ${x.name} is paid from it automatically. Change where that card is paid from first.';
+    }
+  }
+  return null;
+}
+
 // ---------------------------------------------------------------- groups
 
 class _GroupsPage extends StatefulWidget {
@@ -387,6 +403,11 @@ class _DeletedPageState extends State<_DeletedPage> with _Busy<_DeletedPage> {
       }, done: '${g.name} is back');
       return;
     }
+    final blocked = _blockers({for (final a in Me.instance.accounts) if (a.groupId == g.id) a.id});
+    if (blocked != null) {
+      toast(context, blocked, bad: true);
+      return;
+    }
     final first = await confirm(context,
         title: 'Delete ${g.name} for good?',
         text: all == 0
@@ -417,6 +438,11 @@ class _DeletedPageState extends State<_DeletedPage> with _Busy<_DeletedPage> {
         await Api.instance.update('accounts', {'deleted_at': null}, where: {'id': 'eq.${a.id}'});
         if (groupGone) await Api.instance.update('account_groups', {'deleted_at': null}, where: {'id': 'eq.${a.groupId}'});
       }, done: '${a.name} is back');
+      return;
+    }
+    final blocked = _blockers({a.id});
+    if (blocked != null) {
+      toast(context, blocked, bad: true);
       return;
     }
     final first = await confirm(context,

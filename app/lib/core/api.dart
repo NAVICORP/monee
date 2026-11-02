@@ -433,7 +433,7 @@ class Api {
 
   Future<int> delete(String table, {required Map<String, String> where}) async {
     final r = await _raw('DELETE', '/rest/v1/$table',
-        query: {'select': 'id', ...where}, headers: {'Prefer': 'return=representation'});
+        query: {'select': '*', ...where}, headers: {'Prefer': 'return=representation'});
     final n = (r.json as List? ?? const []).length;
     if (n == 0) throw ApiError('Nothing was deleted. You may not have permission, or it was already gone.');
     return n;

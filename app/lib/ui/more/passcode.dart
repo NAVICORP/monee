@@ -56,7 +56,7 @@ class Passcode {
 
   static bool check(String pin) => _hash != null && _digest(pin) == _hash;
 
-  static Future<void> set(String pin) async {
+  static Future<void> save(String pin) async {
     _hash = _digest(pin);
     try {
       final p = await SharedPreferences.getInstance();
@@ -469,7 +469,7 @@ class _PasscodeSettingsPageState extends State<PasscodeSettingsPage> {
       toast(context, 'The two did not match. Try again.', bad: true);
       return false;
     }
-    await Passcode.set(first);
+    await Passcode.save(first);
     return true;
   }
 

@@ -282,12 +282,13 @@ begin
     select c.id, c.name, c.emoji, c.sort from public.categories c
      where c.book_id = b and c.kind = 'expense' and c.parent_id is null and c.deleted_at is null
   ), budget as (
-    select c.id, coalesce(
+    -- A budget saved as 0 means it was cleared from that month on.
+    select c.id, nullif(coalesce(
       (select x.amount from public.budgets x where x.book_id = b and x.category_id = c.id and x.period = budget_status.period
          and x.from_month <= mo order by x.from_month desc limit 1),
       (select x.amount * case budget_status.period when 'week' then 12.0 / 52 when 'year' then 12 else 1 end
          from public.budgets x where x.book_id = b and x.category_id = c.id and x.period = 'month'
-          and x.from_month <= mo order by x.from_month desc limit 1)) as amount
+          and x.from_month <= mo order by x.from_month desc limit 1)), 0) as amount
       from cats c
   ), spent as (
     select coalesce(p.id, c.id) as id, sum(e.amount_main) as amount
@@ -304,12 +305,12 @@ begin
     from cats c join budget bu on bu.id = c.id left join spent s on s.id = c.id
    where bu.amount is not null;
 
-  total_budget := coalesce(
+  total_budget := coalesce(nullif(coalesce(
     (select x.amount from public.budgets x where x.book_id = b and x.category_id is null and x.period = budget_status.period
         and x.from_month <= mo order by x.from_month desc limit 1),
     (select x.amount * case budget_status.period when 'week' then 12.0 / 52 when 'year' then 12 else 1 end
        from public.budgets x where x.book_id = b and x.category_id is null and x.period = 'month'
-        and x.from_month <= mo order by x.from_month desc limit 1),
+        and x.from_month <= mo order by x.from_month desc limit 1)), 0),
     (select sum((r ->> 'budget')::numeric) from jsonb_array_elements(coalesce(rows, '[]')) r));
   select coalesce(sum(e.amount_main), 0) into total_spent from public.entries e
    where e.book_id = b and e.kind = 'expense' and e.day between date_from and date_to;
