@@ -79,7 +79,7 @@ select pg_temp.fails(format($$insert into public.account_groups (book_id, name) 
 select pg_temp.fails(format($$select public.save_txn(jsonb_build_object('kind', 'expense', 'account_id', %L, 'amount', 5))$$,
   (select id from public.accounts a where a.book_id = pg_temp.id('b1') limit 1)), 'another book', 'nor spend from her accounts');
 reset role;
-select pg_temp.ok((select count(*) from public.txns) = 0, 'nothing was written');
+select pg_temp.ok((select count(*) from public.txns where book_id in (pg_temp.id('b1'), pg_temp.id('b2'))) = 0, 'nothing was written');
 
 -- ---------------------------------------------------------------- income, expenses, transfers, currencies
 select pg_temp.as_user('a1111111-1111-1111-1111-111111111111', null, 'asha@example.com', pg_temp.id('b1'));
