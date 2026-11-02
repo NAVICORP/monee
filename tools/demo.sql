@@ -149,7 +149,7 @@ begin
   insert into public.txn_tags (book_id, txn_id, tag_id)
   select b, t.id, (select tg.id from public.tags tg where tg.book_id = b and tg.name = 'trip')
     from public.txns t where t.book_id = b and t.note in ('Kochi taxi and hotel', 'Gifts for family', 'Manama dinner');
-  insert into public.day_memos (book_id, day, text, color) values (b, today - 3, 'Ask landlord about the AC', '#7048E8');
+  insert into public.day_memos (book_id, day, text, color) values (b, today - 3, 'Ask landlord about the AC', '#6D4AE8');
 
   -- The card is paid on its payment day, as catch_up would have done.
   perform set_config('request.jwt.claims', json_build_object('sub', uid, 'role', 'authenticated', 'email', 'demo@skifi.co')::text, true);

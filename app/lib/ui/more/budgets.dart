@@ -39,9 +39,16 @@ class _BudgetsPageState extends State<BudgetsPage> with ReloadOnChange<BudgetsPa
   }
 
   /// The first day of this month, in the book's own calendar.
+  /// The book month today falls in, so a month starting on the 25th is
+  /// labelled by the month it starts in, as budget_status reads it.
   DateTime get _month {
-    final t = Me.instance.book?.today ?? DateTime.now();
-    return DateTime(t.year, t.month, 1);
+    final b = Me.instance.book;
+    if (b == null) {
+      final t = DateTime.now();
+      return DateTime(t.year, t.month, 1);
+    }
+    final (y, m) = b.monthOf(b.today);
+    return DateTime(y, m, 1);
   }
 
   String get _periodWord => switch (period) { 'week' => 'Weekly', 'year' => 'Yearly', _ => 'Monthly' };

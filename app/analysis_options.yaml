@@ -5,3 +5,9 @@ linter:
     prefer_single_quotes: true
     avoid_print: true
     use_build_context_synchronously: true
+
+# The screen pictures (test_screens) are compiled and run by their own CI job,
+# so a problem there never holds up the app check, Android or iOS.
+analyzer:
+  exclude:
+    - test_screens/**

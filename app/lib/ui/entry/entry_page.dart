@@ -38,7 +38,7 @@ Future<bool> openEntry(
   if (Me.instance.book == null) return false;
   var keepDate = false;
   if (txn != null && copy) {
-    final now = DateTime.now();
+    final now = Me.instance.book?.today ?? DateTime.now();
     final pick = await showPicker<bool>(context, title: 'Copy this entry', options: [
       PickOption<bool>(true, 'Keep its date', sub: '${dayLabel(txn.at)} ${txn.at.year}', icon: Icons.event_outlined),
       PickOption<bool>(false, 'Use today', sub: '${dayLabel(now)} ${now.year}', icon: Icons.today_outlined),
@@ -258,7 +258,7 @@ class _EntryPageState extends State<_EntryPage> {
   void _fresh() {
     final tpl = widget.template;
     final now = DateTime.now();
-    final d = widget.day ?? _lastDay ?? now;
+    final d = widget.day ?? _lastDay ?? Me.instance.book?.today ?? now;
     kind = _kindOk((tpl?['kind'] as String?) ?? widget.kind);
     at = DateTime(d.year, d.month, d.day, now.hour, now.minute);
     accountId = _liveId(tpl?['account_id'] as String?) ?? _liveId(_lastAccountId) ?? _pickable(null).firstOrNull?.id;
@@ -302,10 +302,11 @@ class _EntryPageState extends State<_EntryPage> {
       if (!mounted) return;
       final stored = parseStamp(r['at']) ?? DateTime.now();
       final now = DateTime.now();
+      final today = Me.instance.book?.today ?? now;
       setState(() {
         editId = widget.copy ? null : id;
         kind = _kindOk(r['kind'] as String?);
-        at = widget.copy && !widget.keepDate ? DateTime(now.year, now.month, now.day, now.hour, now.minute) : stored;
+        at = widget.copy && !widget.keepDate ? DateTime(today.year, today.month, today.day, now.hour, now.minute) : stored;
         accountId = r['account_id'] as String?;
         toAccountId = kind == 'transfer' ? r['to_account_id'] as String? : null;
         categoryId = kind == 'transfer' ? null : r['category_id'] as String?;

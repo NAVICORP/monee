@@ -1,11 +1,13 @@
 # The Monee app (Android, iPhone and the web): checks and builds on every push.
 #
 # 1. check: flutter analyze and the tests.
-# 2. web: the web app, as served at monee.skifi.co/app (Actions > the run >
+# 2. screens: a picture of every main screen, pushed to the `screens` branch,
+#    so the design can be checked without a phone.
+# 3. web: the web app, as served at monee.skifi.co/app (Actions > the run >
 #    Artifacts). The server image is built by server.yml.
-# 3. android: a release APK to install on a phone. With the signing secrets
+# 4. android: a release APK to install on a phone. With the signing secrets
 #    set, also the Play Store bundle.
-# 4. ios: a full iOS build, on request only (Run workflow, or "[ios]" in the
+# 5. ios: a full iOS build, on request only (Run workflow, or "[ios]" in the
 #    commit message), because Mac minutes cost more. Unsigned by default, as a
 #    check. With "testflight" ticked it signs the app with the App Store
 #    Connect API key and uploads it to TestFlight. That needs the app made in
@@ -66,11 +68,72 @@ jobs:
       - if: failure()
         run: python3 .github/scripts/annotate.py "$RUNNER_TEMP/out.log" "Check"
 
+  # Pictures of every main signed-in screen, pushed to the `screens` branch,
+  # so the design can be checked without a phone, runtime errors (a bad cast,
+  # a box that spills) show up, and the stores get screenshots. The screens
+  # show the demo book (tools/demo.sql) as the real database rules answer for
+  # it: it is loaded into Postgres here and recorded (tools/record_screens.py)
+  # for the tests (app/test_screens).
+  screens:
+    needs: check
+    runs-on: ubuntu-latest
+    services:
+      db:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: demo
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      PGHOST: localhost
+      PGUSER: postgres
+      PGPASSWORD: test
+      PGDATABASE: demo
+      # The demo book keeps Riyadh time: the pictures' "today" is the book's today.
+      TZ: Asia/Riyadh
+    steps:
+      - uses: actions/checkout@v5
+      - name: The demo book
+        run: |
+          psql -v ON_ERROR_STOP=1 -q -f supabase/tests/platform.sql
+          for f in supabase/migrations/*.sql; do psql -v ON_ERROR_STOP=1 -q -1 -f "$f"; done
+          psql -v ON_ERROR_STOP=1 -q -f tools/demo.sql > /dev/null
+          pip install -q "psycopg[binary]"
+          python3 tools/record_screens.py app/test_screens/fixtures.json
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - working-directory: app
+        run: flutter pub get
+      - working-directory: app
+        run: set -o pipefail; flutter test test_screens --update-goldens 2>&1 | tee -a "$RUNNER_TEMP/out.log"
+        continue-on-error: true
+      - run: python3 .github/scripts/annotate.py "$RUNNER_TEMP/out.log" "Screens"
+        if: always()
+      - name: Push the pictures to the screens branch
+        run: |
+          set -e
+          ls app/test_screens/shots/*.png > /dev/null 2>&1 || { echo "no pictures"; exit 0; }
+          mkdir -p /tmp/shots && cp app/test_screens/shots/*.png /tmp/shots/
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout --orphan screens-tmp
+          git rm -rf --quiet .
+          git clean -fdq
+          cp /tmp/shots/*.png .
+          echo "${{ github.sha }}" > SOURCE
+          git add -A
+          git commit -qm "Screens for ${{ github.sha }}"
+          git push -f origin HEAD:screens
+
   # The web app as served at monee.skifi.co/app, opened in a real browser
   # (.github/scripts/web_check.mjs): it must draw, and open again with no
-  # network. Its pictures are kept with the run.
+  # network. Its pictures are kept with the run and join the `screens` branch.
   web:
-    needs: [check]
+    needs: [check, screens]
     if: ${{ !cancelled() && needs.check.result == 'success' }}
     runs-on: ubuntu-latest
     steps:
@@ -109,6 +172,23 @@ jobs:
           name: monee-web-shots
           path: web-shots
           retention-days: 14
+      - name: Add the pictures to the screens branch
+        if: always()
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ls web-shots/*.png > /dev/null 2>&1 || exit 0
+          remote="https://x-access-token:${TOKEN}@github.com/${{ github.repository }}"
+          if ! git clone -q --depth 1 -b screens "$remote" /tmp/screens; then
+            mkdir -p /tmp/screens && git -C /tmp/screens init -q -b screens
+          fi
+          cp web-shots/*.png /tmp/screens/
+          cd /tmp/screens
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -qm "Web app pictures for ${{ github.sha }}" || exit 0
+          git push -q "$remote" HEAD:screens
 
   android:
     needs: check
