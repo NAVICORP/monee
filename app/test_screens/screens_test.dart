@@ -353,10 +353,13 @@ Future<void> signedIn(WidgetTester tester) async {
 }
 
 /// The app opened the way a person opens it, on its first tab.
-Future<void> openApp(WidgetTester tester) async {
+/// Opens the app signed in. It starts on Home; the pictures of the other
+/// screens start from Trans, as the app did before Home.
+Future<void> openApp(WidgetTester tester, {bool home = false}) async {
   await signedIn(tester);
   await tester.pumpWidget(const MoneeApp());
   await settle(tester);
+  if (!home) await openTab(tester, 'Trans');
 }
 
 /// What tools/record_screens.py picked for the pictures to open: the entry,
@@ -397,6 +400,33 @@ void main() {
   });
 
   final skip = !_have;
+
+  testWidgets('home', (tester) async {
+    phone(tester);
+    await openApp(tester, home: true);
+    await shot(tester, '35-home');
+  }, skip: skip);
+
+  testWidgets('home, further down', (tester) async {
+    phone(tester);
+    await openApp(tester, home: true);
+    await tester.drag(find.byType(ListView).first, const Offset(0, -700));
+    await shot(tester, '36-home-down');
+  }, skip: skip);
+
+  testWidgets('home, on a computer', (tester) async {
+    computer(tester);
+    await openApp(tester, home: true);
+    await shot(tester, '37-home-computer');
+  }, skip: skip);
+
+  testWidgets('home, at night', (tester) async {
+    phone(tester);
+    K.dark = true;
+    addTearDown(() => K.dark = false);
+    await openApp(tester, home: true);
+    await shot(tester, '38-night-home');
+  }, skip: skip);
 
   testWidgets('welcome', (tester) async {
     phone(tester);

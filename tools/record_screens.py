@@ -173,6 +173,15 @@ rpc('budget_status', {**mon, 'period': 'month'})
 rpc('period_accounts', dict(mon))
 for kind in ('expense', 'income'):
     rpc('note_totals', {**mon, 'kind': kind, 'f': {}})
+# The Home tab: six months of cash flow ending this month, and the latest entries.
+hy, hm = month_of(today)
+hm -= 5
+while hm < 1:
+    hm += 12
+    hy -= 1
+rpc('span_totals', {'date_from': iso(month(hy, hm)[0]), 'date_to': iso(m1), 'unit': 'month', 'f': {}})
+rpc('txn_list', {**mon, 'f': {}, 'max_rows': 5})
+rpc('category_totals', {**mon, 'kind': 'expense', 'f': {}})
 # The filter page (this month, no filter) and a search.
 rpc('txn_list', {**mon, 'f': {}, 'max_rows': 10000})
 rpc('txn_list', {'date_from': iso(plus(today, -3650)), 'date_to': iso(plus(today, 400)), 'f': {'q': SEARCH}, 'max_rows': 500})

@@ -3,14 +3,15 @@ import 'package:flutter/material.dart';
 import '../core/book.dart';
 import 'accounts/accounts_page.dart';
 import 'glass.dart';
+import 'home/home_page.dart';
 import 'more/more_page.dart';
 import 'stats/stats_page.dart';
 import 'theme.dart';
 import 'trans/trans_page.dart';
 import 'widgets.dart';
 
-/// The four tabs, like Kuree: Trans, Stats, Accounts, More in the footer on
-/// phones, in a side bar on wide screens. Each tab keeps its own pile of
+/// The five tabs: Home (the dashboard), then Trans, Stats, Accounts and More
+/// as in Kuree, in the footer on phones, in a side bar on wide screens. Each tab keeps its own pile of
 /// opened screens, so the footer stays below everything opened from it.
 class MoneeShell extends StatefulWidget {
   const MoneeShell({super.key});
@@ -21,12 +22,13 @@ class MoneeShell extends StatefulWidget {
 
 class _MoneeShellState extends State<MoneeShell> {
   static const _items = [
+    KNavItem(Icons.space_dashboard_outlined, Icons.space_dashboard_rounded, 'Home'),
     KNavItem(Icons.receipt_long_outlined, Icons.receipt_long_rounded, 'Trans'),
     KNavItem(Icons.pie_chart_outline_rounded, Icons.pie_chart_rounded, 'Stats'),
     KNavItem(Icons.account_balance_wallet_outlined, Icons.account_balance_wallet_rounded, 'Accounts'),
     KNavItem(Icons.more_horiz_rounded, Icons.more_horiz_rounded, 'More'),
   ];
-  final navs = List.generate(4, (i) => GlobalKey<NavigatorState>(debugLabel: 'tab$i'));
+  final navs = List.generate(_items.length, (i) => GlobalKey<NavigatorState>(debugLabel: 'tab$i'));
   final seen = <int>{0};
   int index = 0;
 
@@ -43,9 +45,10 @@ class _MoneeShellState extends State<MoneeShell> {
   }
 
   Widget _root(int i) => switch (i) {
-        0 => const TransPage(),
-        1 => const StatsPage(),
-        2 => const AccountsPage(),
+        0 => HomePage(onOpenTab: _select),
+        1 => const TransPage(),
+        2 => const StatsPage(),
+        3 => const AccountsPage(),
         _ => const MorePage(),
       };
 
@@ -60,7 +63,7 @@ class _MoneeShellState extends State<MoneeShell> {
     final stack = IndexedStack(
       index: index,
       sizing: StackFit.expand,
-      children: [for (var i = 0; i < 4; i++) seen.contains(i) ? _stack(i) : const SizedBox.shrink()],
+      children: [for (var i = 0; i < _items.length; i++) seen.contains(i) ? _stack(i) : const SizedBox.shrink()],
     );
     final pop = PopScope(
       canPop: false,

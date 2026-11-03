@@ -259,3 +259,56 @@ class _BarPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant _BarPainter old) => old.points != points || old.night != night;
 }
+
+/// A ring of slices with words in the middle (the dashboard's spending).
+class DonutChart extends StatelessWidget {
+  const DonutChart({super.key, required this.slices, this.size = 156, this.center});
+  final List<Slice> slices;
+  final double size;
+
+  /// What sits in the hole, usually the total.
+  final Widget? center;
+
+  @override
+  Widget build(BuildContext context) => SizedBox(
+        width: size,
+        height: size,
+        child: CustomPaint(
+          painter: _DonutPainter(slices),
+          child: center == null ? null : Center(child: Padding(padding: EdgeInsets.all(size * 0.2), child: center)),
+        ),
+      );
+}
+
+class _DonutPainter extends CustomPainter {
+  _DonutPainter(this.slices);
+  final List<Slice> slices;
+
+  /// Drawn at night: a switch repaints it.
+  final bool night = K.dark;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final stroke = size.shortestSide * 0.15;
+    final rect = (Offset.zero & size).deflate(stroke / 2);
+    final total = slices.fold<num>(0, (s, x) => s + math.max(0, x.value));
+    final ring = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = stroke;
+    canvas.drawArc(rect, 0, math.pi * 2, false, ring..color = K.surface2);
+    if (total <= 0) return;
+    final shown = slices.where((s) => s.value > 0).toList();
+    final gap = shown.length > 1 ? 0.035 : 0.0;
+    var start = -math.pi / 2;
+    for (final s in shown) {
+      final sweep = math.pi * 2 * s.value / total;
+      if (sweep - gap > 0.001) {
+        canvas.drawArc(rect, start + gap / 2, sweep - gap, false, ring..color = s.color);
+      }
+      start += sweep;
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _DonutPainter old) => old.slices != slices || old.night != night;
+}
