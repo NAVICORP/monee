@@ -1157,9 +1157,9 @@ class PageBody extends StatelessWidget {
   }
 }
 
-/// The logo as it is shown: the m and its coin in white on a violet tile
-/// with rounded corners, like the app icon. Drawn, not loaded, so it is there
-/// on the very first frame, at any size.
+/// The logo as it is shown: the wallet on the lilac tile with rounded
+/// corners, like the app icon. Drawn, not loaded, so it is there on the very
+/// first frame, at any size.
 class MoneeIcon extends StatelessWidget {
   const MoneeIcon({super.key, this.size = 84, this.shadow = false});
   final double size;
@@ -1179,74 +1179,12 @@ class MoneeIcon extends StatelessWidget {
   }
 }
 
-void _paintM(Canvas canvas, double s, double scale, Color c) {
-  canvas.save();
-  final t = s * (1 - scale) / 2;
-  canvas.translate(t, t + purseeShift * s * scale / 1000);
-  canvas.scale(s * scale / 1000);
-  // The purse goes on its own layer so the frame line and the P can be cut
-  // out of it, letting whatever is behind show through.
-  canvas.saveLayer(const Rect.fromLTWH(0, 0, 1000, 1000), Paint());
-  final fill = Paint()..color = c;
-  canvas.drawPath(purseeBody(), fill);
-  canvas.drawPath(
-      purseePosts(),
-      Paint()
-        ..color = c
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = purseePostStroke
-        ..strokeCap = StrokeCap.round);
-  for (final b in purseeBalls) {
-    canvas.drawCircle(b, purseeBallRadius, fill);
-  }
-  final cut = Paint()
-    ..blendMode = BlendMode.clear
-    ..style = PaintingStyle.stroke
-    ..strokeCap = StrokeCap.round
-    ..strokeJoin = StrokeJoin.round;
-  canvas.drawPath(purseeFrame(), cut..strokeWidth = purseeFrameStroke);
-  canvas.drawPath(purseeP(), cut..strokeWidth = purseePStroke);
-  canvas.restore();
-  canvas.restore();
-}
-
 class _TilePainter extends CustomPainter {
   const _TilePainter();
 
   @override
-  void paint(Canvas canvas, Size size) {
-    final s = size.width;
-    final rect = Offset.zero & size;
-    canvas.drawRRect(
-        RRect.fromRectAndRadius(rect, Radius.circular(s * 0.24)),
-        Paint()
-          ..shader = const LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight,
-              colors: [Color(purseeMainColour), Color(purseeDeepColour)]).createShader(rect));
-    _paintM(canvas, s, 0.74, Colors.white);
-  }
+  void paint(Canvas canvas, Size size) => paintPurseeTile(canvas, size.width);
 
   @override
   bool shouldRepaint(covariant _TilePainter old) => false;
-}
-
-/// The purse alone, in violet.
-class MoneeMark extends StatelessWidget {
-  const MoneeMark({super.key, this.size = 40, this.color = const Color(purseeMainColour)});
-  final double size;
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) =>
-      Semantics(label: 'Pursee', image: true, child: CustomPaint(size: Size.square(size), painter: _MarkPainter(color)));
-}
-
-class _MarkPainter extends CustomPainter {
-  const _MarkPainter(this.color);
-  final Color color;
-
-  @override
-  void paint(Canvas canvas, Size size) => _paintM(canvas, size.width, 1.0, color);
-
-  @override
-  bool shouldRepaint(covariant _MarkPainter old) => old.color != color;
 }
