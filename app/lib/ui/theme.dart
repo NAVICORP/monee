@@ -17,6 +17,8 @@ class K {
   static Color _c(int day, int night) => Color(dark ? night : day);
 
   static Color get deep => _c(0xFF1E1240, 0xFF3A2A86);
+  /// Text in the deep colour: light at night, where the deep violet would vanish.
+  static Color get deepText => _c(0xFF1E1240, 0xFFF2EFFA);
   static Color get blue => _c(0xFF6D4AE8, 0xFF8F74FF);   // the brand violet (kept as `blue` so shared widgets read the same)
   static Color get sky => _c(0xFF9B7BFF, 0xFFA78FFF);
   static Color get glow => _c(0xFFC4B2FF, 0xFFC4B2FF);

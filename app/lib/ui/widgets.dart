@@ -35,7 +35,7 @@ class KButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final (bg, fg, side) = switch (kind) {
       KButtonKind.primary => (K.deep, Colors.white, BorderSide.none),
-      KButtonKind.secondary => (K.surface, K.deep, BorderSide(color: K.border2)),
+      KButtonKind.secondary => (K.surface, K.deepText, BorderSide(color: K.border2)),
       KButtonKind.ghost => (Colors.transparent, K.blue, BorderSide.none),
       KButtonKind.danger => (K.badBg, K.bad, BorderSide.none),
       KButtonKind.blue => (K.blue, Colors.white, BorderSide.none),
@@ -274,7 +274,7 @@ class KSegmented<V> extends StatelessWidget {
                 borderRadius: BorderRadius.circular(999),
                 boxShadow: v == value ? const [BoxShadow(color: Color(0x1A071C42), blurRadius: 6, offset: Offset(0, 2))] : null,
               ),
-              child: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis, style: T.label.copyWith(color: v == value ? K.deep : K.muted)),
+              child: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis, style: T.label.copyWith(color: v == value ? K.deepText : K.muted)),
             ),
           ),
         );
