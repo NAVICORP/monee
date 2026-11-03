@@ -414,7 +414,9 @@ class _CalcBoxState extends State<_CalcBox> {
     );
   }
 
-  Widget _key(String label, VoidCallback onTap, {Color bg = K.surface, Color fg = K.ink, IconData? icon, bool line = true, String? hint}) {
+  Widget _key(String label, VoidCallback onTap, {Color? bg, Color? fg, IconData? icon, bool line = true, String? hint}) {
+    bg ??= K.surface;
+    fg ??= K.ink;
     final child = icon != null
         ? Icon(icon, size: 20, color: fg)
         : Text(label, style: T.h2.copyWith(fontSize: 19, color: fg));
