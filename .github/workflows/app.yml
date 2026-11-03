@@ -108,6 +108,8 @@ jobs:
           cache: true
       - working-directory: app
         run: flutter pub get
+      - name: An emoji font, for the category emojis
+        run: ls /usr/share/fonts/truetype/noto/NotoColorEmoji.ttf 2>/dev/null || (sudo apt-get update -qq && sudo apt-get install -y -qq fonts-noto-color-emoji)
       - working-directory: app
         run: set -o pipefail; flutter test test_screens --update-goldens 2>&1 | tee -a "$RUNNER_TEMP/out.log"
         continue-on-error: true

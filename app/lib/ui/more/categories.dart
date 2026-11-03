@@ -244,7 +244,7 @@ class _SubRow extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsetsDirectional.fromSTEB(60, 9, 12, 9),
         child: Row(children: [
-          if (e.isNotEmpty) ...[Text(e, style: const TextStyle(fontSize: 15, height: 1.2)), const SizedBox(width: Sp.sm)],
+          if (e.isNotEmpty) ...[Text(e, style: const TextStyle(fontSize: 15, height: 1.2, fontFamilyFallback: T.emojiFallback)), const SizedBox(width: Sp.sm)],
           Expanded(child: Text(c.name, maxLines: 1, overflow: TextOverflow.ellipsis, style: T.body)),
           if (trailing != null) ...[const SizedBox(width: Sp.sm), trailing!],
         ]),

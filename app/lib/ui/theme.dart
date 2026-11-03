@@ -75,18 +75,22 @@ class T {
   static const _m = 'Manrope';
   static const _b = 'Bricolage';
 
-  static const display = TextStyle(fontFamily: _b, fontSize: 28, fontWeight: FontWeight.w600, height: 1.14, letterSpacing: 0, color: K.ink);
-  static const h1 = TextStyle(fontFamily: _b, fontSize: 23, fontWeight: FontWeight.w600, height: 1.2, letterSpacing: 0, color: K.ink);
-  static const h2 = TextStyle(fontFamily: _b, fontSize: 19, fontWeight: FontWeight.w600, height: 1.24, letterSpacing: 0, color: K.ink);
-  static const h3 = TextStyle(fontFamily: _b, fontSize: 16, fontWeight: FontWeight.w600, height: 1.28, letterSpacing: 0, color: K.ink);
-  static const amount = TextStyle(fontFamily: _b, fontSize: 32, fontWeight: FontWeight.w600, height: 1.0, letterSpacing: 0,
+  /// Category emojis: phones and the web use their own emoji font anyway;
+  /// naming this one lets the screen pictures draw emojis too.
+  static const emojiFallback = ['Noto Color Emoji'];
+
+  static const display = TextStyle(fontFamily: _b, fontFamilyFallback: emojiFallback, fontSize: 28, fontWeight: FontWeight.w600, height: 1.14, letterSpacing: 0, color: K.ink);
+  static const h1 = TextStyle(fontFamily: _b, fontFamilyFallback: emojiFallback, fontSize: 23, fontWeight: FontWeight.w600, height: 1.2, letterSpacing: 0, color: K.ink);
+  static const h2 = TextStyle(fontFamily: _b, fontFamilyFallback: emojiFallback, fontSize: 19, fontWeight: FontWeight.w600, height: 1.24, letterSpacing: 0, color: K.ink);
+  static const h3 = TextStyle(fontFamily: _b, fontFamilyFallback: emojiFallback, fontSize: 16, fontWeight: FontWeight.w600, height: 1.28, letterSpacing: 0, color: K.ink);
+  static const amount = TextStyle(fontFamily: _b, fontFamilyFallback: emojiFallback, fontSize: 32, fontWeight: FontWeight.w600, height: 1.0, letterSpacing: 0,
       color: Colors.white, fontFeatures: [FontFeature.tabularFigures()]);
-  static const body = TextStyle(fontFamily: _m, fontSize: 14.5, fontWeight: FontWeight.w500, height: 1.45, letterSpacing: 0, color: K.ink);
-  static const bodyStrong = TextStyle(fontFamily: _m, fontSize: 14.5, fontWeight: FontWeight.w600, height: 1.35, letterSpacing: 0, color: K.ink);
-  static const small = TextStyle(fontFamily: _m, fontSize: 12.5, fontWeight: FontWeight.w500, height: 1.4, letterSpacing: 0, color: K.muted);
-  static const tiny = TextStyle(fontFamily: _m, fontSize: 11, fontWeight: FontWeight.w600, height: 1.3, letterSpacing: 0, color: K.muted);
-  static const label = TextStyle(fontFamily: _m, fontSize: 12.5, fontWeight: FontWeight.w600, height: 1.3, letterSpacing: 0, color: K.ink2);
-  static const button = TextStyle(fontFamily: _m, fontSize: 14.5, fontWeight: FontWeight.w600, height: 1.2, letterSpacing: 0);
+  static const body = TextStyle(fontFamily: _m, fontFamilyFallback: emojiFallback, fontSize: 14.5, fontWeight: FontWeight.w500, height: 1.45, letterSpacing: 0, color: K.ink);
+  static const bodyStrong = TextStyle(fontFamily: _m, fontFamilyFallback: emojiFallback, fontSize: 14.5, fontWeight: FontWeight.w600, height: 1.35, letterSpacing: 0, color: K.ink);
+  static const small = TextStyle(fontFamily: _m, fontFamilyFallback: emojiFallback, fontSize: 12.5, fontWeight: FontWeight.w500, height: 1.4, letterSpacing: 0, color: K.muted);
+  static const tiny = TextStyle(fontFamily: _m, fontFamilyFallback: emojiFallback, fontSize: 11, fontWeight: FontWeight.w600, height: 1.3, letterSpacing: 0, color: K.muted);
+  static const label = TextStyle(fontFamily: _m, fontFamilyFallback: emojiFallback, fontSize: 12.5, fontWeight: FontWeight.w600, height: 1.3, letterSpacing: 0, color: K.ink2);
+  static const button = TextStyle(fontFamily: _m, fontFamilyFallback: emojiFallback, fontSize: 14.5, fontWeight: FontWeight.w600, height: 1.2, letterSpacing: 0);
   static const tabular = TextStyle(fontFeatures: [FontFeature.tabularFigures()]);
 }
 
@@ -107,8 +111,8 @@ ThemeData moneeTheme() {
     outline: K.border2,
     outlineVariant: K.border,
   );
-  TextStyle m(double size, FontWeight w, [Color c = K.ink]) => TextStyle(fontFamily: 'Manrope', fontSize: size, fontWeight: w, letterSpacing: 0, color: c);
-  TextStyle b(double size, FontWeight w) => TextStyle(fontFamily: 'Bricolage', fontSize: size, fontWeight: w, letterSpacing: 0, color: K.ink);
+  TextStyle m(double size, FontWeight w, [Color c = K.ink]) => TextStyle(fontFamily: 'Manrope', fontFamilyFallback: T.emojiFallback, fontSize: size, fontWeight: w, letterSpacing: 0, color: c);
+  TextStyle b(double size, FontWeight w) => TextStyle(fontFamily: 'Bricolage', fontFamilyFallback: T.emojiFallback, fontSize: size, fontWeight: w, letterSpacing: 0, color: K.ink);
   final text = TextTheme(
     displayLarge: b(40, FontWeight.w600),
     displayMedium: b(34, FontWeight.w600),

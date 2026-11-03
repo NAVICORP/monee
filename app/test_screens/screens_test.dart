@@ -38,6 +38,13 @@ Future<void> loadFonts() async {
 
   await family('Manrope', [for (final w in [500, 600, 700, 800]) 'assets/fonts/Manrope-$w.ttf']);
   await family('Bricolage', [for (final w in [600, 700]) 'assets/fonts/BricolageGrotesque-$w.ttf']);
+  // Category emojis, from the system's emoji font when CI has installed it.
+  final emoji = File('/usr/share/fonts/truetype/noto/NotoColorEmoji.ttf');
+  if (emoji.existsSync()) {
+    final bytes = emoji.readAsBytesSync();
+    final l = FontLoader('Noto Color Emoji')..addFont(Future.value(bytes.buffer.asByteData(bytes.offsetInBytes, bytes.lengthInBytes)));
+    await l.load();
+  }
   // Material icons, from the Flutter SDK running the test.
   final roots = <String>[
     if (Platform.environment['FLUTTER_ROOT'] != null) Platform.environment['FLUTTER_ROOT']!,

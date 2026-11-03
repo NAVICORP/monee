@@ -337,7 +337,7 @@ class EmojiBadge extends StatelessWidget {
       alignment: Alignment.center,
       decoration: BoxDecoration(color: color, shape: BoxShape.circle),
       child: e.isNotEmpty
-          ? Text(e, style: TextStyle(fontSize: size * 0.5, height: 1))
+          ? Text(e, style: TextStyle(fontSize: size * 0.5, height: 1, fontFamilyFallback: T.emojiFallback))
           : Text(name.isEmpty ? '?' : initials(name), style: T.tiny.copyWith(color: K.ink2, fontSize: size * 0.36)),
     );
   }
