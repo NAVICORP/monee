@@ -91,7 +91,7 @@ class _CurrenciesPageState extends State<CurrenciesPage> {
             const SizedBox(width: Sp.md),
             Expanded(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                const Text('Main currency', style: T.tiny),
+                Text('Main currency', style: T.tiny),
                 Text('${main.code}, ${main.name}', maxLines: 1, overflow: TextOverflow.ellipsis, style: T.h3),
                 Text(b.isOwner ? 'Totals, budgets and stats are in ${main.code}.' : 'Only the book\'s owner can change it.', style: T.small),
               ]),
@@ -128,7 +128,7 @@ class _CurrenciesPageState extends State<CurrenciesPage> {
                 leading: CurrencyBadge(currencyOf(c)),
                 title: '$c, ${currencyOf(c).name}',
                 sub: '1 $c = ${rateWords(me.rates[c]!)} ${main.code}\n1 ${main.code} = ${rateWords(1 / me.rates[c]!)} $c',
-                trailing: b.canEdit ? const Icon(Icons.more_horiz_rounded, color: K.muted, size: 20) : null,
+                trailing: b.canEdit ? Icon(Icons.more_horiz_rounded, color: K.muted, size: 20) : null,
                 onTap: b.canEdit ? () => _actions(c) : null,
               ),
           ]),
@@ -158,7 +158,7 @@ class CurrencyBadge extends StatelessWidget {
       height: size,
       padding: const EdgeInsets.all(6),
       alignment: Alignment.center,
-      decoration: const BoxDecoration(color: K.brand100, shape: BoxShape.circle),
+      decoration: BoxDecoration(color: K.brand100, shape: BoxShape.circle),
       child: FittedBox(fit: BoxFit.scaleDown, child: Text(c.symbol, maxLines: 1, style: T.label.copyWith(color: K.brand600))),
     );
   }

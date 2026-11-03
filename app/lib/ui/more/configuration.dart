@@ -4,6 +4,7 @@ import '../../core/api.dart';
 import '../../core/book.dart';
 import '../../core/format.dart';
 import '../book_gate.dart';
+import '../night.dart';
 import '../theme.dart';
 import '../widgets.dart';
 import 'budgets.dart';
@@ -12,6 +13,18 @@ import 'currencies.dart';
 import 'more_common.dart';
 import 'repeats.dart';
 import 'tags.dart';
+
+/// Night mode: off, on, or the same as the phone. Anyone can choose it; it
+/// stays on this device.
+Future<void> pickNight(BuildContext context) async {
+  final p = await showPicker<String>(context, title: 'Night mode', selected: Night.mode, options: const [
+    PickOption<String>('off', 'Off', sub: 'Light, as always', icon: Icons.light_mode_outlined),
+    PickOption<String>('on', 'On', sub: 'Dark, easy on the eyes at night', icon: Icons.dark_mode_outlined),
+    PickOption<String>('phone', 'Same as phone', sub: 'Follows the phone\'s own setting', icon: Icons.brightness_auto_outlined),
+  ]);
+  if (p == null) return;
+  await Night.set(p.value);
+}
 
 /// More > Configuration: the book's own settings. Only the owner changes
 /// them; everyone else sees them as they are.
@@ -34,6 +47,10 @@ class ConfigurationPage extends StatelessWidget {
       appBar: AppBar(title: const Text('Configuration')),
       body: PageBody(bottom: 40, children: [
         if (!own) const ReadOnlyNote('Only the book\'s owner can change these settings.'),
+        const GroupLabel('Look'),
+        LinkGroup([
+          LinkRow(Icons.dark_mode_outlined, 'Night mode', () => pickNight(context), value: Night.label, sub: 'On this device'),
+        ]),
         const GroupLabel('Book'),
         LinkGroup([
           LinkRow(Icons.menu_book_outlined, 'Book name', tap(() => _rename(context, b)), value: b.name),
@@ -247,7 +264,7 @@ class _NewBookState extends State<_NewBook> {
     final cur = currencyOf(currency);
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       if (error != null) ...[Notice(error!), const SizedBox(height: Sp.md)],
-      const Text('A separate set of accounts, categories and entries: for a business, a trip, or someone else\'s money. Switch books from More.',
+      Text('A separate set of accounts, categories and entries: for a business, a trip, or someone else\'s money. Switch books from More.',
           style: T.small),
       const SizedBox(height: Sp.md),
       KField(label: 'Book name', controller: _name, hint: 'Shop', autofocus: true, caps: TextCapitalization.words),

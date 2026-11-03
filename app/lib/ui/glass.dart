@@ -62,7 +62,18 @@ class Glass extends StatelessWidget {
   final bool shadow;
   final EdgeInsetsGeometry padding;
 
-  static List<Color> _fill(GlassTone tone) => switch (tone) {
+  static List<Color> _fill(GlassTone tone) => K.dark ? _night(tone) : _day(tone);
+
+  // At night the light glass turns smoky: the same layers, dark and see-through.
+  static List<Color> _night(GlassTone tone) => switch (tone) {
+        GlassTone.light => const [Color(0xC72A2440), Color(0x9E1A1627), Color(0xB3221D35)],
+        GlassTone.violet => const [Color(0xF28C6CF7), Color(0xF26D4AE8), Color(0xF7522FC2)],
+        GlassTone.dark => const [Color(0x2EFFFFFF), Color(0x14FFFFFF), Color(0x1FFFFFFF)],
+        GlassTone.lilac => const [Color(0xF0463591), Color(0xE6342771), Color(0xEB3D2F80)],
+        GlassTone.sheet => const [Color(0xF51C1829), Color(0xEB16121F), Color(0xF21A1626)],
+      };
+
+  static List<Color> _day(GlassTone tone) => switch (tone) {
         GlassTone.light => const [Color(0xD6FFFFFF), Color(0x9EF7F3FF), Color(0xB8FFFFFF)],
         GlassTone.violet => const [Color(0xF28C6CF7), Color(0xF26D4AE8), Color(0xF7522FC2)],
         GlassTone.dark => const [Color(0x2EFFFFFF), Color(0x14FFFFFF), Color(0x1FFFFFFF)],
@@ -108,6 +119,9 @@ class Glass extends StatelessWidget {
 /// right where it bends through. A sheen across the top half sells the
 /// thickness of the glass.
 class _GlassRim extends CustomPainter {
+  /// Drawn at night: a switch repaints it.
+  final bool night = K.dark;
+
   _GlassRim(this.radius, this.tone);
   final BorderRadius radius;
   final GlassTone tone;
@@ -116,13 +130,16 @@ class _GlassRim extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final rect = Offset.zero & size;
     final rr = radius.toRRect(rect);
-    final (top, side, low, sheen) = switch (tone) {
+    final (t0, s0, l0, h0) = switch (tone) {
       GlassTone.light => (0.95, 0.30, 0.70, 0.55),
       GlassTone.violet => (0.70, 0.12, 0.40, 0.30),
       GlassTone.dark => (0.55, 0.08, 0.28, 0.16),
       GlassTone.lilac => (0.95, 0.35, 0.60, 0.50),
       GlassTone.sheet => (1.0, 0.0, 0.0, 0.0),
     };
+    // The white rim and sheen are quieter on smoky night glass.
+    final k = K.dark && tone != GlassTone.violet ? 0.45 : 1.0;
+    final top = t0 * k, side = s0 * k, low = l0 * k, sheen = h0 * k;
     final white = Colors.white;
     // The sheen: a soft white wash over the top half, gone by the middle.
     canvas.save();
@@ -153,11 +170,14 @@ class _GlassRim extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(_GlassRim old) => old.radius != radius || old.tone != tone;
+  bool shouldRepaint(_GlassRim old) => old.radius != radius || old.tone != tone || old.night != night;
 }
 
 /// A soft shadow drawn only outside the glass, so it never greys the glass.
 class _GlassShadow extends CustomPainter {
+  /// Drawn at night: a switch repaints it.
+  final bool night = K.dark;
+
   _GlassShadow(this.radius, this.tone, {required this.strong});
   final BorderRadius radius;
   final GlassTone tone;
@@ -189,7 +209,7 @@ class _GlassShadow extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(_GlassShadow old) => old.radius != radius || old.tone != tone || old.strong != strong;
+  bool shouldRepaint(_GlassShadow old) => old.radius != radius || old.tone != tone || old.strong != strong || old.night != night;
 }
 
 /// Only the light on glass (rim and sheen), for buttons that keep their own
@@ -297,6 +317,9 @@ class AmbientLight extends StatelessWidget {
 }
 
 class _Ambient extends CustomPainter {
+  /// Drawn at night: a switch repaints it.
+  final bool night = K.dark;
+
   @override
   void paint(Canvas canvas, Size size) {
     canvas.drawRect(Offset.zero & size, Paint()..color = K.paper);
@@ -310,12 +333,13 @@ class _Ambient extends CustomPainter {
     }
 
     final m = math.max(size.width, size.height);
-    blob(Offset(size.width * 0.05, size.height * 0.12), m * 0.32, K.sky.withValues(alpha: 0.45));
-    blob(Offset(size.width * 0.18, size.height * 0.62), m * 0.30, const Color(0xFFFFB48A).withValues(alpha: 0.30));
-    blob(Offset(size.width * 0.02, size.height * 0.95), m * 0.28, K.blue.withValues(alpha: 0.32));
-    blob(Offset(size.width * 0.9, size.height * 0.05), m * 0.22, K.glow.withValues(alpha: 0.35));
+    final f = K.dark ? 0.45 : 1.0;   // softer at night
+    blob(Offset(size.width * 0.05, size.height * 0.12), m * 0.32, K.sky.withValues(alpha: 0.45 * f));
+    blob(Offset(size.width * 0.18, size.height * 0.62), m * 0.30, const Color(0xFFFFB48A).withValues(alpha: 0.30 * f));
+    blob(Offset(size.width * 0.02, size.height * 0.95), m * 0.28, K.blue.withValues(alpha: 0.32 * f));
+    blob(Offset(size.width * 0.9, size.height * 0.05), m * 0.22, K.glow.withValues(alpha: 0.35 * f));
   }
 
   @override
-  bool shouldRepaint(_Ambient old) => false;
+  bool shouldRepaint(_Ambient old) => old.night != night;
 }

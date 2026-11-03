@@ -252,7 +252,7 @@ class _AccountEditorState extends State<_AccountEditor> {
         const SizedBox(height: Sp.md),
         if (isDebit) ...[
           KChoice(label: 'Linked account', value: linked?.name ?? 'Pick an account', icon: Icons.link_rounded, onTap: _pickLinked),
-          const Padding(
+          Padding(
             padding: EdgeInsetsDirectional.fromSTEB(4, 6, 4, 0),
             child: Text('Spending on the card comes off this account straight away, in its currency.', style: T.small),
           ),
@@ -286,7 +286,7 @@ class _AccountEditorState extends State<_AccountEditor> {
             const SizedBox(width: Sp.sm),
             Expanded(child: KChoice(label: 'Payment day', value: 'Day $paymentDay', onTap: _pickPayment)),
           ]),
-          const Padding(
+          Padding(
             padding: EdgeInsetsDirectional.fromSTEB(4, 6, 4, 0),
             child: Text(
               'Spending up to the settlement day is payable on the payment day. Spending after it is outstanding until the next settlement.',
@@ -366,7 +366,7 @@ Future<int?> _pickDay(BuildContext context, {required String title, required int
         ],
       ),
       const SizedBox(height: Sp.sm),
-      const Text('In shorter months, days after the last day fall on the last day.', textAlign: TextAlign.center, style: T.small),
+      Text('In shorter months, days after the last day fall on the last day.', textAlign: TextAlign.center, style: T.small),
     ]),
   );
 }
@@ -434,7 +434,7 @@ class _NewGroupSheetState extends State<_NewGroupSheet> {
       KField(label: 'Emoji', controller: emoji, hint: 'Optional', caps: TextCapitalization.none),
       const SizedBox(height: Sp.md),
       KChoice(label: 'Kind', value: kGroupKinds[kind] ?? kind, icon: Icons.category_outlined, onTap: _pickKind),
-      const Padding(
+      Padding(
         padding: EdgeInsetsDirectional.fromSTEB(4, 6, 4, 0),
         child: Text('The kind decides how its accounts work: cards get billing dates, debit cards spend from a linked account.', style: T.small),
       ),

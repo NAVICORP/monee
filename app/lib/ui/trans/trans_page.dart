@@ -228,7 +228,7 @@ class _TransPageState extends State<TransPage> with ReloadOnChange {
       color: K.brand100,
       padding: const EdgeInsetsDirectional.fromSTEB(Sp.page, 2, 6, 2),
       child: Row(children: [
-        const Icon(Icons.tune_rounded, size: 15, color: K.brand600),
+        Icon(Icons.tune_rounded, size: 15, color: K.brand600),
         const SizedBox(width: 6),
         Expanded(
           child: Text(_filterWords(), maxLines: 1, overflow: TextOverflow.ellipsis, style: T.tiny.copyWith(color: K.brand600)),
@@ -256,7 +256,7 @@ class _TransPageState extends State<TransPage> with ReloadOnChange {
   @override
   Widget build(BuildContext context) {
     final b = _book;
-    if (b == null) return const Scaffold(backgroundColor: K.paper, body: Loading());
+    if (b == null) return Scaffold(backgroundColor: K.paper, body: Loading());
     final visible = _visible(b);
     final edit = b.canEdit;
     return Scaffold(

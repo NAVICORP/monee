@@ -24,6 +24,7 @@ import 'package:monee/core/book.dart' show Me;
 import 'package:monee/core/format.dart' show isoDay;
 import 'package:monee/main.dart' show MoneeApp;
 import 'package:monee/ui/money.dart' show PillTabs;
+import 'package:monee/ui/theme.dart' show K;
 import 'package:monee/ui/widgets.dart' show KNavBar;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -564,6 +565,33 @@ void main() {
       await shot(tester, name);
     }, skip: skip);
   }
+
+  // Night mode: the same screens in the dark.
+  const nightShots = <(String, String)>[
+    ('', '30-night-daily'),
+    ('Stats', '31-night-stats'),
+    ('Accounts', '32-night-accounts'),
+    ('More', '33-night-more'),
+  ];
+  for (final (tab, name) in nightShots) {
+    testWidgets('night, ${tab.isEmpty ? 'Trans' : tab}', (tester) async {
+      phone(tester);
+      K.dark = true;
+      addTearDown(() => K.dark = false);
+      await openApp(tester);
+      if (tab.isNotEmpty) await openTab(tester, tab);
+      await shot(tester, name);
+    }, skip: skip);
+  }
+
+  testWidgets('night, new expense', (tester) async {
+    phone(tester);
+    K.dark = true;
+    addTearDown(() => K.dark = false);
+    await openApp(tester);
+    await tapOn(tester, find.byTooltip('Add'));
+    await shot(tester, '34-night-new-expense');
+  }, skip: skip);
 
   // The web app on a computer: the side bar instead of the footer.
   testWidgets('computer, trans', (tester) async {

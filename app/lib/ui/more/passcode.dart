@@ -189,7 +189,7 @@ class _PasscodeGateState extends State<PasscodeGate> with WidgetsBindingObserver
     final covered = !_ready || _locked;
     return Stack(fit: StackFit.expand, children: [
       ExcludeSemantics(excluding: covered, child: widget.child),
-      if (!_ready) const Positioned.fill(child: ColoredBox(color: K.paper)),
+      if (!_ready) Positioned.fill(child: ColoredBox(color: K.paper)),
       if (_ready && _locked) Positioned.fill(child: _LockScreen(onUnlock: () => setState(() => _locked = false))),
     ]);
   }
@@ -286,7 +286,7 @@ class _LockScreenState extends State<_LockScreen> {
                 child: Column(mainAxisSize: MainAxisSize.min, children: [
                   const MoneeIcon(size: 56, shadow: true),
                   const SizedBox(height: Sp.lg),
-                  const Text('Enter your passcode', style: T.h2, textAlign: TextAlign.center),
+                  Text('Enter your passcode', style: T.h2, textAlign: TextAlign.center),
                   const SizedBox(height: 4),
                   Text(error ?? 'Pursee is locked on this device.',
                       textAlign: TextAlign.center, style: T.small.copyWith(color: error == null ? K.muted : K.bad)),
@@ -347,7 +347,7 @@ class PinPad extends StatelessWidget {
         label: label,
         child: Material(
           color: tap == null ? Colors.transparent : K.surface,
-          shape: CircleBorder(side: tap == null ? BorderSide.none : const BorderSide(color: K.border)),
+          shape: CircleBorder(side: tap == null ? BorderSide.none : BorderSide(color: K.border)),
           clipBehavior: Clip.antiAlias,
           child: InkWell(
             onTap: tap == null || !enabled
@@ -378,7 +378,7 @@ class PinPad extends StatelessWidget {
         Row(mainAxisSize: MainAxisSize.min, children: [
           _key(const SizedBox.shrink(), null),
           digit('0'),
-          _key(const Icon(Icons.backspace_outlined, size: 20, color: K.ink2), onBack, label: 'Delete'),
+          _key(Icon(Icons.backspace_outlined, size: 20, color: K.ink2), onBack, label: 'Delete'),
         ]),
       ]),
     );
@@ -524,7 +524,7 @@ class _PasscodeSettingsPageState extends State<PasscodeSettingsPage> {
                 if (on) LinkRow(Icons.timer_outlined, 'Ask again', _after, value: Passcode.afterLabel(Passcode.after)),
               ]),
               const SizedBox(height: Sp.md),
-              const Text('Forgot it? The lock screen can sign you out; sign in again and your books are all there.', style: T.small),
+              Text('Forgot it? The lock screen can sign you out; sign in again and your books are all there.', style: T.small),
             ]),
     );
   }

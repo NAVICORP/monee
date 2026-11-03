@@ -56,7 +56,7 @@ class PhoneField extends StatelessWidget {
       child: Row(children: [
         Material(
           color: K.surface,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14), side: const BorderSide(color: K.border2)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14), side: BorderSide(color: K.border2)),
           clipBehavior: Clip.antiAlias,
           child: InkWell(
             onTap: () async {
@@ -70,7 +70,7 @@ class PhoneField extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: Row(mainAxisSize: MainAxisSize.min, children: [
                   Text('+$cc', style: T.bodyStrong),
-                  const Icon(Icons.expand_more_rounded, size: 18, color: K.muted),
+                  Icon(Icons.expand_more_rounded, size: 18, color: K.muted),
                 ]),
               ),
             ),
@@ -120,7 +120,7 @@ class Welcome extends StatelessWidget {
                 child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                   const Center(child: MoneeIcon(size: 84, shadow: true)),
                   const SizedBox(height: 16),
-                  const Text('Pursee', textAlign: TextAlign.center, style: T.display),
+                  Text('Pursee', textAlign: TextAlign.center, style: T.display),
                   const SizedBox(height: 4),
                   Text('Your money, accounts, budgets and stats.\nThe same book on your phone and computer.',
                       textAlign: TextAlign.center, style: T.body.copyWith(color: K.muted)),
@@ -284,7 +284,7 @@ class _SignInState extends State<SignIn> {
         ];
       case _Step.phone:
         return [
-          const Text('Your WhatsApp number', style: T.label),
+          Text('Your WhatsApp number', style: T.label),
           const SizedBox(height: Sp.sm),
           PhoneField(cc: cc, onCc: (v) => setState(() => cc = v), controller: _num, onSubmitted: _sendPhone),
           const SizedBox(height: Sp.lg),
@@ -331,7 +331,7 @@ class _SignInState extends State<SignIn> {
         ];
       case _Step.email:
         return [
-          const Text('Email', style: T.label),
+          Text('Email', style: T.label),
           const SizedBox(height: Sp.sm),
           TextField(
             controller: _mail,

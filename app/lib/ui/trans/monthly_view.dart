@@ -198,7 +198,7 @@ class _TransMonthlyViewState extends State<TransMonthlyView> with ReloadOnChange
         onTap: () => _tapMonth(m),
         child: Container(
           padding: const EdgeInsetsDirectional.fromSTEB(Sp.page, 11, Sp.page, 11),
-          decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: K.border))),
+          decoration: BoxDecoration(border: Border(bottom: BorderSide(color: K.border))),
           child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
             SizedBox(
               width: 96,
@@ -215,7 +215,7 @@ class _TransMonthlyViewState extends State<TransMonthlyView> with ReloadOnChange
                 if (planned != null) ...[
                   const SizedBox(height: 4),
                   Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                    const Text('Upcoming', style: T.tiny),
+                    Text('Upcoming', style: T.tiny),
                     const SizedBox(width: Sp.sm),
                     Flexible(child: _amounts(planned.$1, planned.$2, dim: true)),
                   ]),
@@ -224,7 +224,7 @@ class _TransMonthlyViewState extends State<TransMonthlyView> with ReloadOnChange
             ),
             if (open) ...[
               const SizedBox(width: 4),
-              const Padding(padding: EdgeInsets.only(top: 2), child: Icon(Icons.chevron_right_rounded, size: 20, color: K.muted)),
+              Padding(padding: EdgeInsets.only(top: 2), child: Icon(Icons.chevron_right_rounded, size: 20, color: K.muted)),
             ],
           ]),
         ),
@@ -239,7 +239,7 @@ class _TransMonthlyViewState extends State<TransMonthlyView> with ReloadOnChange
         onTap: () => widget.onOpen(Period(PeriodKind.week, w.from, w.to)),
         child: Container(
           padding: const EdgeInsetsDirectional.fromSTEB(Sp.page + 8, 9, Sp.page, 9),
-          decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: K.border))),
+          decoration: BoxDecoration(border: Border(bottom: BorderSide(color: K.border))),
           child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
             SizedBox(
               width: 96,

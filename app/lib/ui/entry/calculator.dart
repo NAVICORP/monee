@@ -428,7 +428,7 @@ class _CalcBoxState extends State<_CalcBox> {
             color: bg,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(K.rMd),
-              side: line ? const BorderSide(color: K.border) : BorderSide.none,
+              side: line ? BorderSide(color: K.border) : BorderSide.none,
             ),
             clipBehavior: Clip.antiAlias,
             child: InkWell(

@@ -328,7 +328,7 @@ class _FlowStrip extends StatelessWidget {
     final style = T.bodyStrong.copyWith(fontSize: 15);
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10),
-      decoration: const BoxDecoration(color: K.surface, border: Border(top: BorderSide(color: K.border), bottom: BorderSide(color: K.border))),
+      decoration: BoxDecoration(color: K.surface, border: Border(top: BorderSide(color: K.border), bottom: BorderSide(color: K.border))),
       child: Row(children: [
         cell('In', MoneyText(inn, currency: cur, kind: 'income', symbol: false, style: style)),
         cell('Out', MoneyText(out, currency: cur, kind: 'expense', symbol: false, style: style)),

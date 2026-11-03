@@ -65,7 +65,7 @@ class _AssetTrendPageState extends State<AssetTrendPage> with ReloadOnChange<Ass
       KCard(
         padding: const EdgeInsets.fromLTRB(Sp.sm, Sp.md, Sp.sm, Sp.sm),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          const Padding(
+          Padding(
             padding: EdgeInsets.symmetric(horizontal: 6),
             child: Wrap(spacing: Sp.md, runSpacing: 4, children: [
               _Key(color: K.income, label: 'Assets'),

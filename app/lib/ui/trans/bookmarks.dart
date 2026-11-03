@@ -81,7 +81,7 @@ class _BookmarksState extends State<_Bookmarks> with ReloadOnChange {
         KGroup(children: [for (final m in _rows) _row(m, edit)]),
       if (edit) ...[
         const SizedBox(height: Sp.md),
-        const Text('Save a bookmark from the star on the entry page.', textAlign: TextAlign.center, style: T.small),
+        Text('Save a bookmark from the star on the entry page.', textAlign: TextAlign.center, style: T.small),
       ],
     ]);
   }
@@ -110,7 +110,7 @@ class _BookmarksState extends State<_Bookmarks> with ReloadOnChange {
         if (edit)
           IconButton(
             tooltip: 'Delete',
-            icon: const Icon(Icons.delete_outline_rounded, size: 19, color: K.muted),
+            icon: Icon(Icons.delete_outline_rounded, size: 19, color: K.muted),
             onPressed: () => _delete(m),
           ),
       ]),

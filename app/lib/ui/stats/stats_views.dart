@@ -82,7 +82,7 @@ class PeriodMenuButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       color: K.surface,
-      shape: const StadiumBorder(side: BorderSide(color: K.border2)),
+      shape: StadiumBorder(side: BorderSide(color: K.border2)),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: onTap,
@@ -91,7 +91,7 @@ class PeriodMenuButton extends StatelessWidget {
           child: Row(mainAxisSize: MainAxisSize.min, children: [
             Text(nameOf(kind), style: T.label),
             const SizedBox(width: 2),
-            const Icon(Icons.expand_more_rounded, size: 18, color: K.muted),
+            Icon(Icons.expand_more_rounded, size: 18, color: K.muted),
           ]),
         ),
       ),
@@ -143,7 +143,7 @@ class KindSwitch extends StatelessWidget {
     return Material(
       color: K.surface,
       child: Container(
-        decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: K.border))),
+        decoration: BoxDecoration(border: Border(bottom: BorderSide(color: K.border))),
         child: Row(children: [
           cell('income', 'Income', income),
           cell('expense', 'Expenses', expense),
@@ -204,7 +204,7 @@ class _CategoryRow extends StatelessWidget {
           MoneyText(toNum(row['amount']), style: T.bodyStrong),
           if (onTap != null) ...[
             const SizedBox(width: 2),
-            const Icon(Icons.chevron_right_rounded, size: 18, color: K.border2),
+            Icon(Icons.chevron_right_rounded, size: 18, color: K.border2),
           ],
         ]),
       ),

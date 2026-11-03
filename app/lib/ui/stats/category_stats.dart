@@ -19,7 +19,7 @@ class CategoryStatsPage extends StatefulWidget {
     required this.categoryId,
     required this.title,
     required this.period,
-    this.color = K.blue,
+    this.color,
     this.hasSubs = false,
   });
 
@@ -28,7 +28,7 @@ class CategoryStatsPage extends StatefulWidget {
   final String categoryId;
   final String title;
   final Period period;
-  final Color color;
+  final Color? color;
   final bool hasSubs;
 
   @override
@@ -147,7 +147,7 @@ class _CategoryStatsPageState extends State<CategoryStatsPage> with ReloadOnChan
         const SectionTitle('Month by month'),
         KCard(
           padding: const EdgeInsets.fromLTRB(Sp.sm, Sp.md, Sp.sm, Sp.sm),
-          child: LineChart(points: points, color: widget.color, format: (v) => compactMoney(v, b.currency)),
+          child: LineChart(points: points, color: widget.color ?? K.blue, format: (v) => compactMoney(v, b.currency)),
         ),
       ],
       const SectionTitle('Transactions'),

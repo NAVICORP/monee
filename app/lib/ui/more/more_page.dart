@@ -8,6 +8,7 @@ import '../../core/book.dart';
 import '../../core/config.dart';
 import '../../core/format.dart';
 import '../entry/calculator.dart' show showCalculator;
+import '../night.dart';
 import '../theme.dart';
 import '../widgets.dart';
 import 'account_settings.dart';
@@ -178,7 +179,7 @@ class _MorePageState extends State<MorePage> {
               ]),
             ),
             const SizedBox(width: Sp.xs),
-            const Icon(Icons.chevron_right_rounded, color: K.border2),
+            Icon(Icons.chevron_right_rounded, color: K.border2),
           ]),
         ),
         if (me.books.length > 1) ...[
@@ -201,6 +202,13 @@ class _MorePageState extends State<MorePage> {
         LinkGroup([
           LinkRow(Icons.account_balance_wallet_outlined, 'Accounts settings', () => _open(const AccountSettingsPage()),
               sub: 'Groups, deleted accounts, Transfer-Expense, cards'),
+        ]),
+        const GroupLabel('Look'),
+        LinkGroup([
+          LinkRow(Icons.dark_mode_outlined, 'Night mode', () async {
+            await pickNight(context);
+            if (mounted) setState(() {});
+          }, value: Night.label),
         ]),
         const GroupLabel('Security'),
         LinkGroup([
@@ -239,7 +247,7 @@ class _MorePageState extends State<MorePage> {
           LinkRow(Icons.delete_outline_rounded, 'Delete my account', _deleteAccount, bad: true),
         ]),
         const SizedBox(height: Sp.xl),
-        const Center(child: Text('Pursee $kAppVersion', style: T.small)),
+        Center(child: Text('Pursee $kAppVersion', style: T.small)),
       ]),
     );
   }
@@ -297,7 +305,7 @@ class _ComputerSheetState extends State<_ComputerSheet> {
         Expanded(child: KButton(label: 'Open', icon: Icons.open_in_new_rounded, expand: true, onPressed: _openIt)),
       ]),
       const SizedBox(height: Sp.sm),
-      const Text('It takes the place of a PC manager: no Wi-Fi pairing, and it works from anywhere.', style: T.small),
+      Text('It takes the place of a PC manager: no Wi-Fi pairing, and it works from anywhere.', style: T.small),
     ]);
   }
 }

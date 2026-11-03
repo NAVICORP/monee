@@ -155,7 +155,7 @@ class _StartBookState extends State<StartBook> {
               child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                 const Center(child: MoneeIcon(size: 64, shadow: true)),
                 const SizedBox(height: Sp.lg),
-                const Text('Start your book', style: T.display, textAlign: TextAlign.center),
+                Text('Start your book', style: T.display, textAlign: TextAlign.center),
                 const SizedBox(height: 6),
                 if (who.isNotEmpty) Text('Signed in as $who.', textAlign: TextAlign.center, style: T.body.copyWith(color: K.muted)),
                 const SizedBox(height: Sp.xl),

@@ -9,6 +9,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'core/api.dart';
 import 'core/book.dart';
 import 'ui/book_gate.dart';
+import 'ui/night.dart';
 import 'ui/start/welcome.dart';
 import 'ui/theme.dart';
 
@@ -22,11 +23,7 @@ Future<void> main() async {
     final shortest = view.physicalSize.shortestSide / view.devicePixelRatio;
     if (shortest < 600) await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   }
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent,
-    systemNavigationBarColor: K.surface,
-    systemNavigationBarIconBrightness: Brightness.dark,
-  ));
+  await Night.load();
   await Api.instance.load();
   runApp(const MoneeApp());
 }
@@ -35,7 +32,9 @@ class MoneeApp extends StatelessWidget {
   const MoneeApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) => ValueListenableBuilder<int>(valueListenable: Night.changes, builder: (context, _, __) => _app());
+
+  Widget _app() {
     return MaterialApp(
       title: 'Pursee',
       debugShowCheckedModeBanner: false,

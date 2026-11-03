@@ -1286,7 +1286,7 @@ class _EntryPageState extends State<_EntryPage> {
 
   Widget _actions() {
     return Container(
-      decoration: const BoxDecoration(color: K.surface, border: Border(top: BorderSide(color: K.border))),
+      decoration: BoxDecoration(color: K.surface, border: Border(top: BorderSide(color: K.border))),
       child: SafeArea(
         top: false,
         child: Center(
@@ -1399,7 +1399,7 @@ class _EntryPageState extends State<_EntryPage> {
     ];
     return Material(
       color: K.surface,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(K.r), side: const BorderSide(color: K.border)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(K.r), side: BorderSide(color: K.border)),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: can ? _tapAmount : null,
@@ -1407,9 +1407,9 @@ class _EntryPageState extends State<_EntryPage> {
           padding: const EdgeInsetsDirectional.fromSTEB(16, 12, 14, 14),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Row(children: [
-              const Expanded(child: Text('Amount', style: T.tiny)),
+              Expanded(child: Text('Amount', style: T.tiny)),
               Pill.grey(cur.code),
-              if (can) ...[const SizedBox(width: 6), const Icon(Icons.calculate_outlined, size: 18, color: K.muted)],
+              if (can) ...[const SizedBox(width: 6), Icon(Icons.calculate_outlined, size: 18, color: K.muted)],
             ]),
             const SizedBox(height: 6),
             FittedBox(
@@ -1497,7 +1497,7 @@ class _EntryPageState extends State<_EntryPage> {
       decoration: BoxDecoration(color: K.surface, borderRadius: BorderRadius.circular(K.r), border: Border.all(color: K.border2)),
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Row(children: [
-          const Icon(Icons.account_balance_wallet_outlined, size: 18, color: K.ink2),
+          Icon(Icons.account_balance_wallet_outlined, size: 18, color: K.ink2),
           const SizedBox(width: 8),
           Text(income ? 'Received in' : 'Paid from', style: T.label),
           const SizedBox(width: Sp.sm),
@@ -1563,9 +1563,9 @@ class _EntryPageState extends State<_EntryPage> {
       decoration: BoxDecoration(color: K.surface, borderRadius: BorderRadius.circular(K.r), border: Border.all(color: K.border2)),
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Row(children: [
-          const Icon(Icons.call_split_rounded, size: 18, color: K.ink2),
+          Icon(Icons.call_split_rounded, size: 18, color: K.ink2),
           const SizedBox(width: 8),
-          const Text('Split', style: T.label),
+          Text('Split', style: T.label),
           const SizedBox(width: Sp.sm),
           Expanded(
             child: Text(status,
@@ -1652,7 +1652,7 @@ class _EntryPageState extends State<_EntryPage> {
         ],
       ]),
       if (two && toAmount == null && r != null)
-        const Padding(
+        Padding(
           padding: EdgeInsetsDirectional.only(start: 4, top: 6),
           child: Text('Received is worked out from the rates. Tap it to change.', style: T.tiny),
         ),
@@ -1666,11 +1666,11 @@ class _EntryPageState extends State<_EntryPage> {
         padding: const EdgeInsetsDirectional.fromSTEB(12, 7, 12, 7),
         decoration: BoxDecoration(color: K.surface, borderRadius: BorderRadius.circular(14), border: Border.all(color: K.border2)),
         child: Row(children: [
-          const Icon(Icons.currency_exchange_rounded, size: 18, color: K.ink2),
+          Icon(Icons.currency_exchange_rounded, size: 18, color: K.ink2),
           const SizedBox(width: 10),
           Expanded(
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
-              const Text('Rate', style: T.tiny),
+              Text('Rate', style: T.tiny),
               Row(children: [
                 Text('1 $currency =', style: T.bodyStrong.copyWith(fontSize: 14)),
                 const SizedBox(width: 8),
@@ -1744,13 +1744,13 @@ class _EntryPageState extends State<_EntryPage> {
       for (final g in Me.instance.tags) '${g['name'] ?? ''}',
     ].where((n) => n.isNotEmpty && !have.contains(n.toLowerCase()) && (typed.isEmpty || n.toLowerCase().contains(typed))).take(8).toList();
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-      const Padding(padding: EdgeInsetsDirectional.only(start: 2, bottom: 6), child: Text('Tags', style: T.label)),
+      Padding(padding: EdgeInsetsDirectional.only(start: 2, bottom: 6), child: Text('Tags', style: T.label)),
       if (tags.isNotEmpty)
         Wrap(spacing: 6, runSpacing: 6, children: [
           for (final t in tags)
             _Chip(label: '#$t', selected: true, onClear: can ? () => setState(() => tags.remove(t)) : null),
         ]),
-      if (tags.isEmpty && !can) const Text('None', style: T.small),
+      if (tags.isEmpty && !can) Text('None', style: T.small),
       if (can) ...[
         if (tags.isNotEmpty) const SizedBox(height: Sp.sm),
         TextField(
@@ -1764,10 +1764,10 @@ class _EntryPageState extends State<_EntryPage> {
             hintText: 'Add a tag',
             isDense: true,
             contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 11),
-            prefixIcon: const Icon(Icons.sell_outlined, size: 18, color: K.muted),
+            prefixIcon: Icon(Icons.sell_outlined, size: 18, color: K.muted),
             suffixIcon: tagCtl.text.trim().isEmpty
                 ? null
-                : IconButton(tooltip: 'Add tag', icon: const Icon(Icons.add_rounded, color: K.blue), onPressed: () => _addTag(tagCtl.text)),
+                : IconButton(tooltip: 'Add tag', icon: Icon(Icons.add_rounded, color: K.blue), onPressed: () => _addTag(tagCtl.text)),
           ),
         ),
         if (suggestions.isNotEmpty)
@@ -1790,9 +1790,9 @@ class _EntryPageState extends State<_EntryPage> {
 
   Widget _photosBlock(bool can) {
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-      const Padding(padding: EdgeInsetsDirectional.only(start: 2, bottom: 6), child: Text('Photos', style: T.label)),
+      Padding(padding: EdgeInsetsDirectional.only(start: 2, bottom: 6), child: Text('Photos', style: T.label)),
       if (photos.isEmpty && !can)
-        const Text('None', style: T.small)
+        Text('None', style: T.small)
       else
         SizedBox(
           height: 72,
@@ -1802,7 +1802,7 @@ class _EntryPageState extends State<_EntryPage> {
           ]),
         ),
       if (can && photos.isNotEmpty)
-        const Padding(
+        Padding(
           padding: EdgeInsetsDirectional.only(start: 2, top: 6),
           child: Text('Tap a photo to see it. Hold it, or tap its x, to delete it.', style: T.tiny),
         ),
@@ -1817,10 +1817,10 @@ class _EntryPageState extends State<_EntryPage> {
         b,
         fit: BoxFit.cover,
         gaplessPlayback: true,
-        errorBuilder: (context, error, stack) => const Center(child: Icon(Icons.broken_image_outlined, size: 20, color: K.muted)),
+        errorBuilder: (context, error, stack) => Center(child: Icon(Icons.broken_image_outlined, size: 20, color: K.muted)),
       );
     } else if (p.failed) {
-      inside = const Center(child: Icon(Icons.broken_image_outlined, size: 20, color: K.muted));
+      inside = Center(child: Icon(Icons.broken_image_outlined, size: 20, color: K.muted));
     } else {
       inside = const Center(child: SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2)));
     }
@@ -1831,7 +1831,7 @@ class _EntryPageState extends State<_EntryPage> {
         Positioned.fill(
           child: Material(
             color: K.surface2,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(K.rSm), side: const BorderSide(color: K.border)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(K.rSm), side: BorderSide(color: K.border)),
             clipBehavior: Clip.antiAlias,
             child: InkWell(
               onTap: b == null ? null : () => _viewPhoto(b),
@@ -1868,12 +1868,12 @@ class _EntryPageState extends State<_EntryPage> {
       height: 72,
       child: Material(
         color: K.surface,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(K.rSm), side: const BorderSide(color: K.border2)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(K.rSm), side: BorderSide(color: K.border2)),
         clipBehavior: Clip.antiAlias,
         child: InkWell(
           onTap: busy ? null : _addPhotos,
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            const Icon(Icons.add_a_photo_outlined, size: 20, color: K.blue),
+            Icon(Icons.add_a_photo_outlined, size: 20, color: K.blue),
             const SizedBox(height: 4),
             Text('Add photo', maxLines: 1, overflow: TextOverflow.ellipsis, style: T.tiny.copyWith(color: K.blue, fontSize: 10.5)),
           ]),

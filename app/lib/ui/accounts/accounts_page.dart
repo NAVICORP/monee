@@ -130,7 +130,7 @@ class _AccountsPageState extends State<AccountsPage> with ReloadOnChange<Account
           Padding(
             padding: const EdgeInsetsDirectional.fromSTEB(Sp.page + 4, Sp.xs, Sp.xs, Sp.xs),
             child: Row(children: [
-              const Expanded(child: Text('Accounts', maxLines: 1, overflow: TextOverflow.ellipsis, style: T.h1)),
+              Expanded(child: Text('Accounts', maxLines: 1, overflow: TextOverflow.ellipsis, style: T.h1)),
               RoundIcon(Icons.show_chart_rounded, tooltip: 'Asset trend', onTap: () => _push(const AssetTrendPage())),
               if (b.canEdit) RoundIcon(Icons.add_rounded, tooltip: 'Add account', onTap: _add),
               RoundIcon(Icons.more_vert_rounded, tooltip: 'More', onTap: _menu),
@@ -217,7 +217,7 @@ class _TotalsStrip extends StatelessWidget {
         );
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10),
-      decoration: const BoxDecoration(color: K.surface, border: Border(top: BorderSide(color: K.border), bottom: BorderSide(color: K.border))),
+      decoration: BoxDecoration(color: K.surface, border: Border(top: BorderSide(color: K.border), bottom: BorderSide(color: K.border))),
       child: Row(children: [
         cell('Assets', MoneyText(assets, currency: currency, kind: 'income', symbol: false, style: style)),
         cell('Liabilities', MoneyText(liabilities, currency: currency, kind: 'expense', symbol: false, style: style)),
@@ -355,7 +355,7 @@ class _AccountRow extends StatelessWidget {
       final linked = Me.instance.account(debit['linked_account_id'] as String?);
       sub = [if (linked != null) 'From ${linked.name}', ...notes].join(', ');
       trailing = Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-        const Text('Spent this month', style: T.tiny),
+        Text('Spent this month', style: T.tiny),
         FitEnd(child: MoneyText(toNum(debit['spent_this_month']), currency: cur, kind: 'expense', style: T.bodyStrong)),
       ]);
     } else {

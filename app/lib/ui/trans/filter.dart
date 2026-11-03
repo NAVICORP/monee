@@ -416,7 +416,7 @@ class _FilterPageState extends State<_FilterPage> {
     }
     return Container(
       padding: const EdgeInsets.fromLTRB(Sp.page, Sp.md, Sp.page, Sp.md),
-      decoration: const BoxDecoration(color: K.surface, border: Border(bottom: BorderSide(color: K.border))),
+      decoration: BoxDecoration(color: K.surface, border: Border(bottom: BorderSide(color: K.border))),
       child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         if (_error != null) ...[Notice(_error!), const SizedBox(height: Sp.sm)],
         Row(children: [
@@ -471,7 +471,7 @@ class _FilterPageState extends State<_FilterPage> {
           ),
         ),
         Container(
-          decoration: const BoxDecoration(color: K.surface, border: Border(top: BorderSide(color: K.border))),
+          decoration: BoxDecoration(color: K.surface, border: Border(top: BorderSide(color: K.border))),
           padding: const EdgeInsets.fromLTRB(Sp.page, Sp.md, Sp.page, Sp.md),
           child: SafeArea(
             top: false,

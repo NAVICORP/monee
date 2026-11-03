@@ -218,7 +218,7 @@ class _BudgetsPageState extends State<BudgetsPage> with ReloadOnChange<BudgetsPa
             }),
         ]),
       const SizedBox(height: Sp.md),
-      const Text(
+      Text(
           'A budget applies from the month it is set until you change it. A weekly or yearly budget that is not set borrows the monthly one (a week is 12/52 of a month).',
           style: T.small),
     ]);
@@ -231,8 +231,8 @@ class _BudgetsPageState extends State<BudgetsPage> with ReloadOnChange<BudgetsPa
           ? Container(
               width: 32,
               height: 32,
-              decoration: const BoxDecoration(color: K.brand100, shape: BoxShape.circle),
-              child: const Icon(Icons.savings_outlined, size: 17, color: K.brand600),
+              decoration: BoxDecoration(color: K.brand100, shape: BoxShape.circle),
+              child: Icon(Icons.savings_outlined, size: 17, color: K.brand600),
             )
           : EmojiBadge(emoji, name: name, size: 32),
       title: name,

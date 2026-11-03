@@ -194,7 +194,7 @@ class _RepeatsPageState extends State<RepeatsPage> with ReloadOnChange<RepeatsPa
         for (final r in paused) ...[_card(r, b.today, can), const SizedBox(height: Sp.sm)],
       ],
       if (list.isNotEmpty)
-        const Padding(
+        Padding(
           padding: EdgeInsets.only(top: Sp.sm),
           child: Text('Repeats record themselves on their dates. Deleting one keeps what it already recorded.', style: T.small),
         ),
@@ -224,8 +224,8 @@ class _RepeatsPageState extends State<RepeatsPage> with ReloadOnChange<RepeatsPa
             Container(
               width: 34,
               height: 34,
-              decoration: const BoxDecoration(color: K.surface2, shape: BoxShape.circle),
-              child: const Icon(Icons.swap_horiz_rounded, size: 18, color: K.transfer),
+              decoration: BoxDecoration(color: K.surface2, shape: BoxShape.circle),
+              child: Icon(Icons.swap_horiz_rounded, size: 18, color: K.transfer),
             )
           else
             EmojiBadge(cat?.emoji ?? parent?.emoji, name: title, size: 34),
@@ -354,7 +354,7 @@ class _RepeatEditState extends State<_RepeatEdit> {
       const SizedBox(height: Sp.md),
       KChoice(label: 'Ends', value: end == null ? 'No end' : dateLabel(end!), icon: Icons.event_busy_outlined, onTap: _pickEnd),
       const SizedBox(height: Sp.sm),
-      const Text('New amounts apply to the dates still to come. Entries already recorded keep theirs.', style: T.small),
+      Text('New amounts apply to the dates still to come. Entries already recorded keep theirs.', style: T.small),
       const SizedBox(height: Sp.lg),
       KButton(label: 'Save', icon: Icons.check_rounded, expand: true, onPressed: _save),
       const SizedBox(height: Sp.sm),

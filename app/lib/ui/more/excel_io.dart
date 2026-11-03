@@ -151,7 +151,7 @@ class _ExportSheetState extends State<_ExportSheet> {
       if (error != null) ...[Notice(error!), const SizedBox(height: Sp.md)],
       KChoice(label: 'Period', value: label == periodLabel(from, to) ? label : '$label, ${periodLabel(from, to)}', icon: Icons.date_range_outlined, onTap: busy ? null : _choose),
       const SizedBox(height: Sp.sm),
-      const Text('Columns: Date, Type, Account, To account, Category, Subcategory, Amount, Currency, Note, Description and Tags. Import reads the same file back.',
+      Text('Columns: Date, Type, Account, To account, Category, Subcategory, Amount, Currency, Note, Description and Tags. Import reads the same file back.',
           style: T.small),
       const SizedBox(height: Sp.lg),
       KButton(label: 'Make the Excel file', icon: Icons.ios_share_rounded, expand: true, busy: busy, onPressed: _export),

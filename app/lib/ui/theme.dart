@@ -7,38 +7,46 @@ import 'package:flutter/services.dart';
 /// cards and buttons, and light violets for progress and selection, on a
 /// soft white. Money has three fixed colours everywhere: income green,
 /// expense red, transfers grey.
+///
+/// Night mode swaps every colour for its night one: [dark] is set by
+/// `Night` (night.dart) before the app is drawn again, so the colours are
+/// read fresh on each build and never kept in a `const`.
 class K {
-  static const deep = Color(0xFF1E1240);
-  static const blue = Color(0xFF6D4AE8);   // the brand violet (kept as `blue` so shared widgets read the same)
-  static const sky = Color(0xFF9B7BFF);
-  static const glow = Color(0xFFC4B2FF);
-  static const ice = Color(0xFFEFEAFF);
-  static const paper = Color(0xFFF8F7FC);
-  static const frame = Color(0xFFECE9F6);
-  static const ink = Color(0xFF17122B);
-  static const ink2 = Color(0xFF3B3557);
-  static const muted = Color(0xFF6B6585);
-  static const border = Color(0xFFE6E2F0);
-  static const border2 = Color(0xFFD2CCE3);
-  static const surface = Color(0xFFFFFFFF);
-  static const surface2 = Color(0xFFF3F0FA);
-  static const brand100 = Color(0xFFEEE8FE);
-  static const brand200 = Color(0xFFD9CDFC);
-  static const brand300 = Color(0xFFB39DF8);
-  static const brand500 = Color(0xFF6D4AE8);
-  static const brand600 = Color(0xFF5634C7);
-  static const heroText = Color(0xFFE2D9FF);
-  static const bad = Color(0xFFB42318);
-  static const badBg = Color(0xFFFDECEA);
-  static const warn = Color(0xFF8A5D0B);
-  static const warnBg = Color(0xFFFBF1DC);
+  static bool dark = false;
+
+  static Color _c(int day, int night) => Color(dark ? night : day);
+
+  static Color get deep => _c(0xFF1E1240, 0xFF3A2A86);
+  static Color get blue => _c(0xFF6D4AE8, 0xFF8F74FF);   // the brand violet (kept as `blue` so shared widgets read the same)
+  static Color get sky => _c(0xFF9B7BFF, 0xFFA78FFF);
+  static Color get glow => _c(0xFFC4B2FF, 0xFFC4B2FF);
+  static Color get ice => _c(0xFFEFEAFF, 0xFF221B3D);
+  static Color get paper => _c(0xFFF8F7FC, 0xFF0E0B17);
+  static Color get frame => _c(0xFFECE9F6, 0xFF15111F);
+  static Color get ink => _c(0xFF17122B, 0xFFF2EFFA);
+  static Color get ink2 => _c(0xFF3B3557, 0xFFCDC6E2);
+  static Color get muted => _c(0xFF6B6585, 0xFF9C95B6);
+  static Color get border => _c(0xFFE6E2F0, 0xFF2A2440);
+  static Color get border2 => _c(0xFFD2CCE3, 0xFF3A3354);
+  static Color get surface => _c(0xFFFFFFFF, 0xFF1A1627);
+  static Color get surface2 => _c(0xFFF3F0FA, 0xFF231E33);
+  static Color get brand100 => _c(0xFFEEE8FE, 0xFF2A2152);
+  static Color get brand200 => _c(0xFFD9CDFC, 0xFF3B2E73);
+  static Color get brand300 => _c(0xFFB39DF8, 0xFF6C55D6);
+  static Color get brand500 => _c(0xFF6D4AE8, 0xFF8F74FF);
+  static Color get brand600 => _c(0xFF5634C7, 0xFFB7A6FF);
+  static Color get heroText => _c(0xFFE2D9FF, 0xFFE2D9FF);
+  static Color get bad => _c(0xFFB42318, 0xFFFF7A70);
+  static Color get badBg => _c(0xFFFDECEA, 0xFF3B1618);
+  static Color get warn => _c(0xFF8A5D0B, 0xFFF2BD55);
+  static Color get warnBg => _c(0xFFFBF1DC, 0xFF35270C);
 
   // Money
-  static const income = Color(0xFF138A5E);
-  static const incomeBg = Color(0xFFE3F5EC);
-  static const expense = Color(0xFFD63A4B);
-  static const expenseBg = Color(0xFFFCE8EA);
-  static const transfer = Color(0xFF6B6585);
+  static Color get income => _c(0xFF138A5E, 0xFF3FCF91);
+  static Color get incomeBg => _c(0xFFE3F5EC, 0xFF0F2E22);
+  static Color get expense => _c(0xFFD63A4B, 0xFFFF6E7E);
+  static Color get expenseBg => _c(0xFFFCE8EA, 0xFF3A1620);
+  static Color get transfer => _c(0xFF6B6585, 0xFF9C95B6);
 
   /// The colours of the pie and the category pills, in order.
   static const chart = [
@@ -52,10 +60,15 @@ class K {
   static const r = 18.0;
   static const rLg = 24.0;
 
-  static const shadow = [
-    BoxShadow(color: Color(0x0A1E1240), blurRadius: 2, offset: Offset(0, 1)),
-    BoxShadow(color: Color(0x1A1E1240), blurRadius: 24, spreadRadius: -18, offset: Offset(0, 10)),
-  ];
+  static List<BoxShadow> get shadow => dark
+      ? const [
+          BoxShadow(color: Color(0x33000000), blurRadius: 2, offset: Offset(0, 1)),
+          BoxShadow(color: Color(0x66000000), blurRadius: 24, spreadRadius: -18, offset: Offset(0, 10)),
+        ]
+      : const [
+          BoxShadow(color: Color(0x0A1E1240), blurRadius: 2, offset: Offset(0, 1)),
+          BoxShadow(color: Color(0x1A1E1240), blurRadius: 24, spreadRadius: -18, offset: Offset(0, 10)),
+        ];
 }
 
 /// Spacing: one scale for paddings and gaps.
@@ -79,24 +92,24 @@ class T {
   /// naming this one lets the screen pictures draw emojis too.
   static const emojiFallback = ['Noto Color Emoji'];
 
-  static const display = TextStyle(fontFamily: _b, fontFamilyFallback: emojiFallback, fontSize: 28, fontWeight: FontWeight.w600, height: 1.14, letterSpacing: 0, color: K.ink);
-  static const h1 = TextStyle(fontFamily: _b, fontFamilyFallback: emojiFallback, fontSize: 23, fontWeight: FontWeight.w600, height: 1.2, letterSpacing: 0, color: K.ink);
-  static const h2 = TextStyle(fontFamily: _b, fontFamilyFallback: emojiFallback, fontSize: 19, fontWeight: FontWeight.w600, height: 1.24, letterSpacing: 0, color: K.ink);
-  static const h3 = TextStyle(fontFamily: _b, fontFamilyFallback: emojiFallback, fontSize: 16, fontWeight: FontWeight.w600, height: 1.28, letterSpacing: 0, color: K.ink);
-  static const amount = TextStyle(fontFamily: _b, fontFamilyFallback: emojiFallback, fontSize: 32, fontWeight: FontWeight.w600, height: 1.0, letterSpacing: 0,
+  static TextStyle get display => TextStyle(fontFamily: _b, fontFamilyFallback: emojiFallback, fontSize: 28, fontWeight: FontWeight.w600, height: 1.14, letterSpacing: 0, color: K.ink);
+  static TextStyle get h1 => TextStyle(fontFamily: _b, fontFamilyFallback: emojiFallback, fontSize: 23, fontWeight: FontWeight.w600, height: 1.2, letterSpacing: 0, color: K.ink);
+  static TextStyle get h2 => TextStyle(fontFamily: _b, fontFamilyFallback: emojiFallback, fontSize: 19, fontWeight: FontWeight.w600, height: 1.24, letterSpacing: 0, color: K.ink);
+  static TextStyle get h3 => TextStyle(fontFamily: _b, fontFamilyFallback: emojiFallback, fontSize: 16, fontWeight: FontWeight.w600, height: 1.28, letterSpacing: 0, color: K.ink);
+  static TextStyle get amount => TextStyle(fontFamily: _b, fontFamilyFallback: emojiFallback, fontSize: 32, fontWeight: FontWeight.w600, height: 1.0, letterSpacing: 0,
       color: Colors.white, fontFeatures: [FontFeature.tabularFigures()]);
-  static const body = TextStyle(fontFamily: _m, fontFamilyFallback: emojiFallback, fontSize: 14.5, fontWeight: FontWeight.w500, height: 1.45, letterSpacing: 0, color: K.ink);
-  static const bodyStrong = TextStyle(fontFamily: _m, fontFamilyFallback: emojiFallback, fontSize: 14.5, fontWeight: FontWeight.w600, height: 1.35, letterSpacing: 0, color: K.ink);
-  static const small = TextStyle(fontFamily: _m, fontFamilyFallback: emojiFallback, fontSize: 12.5, fontWeight: FontWeight.w500, height: 1.4, letterSpacing: 0, color: K.muted);
-  static const tiny = TextStyle(fontFamily: _m, fontFamilyFallback: emojiFallback, fontSize: 11, fontWeight: FontWeight.w600, height: 1.3, letterSpacing: 0, color: K.muted);
-  static const label = TextStyle(fontFamily: _m, fontFamilyFallback: emojiFallback, fontSize: 12.5, fontWeight: FontWeight.w600, height: 1.3, letterSpacing: 0, color: K.ink2);
-  static const button = TextStyle(fontFamily: _m, fontFamilyFallback: emojiFallback, fontSize: 14.5, fontWeight: FontWeight.w600, height: 1.2, letterSpacing: 0);
+  static TextStyle get body => TextStyle(fontFamily: _m, fontFamilyFallback: emojiFallback, fontSize: 14.5, fontWeight: FontWeight.w500, height: 1.45, letterSpacing: 0, color: K.ink);
+  static TextStyle get bodyStrong => TextStyle(fontFamily: _m, fontFamilyFallback: emojiFallback, fontSize: 14.5, fontWeight: FontWeight.w600, height: 1.35, letterSpacing: 0, color: K.ink);
+  static TextStyle get small => TextStyle(fontFamily: _m, fontFamilyFallback: emojiFallback, fontSize: 12.5, fontWeight: FontWeight.w500, height: 1.4, letterSpacing: 0, color: K.muted);
+  static TextStyle get tiny => TextStyle(fontFamily: _m, fontFamilyFallback: emojiFallback, fontSize: 11, fontWeight: FontWeight.w600, height: 1.3, letterSpacing: 0, color: K.muted);
+  static TextStyle get label => TextStyle(fontFamily: _m, fontFamilyFallback: emojiFallback, fontSize: 12.5, fontWeight: FontWeight.w600, height: 1.3, letterSpacing: 0, color: K.ink2);
+  static TextStyle get button => TextStyle(fontFamily: _m, fontFamilyFallback: emojiFallback, fontSize: 14.5, fontWeight: FontWeight.w600, height: 1.2, letterSpacing: 0);
   static const tabular = TextStyle(fontFeatures: [FontFeature.tabularFigures()]);
 }
 
 ThemeData moneeTheme() {
-  const scheme = ColorScheme(
-    brightness: Brightness.light,
+  final scheme = ColorScheme(
+    brightness: K.dark ? Brightness.dark : Brightness.light,
     primary: K.deep,
     onPrimary: Colors.white,
     secondary: K.blue,
@@ -111,7 +124,7 @@ ThemeData moneeTheme() {
     outline: K.border2,
     outlineVariant: K.border,
   );
-  TextStyle m(double size, FontWeight w, [Color c = K.ink]) => TextStyle(fontFamily: 'Manrope', fontFamilyFallback: T.emojiFallback, fontSize: size, fontWeight: w, letterSpacing: 0, color: c);
+  TextStyle m(double size, FontWeight w, [Color? c]) => TextStyle(fontFamily: 'Manrope', fontFamilyFallback: T.emojiFallback, fontSize: size, fontWeight: w, letterSpacing: 0, color: c ?? K.ink);
   TextStyle b(double size, FontWeight w) => TextStyle(fontFamily: 'Bricolage', fontFamilyFallback: T.emojiFallback, fontSize: size, fontWeight: w, letterSpacing: 0, color: K.ink);
   final text = TextTheme(
     displayLarge: b(40, FontWeight.w600),
@@ -137,13 +150,16 @@ ThemeData moneeTheme() {
     fontFamily: 'Manrope',
     textTheme: text,
     splashFactory: kIsWeb ? InkRipple.splashFactory : InkSparkle.splashFactory,
-    appBarTheme: const AppBarTheme(
+    appBarTheme: AppBarTheme(
       backgroundColor: K.paper,
       foregroundColor: K.ink,
       elevation: 0,
       scrolledUnderElevation: 0,
       centerTitle: false,
-      systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.transparent, statusBarIconBrightness: Brightness.dark, statusBarBrightness: Brightness.light),
+      systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: K.dark ? Brightness.light : Brightness.dark,
+          statusBarBrightness: K.dark ? Brightness.dark : Brightness.light),
       titleTextStyle: TextStyle(fontFamily: 'Bricolage', fontSize: 18, fontWeight: FontWeight.w600, letterSpacing: 0, color: K.ink),
     ),
     inputDecorationTheme: InputDecorationTheme(
@@ -151,17 +167,17 @@ ThemeData moneeTheme() {
       fillColor: K.surface,
       isDense: false,
       contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
-      hintStyle: m(14.5, FontWeight.w500, const Color(0xFF9A93B3)),
+      hintStyle: m(14.5, FontWeight.w500, K.dark ? const Color(0xFF6E6889) : const Color(0xFF9A93B3)),
       labelStyle: m(13.5, FontWeight.w500, K.muted),
       floatingLabelStyle: m(13.5, FontWeight.w600, K.blue),
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: const BorderSide(color: K.border2)),
-      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: const BorderSide(color: K.border2)),
-      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: const BorderSide(color: K.blue, width: 1.6)),
-      errorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: const BorderSide(color: K.bad)),
-      focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: const BorderSide(color: K.bad, width: 1.6)),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: K.border2)),
+      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: K.border2)),
+      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: K.blue, width: 1.6)),
+      errorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: K.bad)),
+      focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: K.bad, width: 1.6)),
       errorStyle: m(12, FontWeight.w500, K.bad),
     ),
-    textSelectionTheme: const TextSelectionThemeData(cursorColor: K.blue, selectionColor: K.brand200, selectionHandleColor: K.blue),
+    textSelectionTheme: TextSelectionThemeData(cursorColor: K.blue, selectionColor: K.brand200, selectionHandleColor: K.blue),
     snackBarTheme: SnackBarThemeData(
       behavior: SnackBarBehavior.floating,
       backgroundColor: K.deep,
@@ -169,8 +185,8 @@ ThemeData moneeTheme() {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       insetPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
     ),
-    dividerTheme: const DividerThemeData(color: K.border, thickness: 1, space: 1),
-    bottomSheetTheme: const BottomSheetThemeData(
+    dividerTheme: DividerThemeData(color: K.border, thickness: 1, space: 1),
+    bottomSheetTheme: BottomSheetThemeData(
       backgroundColor: K.paper,
       surfaceTintColor: Colors.transparent,
       showDragHandle: false,
@@ -184,7 +200,7 @@ ThemeData moneeTheme() {
       titleTextStyle: b(18, FontWeight.w600),
       contentTextStyle: m(14.5, FontWeight.w500, K.ink2),
     ),
-    progressIndicatorTheme: const ProgressIndicatorThemeData(color: K.blue),
+    progressIndicatorTheme: ProgressIndicatorThemeData(color: K.blue),
     tooltipTheme: TooltipThemeData(
       decoration: BoxDecoration(color: K.deep, borderRadius: BorderRadius.circular(10)),
       textStyle: m(13, FontWeight.w600, Colors.white),
@@ -197,7 +213,7 @@ ThemeData moneeTheme() {
     checkboxTheme: CheckboxThemeData(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
       fillColor: WidgetStateProperty.resolveWith((s) => s.contains(WidgetState.selected) ? K.blue : Colors.transparent),
-      side: const BorderSide(color: K.border2, width: 1.6),
+      side: BorderSide(color: K.border2, width: 1.6),
     ),
     pageTransitionsTheme: const PageTransitionsTheme(builders: {
       TargetPlatform.android: FadeForwardsPageTransitionsBuilder(),

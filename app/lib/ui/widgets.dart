@@ -35,7 +35,7 @@ class KButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final (bg, fg, side) = switch (kind) {
       KButtonKind.primary => (K.deep, Colors.white, BorderSide.none),
-      KButtonKind.secondary => (K.surface, K.deep, const BorderSide(color: K.border2)),
+      KButtonKind.secondary => (K.surface, K.deep, BorderSide(color: K.border2)),
       KButtonKind.ghost => (Colors.transparent, K.blue, BorderSide.none),
       KButtonKind.danger => (K.badBg, K.bad, BorderSide.none),
       KButtonKind.blue => (K.blue, Colors.white, BorderSide.none),
@@ -108,17 +108,17 @@ class KFab extends StatelessWidget {
 
 /// A white card with a hairline border and a soft shadow.
 class KCard extends StatelessWidget {
-  const KCard({super.key, required this.child, this.padding = const EdgeInsets.all(Sp.lg), this.onTap, this.color = K.surface});
+  const KCard({super.key, required this.child, this.padding = const EdgeInsets.all(Sp.lg), this.onTap, this.color});
   final Widget child;
   final EdgeInsetsGeometry padding;
   final VoidCallback? onTap;
-  final Color color;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: color,
+        color: color ?? K.surface,
         borderRadius: BorderRadius.circular(K.r),
         border: Border.all(color: K.border),
         boxShadow: K.shadow,
@@ -175,24 +175,33 @@ class HeroCard extends StatelessWidget {
 
 /// A small rounded label, as wide as its words.
 class Pill extends StatelessWidget {
-  const Pill(this.text, {super.key, this.color = K.brand100, this.fg = K.brand600, this.icon});
+  const Pill(this.text, {super.key, this.color, this.fg, this.icon}) : _tone = 0;
   final String text;
-  final Color color;
-  final Color fg;
+  final Color? color;
+  final Color? fg;
   final IconData? icon;
 
+  /// 0 violet, 1 warn, 2 bad, 3 grey: the colours are read when drawn, so
+  /// they follow night mode.
+  final int _tone;
+
   const Pill.warn(this.text, {super.key, this.icon})
-      : color = K.warnBg,
-        fg = K.warn;
+      : color = null,
+        fg = null,
+        _tone = 1;
   const Pill.bad(this.text, {super.key, this.icon})
-      : color = K.badBg,
-        fg = K.bad;
+      : color = null,
+        fg = null,
+        _tone = 2;
   const Pill.grey(this.text, {super.key, this.icon})
-      : color = K.surface2,
-        fg = K.ink2;
+      : color = null,
+        fg = null,
+        _tone = 3;
 
   @override
   Widget build(BuildContext context) {
+    final color = this.color ?? switch (_tone) { 1 => K.warnBg, 2 => K.badBg, 3 => K.surface2, _ => K.brand100 };
+    final fg = this.fg ?? switch (_tone) { 1 => K.warn, 2 => K.bad, 3 => K.ink2, _ => K.brand600 };
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
       decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(999)),
@@ -206,9 +215,9 @@ class Pill extends StatelessWidget {
 
 /// A thin progress line that fills from the start side.
 class ProgressLine extends StatelessWidget {
-  const ProgressLine(this.value, {super.key, this.color = K.glow, this.track = const Color(0x24FFFFFF), this.height = 8});
+  const ProgressLine(this.value, {super.key, this.color, this.track = const Color(0x24FFFFFF), this.height = 8});
   final double value;
-  final Color color;
+  final Color? color;
   final Color track;
   final double height;
 
@@ -228,7 +237,7 @@ class ProgressLine extends StatelessWidget {
             curve: Curves.easeOutCubic,
             width: w * value.clamp(0, 1).toDouble(),
             height: height,
-            decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(height)),
+            decoration: BoxDecoration(color: color ?? K.glow, borderRadius: BorderRadius.circular(height)),
           ),
         ),
       );
@@ -403,7 +412,7 @@ class KChoice extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       color: K.surface,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14), side: const BorderSide(color: K.border2)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14), side: BorderSide(color: K.border2)),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: onTap,
@@ -419,7 +428,7 @@ class KChoice extends StatelessWidget {
               ]),
             ),
             const SizedBox(width: Sp.sm),
-            const Icon(Icons.expand_more_rounded, color: K.muted, size: 20),
+            Icon(Icons.expand_more_rounded, color: K.muted, size: 20),
           ]),
         ),
       ),
@@ -519,11 +528,11 @@ class KSwitchRow extends StatelessWidget {
 
 /// A round avatar with initials.
 class Avatar extends StatelessWidget {
-  const Avatar(this.name, {super.key, this.size = 36, this.color = K.brand100, this.fg = K.brand600});
+  const Avatar(this.name, {super.key, this.size = 36, this.color, this.fg});
   final String name;
   final double size;
-  final Color color;
-  final Color fg;
+  final Color? color;
+  final Color? fg;
 
   @override
   Widget build(BuildContext context) {
@@ -531,8 +540,8 @@ class Avatar extends StatelessWidget {
       width: size,
       height: size,
       alignment: Alignment.center,
-      decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-      child: Text(initials(name), style: TextStyle(fontFamily: 'Manrope', fontWeight: FontWeight.w800, fontSize: size * 0.36, color: fg, letterSpacing: 0)),
+      decoration: BoxDecoration(color: color ?? K.brand100, shape: BoxShape.circle),
+      child: Text(initials(name), style: TextStyle(fontFamily: 'Manrope', fontWeight: FontWeight.w800, fontSize: size * 0.36, color: fg ?? K.brand600, letterSpacing: 0)),
     );
   }
 }
@@ -649,7 +658,7 @@ class SearchField extends StatelessWidget {
       textInputAction: TextInputAction.search,
       decoration: InputDecoration(
         hintText: hint,
-        prefixIcon: const Icon(Icons.search_rounded, size: 20, color: K.muted),
+        prefixIcon: Icon(Icons.search_rounded, size: 20, color: K.muted),
         suffixIcon: ListenableBuilder(
           listenable: controller,
           builder: (context, _) => controller.text.isEmpty
@@ -734,7 +743,7 @@ Future<PickOption<V>?> showPicker<V>(BuildContext context,
           : options.where((o) => o.label.toLowerCase().contains(t) || (o.sub ?? '').toLowerCase().contains(t)).toList();
       return Column(children: [
         if (search) ...[SearchField(controller: q, onChanged: (_) => set(() {})), const SizedBox(height: Sp.md)],
-        if (shown.isEmpty) const Padding(padding: EdgeInsets.all(Sp.xl), child: Text('Nothing matches', style: T.small)),
+        if (shown.isEmpty) Padding(padding: EdgeInsets.all(Sp.xl), child: Text('Nothing matches', style: T.small)),
         for (final o in shown.take(300))
           Padding(
             padding: const EdgeInsets.only(bottom: 6),
@@ -754,7 +763,7 @@ Future<PickOption<V>?> showPicker<V>(BuildContext context,
                       Container(
                         width: 30,
                         height: 30,
-                        decoration: const BoxDecoration(color: K.surface2, shape: BoxShape.circle),
+                        decoration: BoxDecoration(color: K.surface2, shape: BoxShape.circle),
                         child: Icon(o.icon, size: 16, color: K.ink2),
                       ),
                       const SizedBox(width: Sp.md),
@@ -766,7 +775,7 @@ Future<PickOption<V>?> showPicker<V>(BuildContext context,
                       ]),
                     ),
                     if (o.trailing != null) ...[const SizedBox(width: Sp.sm), Text(o.trailing!, style: T.label.copyWith(color: K.muted))],
-                    if (o.value == selected) ...[const SizedBox(width: Sp.sm), const Icon(Icons.check_rounded, color: K.blue, size: 20)],
+                    if (o.value == selected) ...[const SizedBox(width: Sp.sm), Icon(Icons.check_rounded, color: K.blue, size: 20)],
                   ]),
                 ),
               ),
@@ -985,7 +994,7 @@ class LinkRow extends StatelessWidget {
                   child: Text(value!, maxLines: 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.end, style: T.small),
                 ),
               ],
-              if (onTap != null) ...[const SizedBox(width: Sp.xs), const Icon(Icons.chevron_right_rounded, color: K.border2)],
+              if (onTap != null) ...[const SizedBox(width: Sp.xs), Icon(Icons.chevron_right_rounded, color: K.border2)],
             ]),
           ),
         ),

@@ -48,10 +48,10 @@ String chartMoney(num v, String currency) {
 
 /// A balance in its currency: above zero green, below zero red, zero muted.
 class BalanceText extends StatelessWidget {
-  const BalanceText(this.amount, {super.key, required this.currency, this.style = T.bodyStrong, this.symbol = true, this.align});
+  const BalanceText(this.amount, {super.key, required this.currency, this.style, this.symbol = true, this.align});
   final num amount;
   final String currency;
-  final TextStyle style;
+  final TextStyle? style;
   final bool symbol;
   final TextAlign? align;
 
@@ -61,7 +61,7 @@ class BalanceText extends StatelessWidget {
       amount,
       currency: currency,
       kind: amount > 0 ? 'income' : (amount < 0 ? 'expense' : null),
-      style: amount == 0 ? style.copyWith(color: K.muted) : style,
+      style: amount == 0 ? (style ?? T.bodyStrong).copyWith(color: K.muted) : (style ?? T.bodyStrong),
       symbol: symbol,
       align: align,
     );
@@ -70,10 +70,10 @@ class BalanceText extends StatelessWidget {
 
 /// Money owed on a card: owed in red, nothing muted, a credit in green.
 class OwedText extends StatelessWidget {
-  const OwedText(this.amount, {super.key, required this.currency, this.style = T.bodyStrong});
+  const OwedText(this.amount, {super.key, required this.currency, this.style});
   final num amount;
   final String currency;
-  final TextStyle style;
+  final TextStyle? style;
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +81,7 @@ class OwedText extends StatelessWidget {
       amount,
       currency: currency,
       kind: amount > 0 ? 'expense' : (amount < 0 ? 'income' : null),
-      style: amount == 0 ? style.copyWith(color: K.muted) : style,
+      style: amount == 0 ? (style ?? T.bodyStrong).copyWith(color: K.muted) : (style ?? T.bodyStrong),
     );
   }
 }

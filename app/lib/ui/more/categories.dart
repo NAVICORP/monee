@@ -184,7 +184,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                 leading: EmojiBadge(c.emoji, name: c.name, size: 32),
                 title: c.parentId == null ? c.name : '${me.category(c.parentId)?.name ?? ''} / ${c.name}',
                 sub: 'Past entries keep it',
-                trailing: can ? const Icon(Icons.more_horiz_rounded, color: K.muted, size: 20) : null,
+                trailing: can ? Icon(Icons.more_horiz_rounded, color: K.muted, size: 20) : null,
                 onTap: can ? () => _deletedActions(c) : null,
               ),
           ]),
@@ -208,7 +208,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                   onUp: i > 0 && !busy ? () => _move(tops, i, -1) : null,
                   onDown: i < tops.length - 1 && !busy ? () => _move(tops, i, 1) : null,
                 )
-              : (can ? const Icon(Icons.more_horiz_rounded, color: K.muted, size: 20) : null),
+              : (can ? Icon(Icons.more_horiz_rounded, color: K.muted, size: 20) : null),
           onTap: can && !ordering ? () => _topActions(c) : null,
         ),
         for (var j = 0; j < subs.length; j++) ...[
@@ -220,7 +220,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
                     onUp: j > 0 && !busy ? () => _move(subs, j, -1) : null,
                     onDown: j < subs.length - 1 && !busy ? () => _move(subs, j, 1) : null,
                   )
-                : (can ? const Icon(Icons.more_horiz_rounded, color: K.border2, size: 18) : null),
+                : (can ? Icon(Icons.more_horiz_rounded, color: K.border2, size: 18) : null),
             onTap: can && !ordering ? () => _subActions(subs[j]) : null,
           ),
         ],

@@ -118,9 +118,9 @@ class _PeoplePageState extends State<PeoplePage> with ReloadOnChange<PeoplePage>
         const SizedBox(height: Sp.md),
         Center(child: KButton(label: 'Add a person', icon: Icons.person_add_alt_rounded, kind: KButtonKind.secondary, small: true, onPressed: _add)),
         const SizedBox(height: Sp.md),
-        const Text('They join when they sign in to Pursee with that email or WhatsApp number. Only you, the owner, can add or remove people.', style: T.small),
+        Text('They join when they sign in to Pursee with that email or WhatsApp number. Only you, the owner, can add or remove people.', style: T.small),
       ] else
-        const Padding(padding: EdgeInsets.only(top: Sp.md), child: Text('Only the book\'s owner can add or remove people.', style: T.small)),
+        Padding(padding: EdgeInsets.only(top: Sp.md), child: Text('Only the book\'s owner can add or remove people.', style: T.small)),
     ]);
   }
 }
@@ -213,7 +213,7 @@ class _AddPersonState extends State<_AddPerson> {
         onSubmitted: (_) => _save(),
       ),
       const SizedBox(height: Sp.md),
-      const Text('They can', style: T.label),
+      Text('They can', style: T.label),
       const SizedBox(height: 6),
       KSegmented<String>(
         expand: true,

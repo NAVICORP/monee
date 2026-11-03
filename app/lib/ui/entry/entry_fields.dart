@@ -83,7 +83,7 @@ class _FieldRow extends StatelessWidget {
     ]);
     return Material(
       color: K.surface,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14), side: const BorderSide(color: K.border2)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14), side: BorderSide(color: K.border2)),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: onTap,
@@ -151,11 +151,11 @@ class _Chip extends StatelessWidget {
 
 /// A small text action: Split, Add part, Repeat.
 class _TinyButton extends StatelessWidget {
-  const _TinyButton(this.label, {required this.onTap, this.icon, this.color = K.blue});
+  const _TinyButton(this.label, {required this.onTap, this.icon, this.color});
   final String label;
   final VoidCallback? onTap;
   final IconData? icon;
-  final Color color;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -165,8 +165,8 @@ class _TinyButton extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 7),
         child: Row(mainAxisSize: MainAxisSize.min, children: [
-          if (icon != null) ...[Icon(icon, size: 16, color: color), const SizedBox(width: 4)],
-          Text(label, maxLines: 1, style: T.label.copyWith(color: color)),
+          if (icon != null) ...[Icon(icon, size: 16, color: color ?? K.blue), const SizedBox(width: 4)],
+          Text(label, maxLines: 1, style: T.label.copyWith(color: color ?? K.blue)),
         ]),
       ),
     );
@@ -303,7 +303,7 @@ class _TimePickerState extends State<_TimePicker> {
     return Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       Center(child: Text(clock(DateTime(2000, 1, 1, h, m)), style: T.h1.merge(T.tabular))),
       const SizedBox(height: Sp.md),
-      const Row(children: [
+      Row(children: [
         Expanded(child: Center(child: Text('Hour', style: T.tiny))),
         SizedBox(width: Sp.md),
         Expanded(child: Center(child: Text('Minute', style: T.tiny))),

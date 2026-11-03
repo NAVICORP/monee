@@ -112,14 +112,14 @@ class _TransNoteViewState extends State<TransNoteView> with ReloadOnChange {
           const Spacer(),
           Material(
             color: K.surface,
-            shape: const StadiumBorder(side: BorderSide(color: K.border)),
+            shape: StadiumBorder(side: BorderSide(color: K.border)),
             clipBehavior: Clip.antiAlias,
             child: InkWell(
               onTap: _pickSort,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 child: Row(mainAxisSize: MainAxisSize.min, children: [
-                  const Icon(Icons.sort_rounded, size: 16, color: K.ink2),
+                  Icon(Icons.sort_rounded, size: 16, color: K.ink2),
                   const SizedBox(width: 6),
                   Text(_sorts[_sort] ?? 'Amount', style: T.label),
                 ]),

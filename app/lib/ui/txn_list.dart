@@ -57,7 +57,7 @@ class TxnRow extends StatelessWidget {
             if (isTransfer && t.toCurrency != null && t.toCurrency != t.currency && t.toAmount != null)
               MoneyText(t.toAmount!, currency: t.toCurrency, kind: 'transfer', style: T.tiny),
             if (t.fee > 0) Text('Fee ${amountText(t.fee, t.currency)}', style: T.tiny),
-            if (t.photos > 0) const Icon(Icons.photo_outlined, size: 13, color: K.muted),
+            if (t.photos > 0) Icon(Icons.photo_outlined, size: 13, color: K.muted),
           ]),
         ]),
       ),
@@ -80,7 +80,7 @@ class DayHeader extends StatelessWidget {
     final wd = day.weekday;
     return Container(
       padding: const EdgeInsets.fromLTRB(Sp.page, 12, Sp.page, 6),
-      decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: K.border))),
+      decoration: BoxDecoration(border: Border(bottom: BorderSide(color: K.border))),
       child: Row(children: [
         Text('${day.day}', style: T.h2.copyWith(fontSize: 22).merge(T.tabular)),
         const SizedBox(width: 8),

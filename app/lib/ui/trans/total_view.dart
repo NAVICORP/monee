@@ -117,9 +117,9 @@ class _TransTotalViewState extends State<TransTotalView> with ReloadOnChange {
       padding: const EdgeInsetsDirectional.fromSTEB(Sp.lg, Sp.md, Sp.lg, Sp.sm),
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Row(children: [
-          const Icon(Icons.savings_outlined, size: 20, color: K.blue),
+          Icon(Icons.savings_outlined, size: 20, color: K.blue),
           const SizedBox(width: Sp.sm),
-          const Expanded(child: Text('Budget', style: T.h3)),
+          Expanded(child: Text('Budget', style: T.h3)),
           if (b.canEdit)
             KButton(
               label: 'Budget setting',
@@ -129,7 +129,7 @@ class _TransTotalViewState extends State<TransTotalView> with ReloadOnChange {
             ),
         ]),
         if (total == null && rows.isEmpty)
-          const Padding(
+          Padding(
             padding: EdgeInsets.symmetric(vertical: Sp.md),
             child: Text('No budget for this period yet.', style: T.small),
           )
@@ -218,9 +218,9 @@ class _TransTotalViewState extends State<TransTotalView> with ReloadOnChange {
       padding: const EdgeInsetsDirectional.fromSTEB(Sp.lg, Sp.md, Sp.lg, Sp.md),
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Row(children: [
-          const Icon(Icons.account_balance_wallet_outlined, size: 20, color: K.blue),
+          Icon(Icons.account_balance_wallet_outlined, size: 20, color: K.blue),
           const SizedBox(width: Sp.sm),
-          const Text('Accounts', style: T.h3),
+          Text('Accounts', style: T.h3),
           const SizedBox(width: Sp.md),
           Expanded(
             child: Text(periodLabel(p.from, p.to), maxLines: 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.end, style: T.tiny),

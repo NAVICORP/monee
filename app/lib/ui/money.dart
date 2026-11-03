@@ -149,7 +149,7 @@ class PeriodBar extends StatelessWidget {
           child: Row(children: [
             IconButton(
               tooltip: 'Before',
-              icon: const Icon(Icons.chevron_left_rounded, color: K.ink2),
+              icon: Icon(Icons.chevron_left_rounded, color: K.ink2),
               onPressed: () {
                 HapticFeedback.selectionClick();
                 onChanged(period.step(b, -1));
@@ -167,7 +167,7 @@ class PeriodBar extends StatelessWidget {
             ),
             IconButton(
               tooltip: 'After',
-              icon: const Icon(Icons.chevron_right_rounded, color: K.ink2),
+              icon: Icon(Icons.chevron_right_rounded, color: K.ink2),
               onPressed: () {
                 HapticFeedback.selectionClick();
                 onChanged(period.step(b, 1));
@@ -203,7 +203,7 @@ class SummaryStrip extends StatelessWidget {
         );
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10),
-      decoration: const BoxDecoration(color: K.surface, border: Border(bottom: BorderSide(color: K.border))),
+      decoration: BoxDecoration(color: K.surface, border: Border(bottom: BorderSide(color: K.border))),
       child: Row(children: [
         cell('Income', income, 'income'),
         cell('Expenses', expense, 'expense'),
@@ -302,7 +302,7 @@ class _PillTabsState extends State<PillTabs> {
                         padding: const EdgeInsets.symmetric(horizontal: 14),
                         // Before the drop is placed (the very first frame), the
                         // chosen pill is coloured on its own.
-                        decoration: at == null && i == widget.index ? const BoxDecoration(color: K.blue, borderRadius: BorderRadius.all(Radius.circular(999))) : null,
+                        decoration: at == null && i == widget.index ? BoxDecoration(color: K.blue, borderRadius: BorderRadius.all(Radius.circular(999))) : null,
                         child: AnimatedDefaultTextStyle(
                           duration: const Duration(milliseconds: 200),
                           style: T.label.copyWith(color: i == widget.index ? Colors.white : K.ink2),
@@ -322,11 +322,11 @@ class _PillTabsState extends State<PillTabs> {
 
 /// A category's emoji in a soft circle (or its first letter).
 class EmojiBadge extends StatelessWidget {
-  const EmojiBadge(this.emoji, {super.key, this.name = '', this.size = 32, this.color = K.surface2});
+  const EmojiBadge(this.emoji, {super.key, this.name = '', this.size = 32, this.color});
   final String? emoji;
   final String name;
   final double size;
-  final Color color;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -335,7 +335,7 @@ class EmojiBadge extends StatelessWidget {
       width: size,
       height: size,
       alignment: Alignment.center,
-      decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+      decoration: BoxDecoration(color: color ?? K.surface2, shape: BoxShape.circle),
       child: e.isNotEmpty
           ? Text(e, style: TextStyle(fontSize: size * 0.5, height: 1, fontFamilyFallback: T.emojiFallback))
           : Text(name.isEmpty ? '?' : initials(name), style: T.tiny.copyWith(color: K.ink2, fontSize: size * 0.36)),

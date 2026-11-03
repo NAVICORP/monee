@@ -121,7 +121,7 @@ class _TransCalendarViewState extends State<TransCalendarView> with ReloadOnChan
       child: ListView(physics: const AlwaysScrollableScrollPhysics(), padding: EdgeInsets.only(bottom: 96 + MediaQuery.paddingOf(context).bottom), children: [
         Container(
           height: 28,
-          decoration: const BoxDecoration(color: K.surface, border: Border(bottom: BorderSide(color: K.border))),
+          decoration: BoxDecoration(color: K.surface, border: Border(bottom: BorderSide(color: K.border))),
           child: Row(children: [
             for (final n in names)
               Expanded(
@@ -170,7 +170,7 @@ class _TransCalendarViewState extends State<TransCalendarView> with ReloadOnChan
         child: Container(
           height: 64,
           padding: const EdgeInsetsDirectional.fromSTEB(4, 3, 3, 3),
-          decoration: const BoxDecoration(border: Border(right: BorderSide(color: K.border), bottom: BorderSide(color: K.border))),
+          decoration: BoxDecoration(border: Border(right: BorderSide(color: K.border), bottom: BorderSide(color: K.border))),
           child: Opacity(
             opacity: inside ? 1 : 0.4,
             child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
@@ -281,20 +281,20 @@ class _TransDaySheetState extends State<TransDaySheet> with ReloadOnChange {
           padding: const EdgeInsets.only(bottom: Sp.sm),
           child: Row(children: [
             if (inc != 0) ...[
-              const Text('Income', style: T.tiny),
+              Text('Income', style: T.tiny),
               const SizedBox(width: 4),
               Flexible(child: MoneyText(inc, kind: 'income', style: T.label)),
               const SizedBox(width: Sp.lg),
             ],
             if (exp != 0) ...[
-              const Text('Expenses', style: T.tiny),
+              Text('Expenses', style: T.tiny),
               const SizedBox(width: 4),
               Flexible(child: MoneyText(exp, kind: 'expense', style: T.label)),
             ],
           ]),
         ),
       if (_txns.isEmpty && _up.isEmpty)
-        const Padding(padding: EdgeInsets.symmetric(vertical: Sp.md), child: Text('Nothing recorded on this day.', style: T.small))
+        Padding(padding: EdgeInsets.symmetric(vertical: Sp.md), child: Text('Nothing recorded on this day.', style: T.small))
       else
         KGroup(children: [
           for (final t in _txns) TxnRow(t),
@@ -323,7 +323,7 @@ class _TransDaySheetState extends State<TransDaySheet> with ReloadOnChange {
       padding: const EdgeInsets.only(bottom: Sp.sm),
       child: Material(
         color: K.surface,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(K.rMd), side: const BorderSide(color: K.border)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(K.rMd), side: BorderSide(color: K.border)),
         clipBehavior: Clip.antiAlias,
         child: InkWell(
           onTap: edit ? () => trEditMemo(context, day: widget.day, memo: m) : null,
@@ -339,7 +339,7 @@ class _TransDaySheetState extends State<TransDaySheet> with ReloadOnChange {
               if (edit)
                 IconButton(
                   tooltip: 'Delete',
-                  icon: const Icon(Icons.delete_outline_rounded, size: 19, color: K.muted),
+                  icon: Icon(Icons.delete_outline_rounded, size: 19, color: K.muted),
                   onPressed: () => _deleteMemo(m),
                 ),
             ]),
@@ -417,7 +417,7 @@ Future<void> trEditMemo(BuildContext context, {required DateTime day, Map<String
                 border: Border.all(color: on ? K.ink : K.border2, width: on ? 2.5 : 1),
               ),
               child: hex == null
-                  ? const Icon(Icons.format_color_reset_outlined, size: 16, color: K.muted)
+                  ? Icon(Icons.format_color_reset_outlined, size: 16, color: K.muted)
                   : (on ? const Icon(Icons.check_rounded, size: 18, color: Colors.white) : null),
             ),
           ),
@@ -429,7 +429,7 @@ Future<void> trEditMemo(BuildContext context, {required DateTime day, Map<String
         const SizedBox(height: Sp.md),
         KField(label: 'Memo', controller: text, maxLines: 4, autofocus: memoId == null),
         const SizedBox(height: Sp.lg),
-        const Text('Colour', style: T.label),
+        Text('Colour', style: T.label),
         const SizedBox(height: Sp.sm),
         Wrap(spacing: 10, runSpacing: 10, children: [
           swatch(null),

@@ -31,6 +31,9 @@ class PieChart extends StatelessWidget {
 }
 
 class _PiePainter extends CustomPainter {
+  /// Drawn at night: a switch repaints it.
+  final bool night = K.dark;
+
   _PiePainter(this.slices, this.maxLabels);
   final List<Slice> slices;
   final int maxLabels;
@@ -109,7 +112,7 @@ class _PiePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _PiePainter old) => old.slices != slices;
+  bool shouldRepaint(covariant _PiePainter old) => old.slices != slices || old.night != night;
 }
 
 /// A point on a line or a bar in a row.
@@ -125,19 +128,22 @@ class ChartPoint {
 /// A simple line chart with dots, the labels along the bottom and the highest
 /// value at the top left. Draws a second line when the points carry value2.
 class LineChart extends StatelessWidget {
-  const LineChart({super.key, required this.points, this.height = 180, this.color = K.blue, this.color2 = K.expense, this.format});
+  const LineChart({super.key, required this.points, this.height = 180, this.color, this.color2, this.format});
   final List<ChartPoint> points;
   final double height;
-  final Color color;
-  final Color color2;
+  final Color? color;
+  final Color? color2;
   final String Function(num)? format;
 
   @override
   Widget build(BuildContext context) =>
-      SizedBox(height: height, width: double.infinity, child: CustomPaint(painter: _LinePainter(points, color, color2, format)));
+      SizedBox(height: height, width: double.infinity, child: CustomPaint(painter: _LinePainter(points, color ?? K.blue, color2 ?? K.expense, format)));
 }
 
 class _LinePainter extends CustomPainter {
+  /// Drawn at night: a switch repaints it.
+  final bool night = K.dark;
+
   _LinePainter(this.points, this.color, this.color2, this.format);
   final List<ChartPoint> points;
   final Color color;
@@ -193,24 +199,27 @@ class _LinePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _LinePainter old) => old.points != points;
+  bool shouldRepaint(covariant _LinePainter old) => old.points != points || old.night != night;
 }
 
 /// Bars in a row (two per label when value2 is given), for income against
 /// expenses month by month.
 class BarChart extends StatelessWidget {
-  const BarChart({super.key, required this.points, this.height = 180, this.color = K.income, this.color2 = K.expense});
+  const BarChart({super.key, required this.points, this.height = 180, this.color, this.color2});
   final List<ChartPoint> points;
   final double height;
-  final Color color;
-  final Color color2;
+  final Color? color;
+  final Color? color2;
 
   @override
   Widget build(BuildContext context) =>
-      SizedBox(height: height, width: double.infinity, child: CustomPaint(painter: _BarPainter(points, color, color2)));
+      SizedBox(height: height, width: double.infinity, child: CustomPaint(painter: _BarPainter(points, color ?? K.income, color2 ?? K.expense)));
 }
 
 class _BarPainter extends CustomPainter {
+  /// Drawn at night: a switch repaints it.
+  final bool night = K.dark;
+
   _BarPainter(this.points, this.color, this.color2);
   final List<ChartPoint> points;
   final Color color;
@@ -248,5 +257,5 @@ class _BarPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _BarPainter old) => old.points != points;
+  bool shouldRepaint(covariant _BarPainter old) => old.points != points || old.night != night;
 }

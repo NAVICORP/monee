@@ -190,7 +190,7 @@ class _SearchPageState extends State<SearchPage> with ReloadOnChange {
         if (_searched && _error == null)
           Container(
             padding: const EdgeInsets.fromLTRB(Sp.page, 8, Sp.page, 8),
-            decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: K.border))),
+            decoration: BoxDecoration(border: Border(bottom: BorderSide(color: K.border))),
             child: Row(children: [
               Expanded(
                 child: Text(n >= _limit ? 'The newest $_limit found' : (n == 1 ? '1 found' : '$n found'), style: T.small),

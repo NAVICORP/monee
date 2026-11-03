@@ -44,7 +44,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
               value: cardDisplayWords(b.cardDisplay)),
         ]),
         const SizedBox(height: Sp.md),
-        const Text('Deleting a group or an account keeps its entries; restore it from Deleted any time.', style: T.small),
+        Text('Deleting a group or an account keeps its entries; restore it from Deleted any time.', style: T.small),
       ]),
     );
   }
@@ -198,7 +198,7 @@ class _GroupsPageState extends State<_GroupsPage> with _Busy<_GroupsPage> {
                               ? () => run(() => saveOrder('account_groups', [for (final x in groups) (x.id, x.sort)], i, 1))
                               : null,
                         )
-                      : (can ? const Icon(Icons.more_horiz_rounded, color: K.muted, size: 20) : null),
+                      : (can ? Icon(Icons.more_horiz_rounded, color: K.muted, size: 20) : null),
                   onTap: can && !ordering ? () => _actions(g) : null,
                 );
               }),
@@ -208,7 +208,7 @@ class _GroupsPageState extends State<_GroupsPage> with _Busy<_GroupsPage> {
           Center(child: KButton(label: 'Add a group', icon: Icons.add_rounded, kind: KButtonKind.secondary, small: true, onPressed: _add)),
         ],
         const SizedBox(height: Sp.md),
-        const Text('A group\'s kind decides how its accounts work: a credit card has a settlement and a payment day, a debit card spends from its bank account.',
+        Text('A group\'s kind decides how its accounts work: a credit card has a settlement and a payment day, a debit card spends from its bank account.',
             style: T.small),
       ]),
     );
@@ -362,7 +362,7 @@ class _AccountsPageState extends State<_AccountsPage> with _Busy<_AccountsPage> 
                                 ? () => run(() => saveOrder('accounts', [for (final x in list) (x.id, x.sort)], i, 1))
                                 : null,
                           )
-                        : (can ? const Icon(Icons.more_horiz_rounded, color: K.muted, size: 20) : null),
+                        : (can ? Icon(Icons.more_horiz_rounded, color: K.muted, size: 20) : null),
                     onTap: can && !ordering ? () => _actions(list[i]) : null,
                   ),
               ]);
@@ -483,7 +483,7 @@ class _DeletedPageState extends State<_DeletedPage> with _Busy<_DeletedPage> {
                 leading: EmojiBadge(g.emoji, name: g.name, size: 32),
                 title: g.name,
                 sub: '${kGroupKinds[g.kind] ?? g.kind}, ${_accounts(me.accounts.where((a) => a.groupId == g.id).length)}',
-                trailing: can ? const Icon(Icons.more_horiz_rounded, color: K.muted, size: 20) : null,
+                trailing: can ? Icon(Icons.more_horiz_rounded, color: K.muted, size: 20) : null,
                 onTap: can && !busy ? () => _group(g) : null,
               ),
           ]),
@@ -495,13 +495,13 @@ class _DeletedPageState extends State<_DeletedPage> with _Busy<_DeletedPage> {
               KRow(
                 title: a.name,
                 sub: '${a.group?.name ?? ''}${(a.group?.deleted ?? false) ? ' (deleted)' : ''}, ${a.currency}',
-                trailing: can ? const Icon(Icons.more_horiz_rounded, color: K.muted, size: 20) : null,
+                trailing: can ? Icon(Icons.more_horiz_rounded, color: K.muted, size: 20) : null,
                 onTap: can && !busy ? () => _account(a) : null,
               ),
           ]),
         ],
         const SizedBox(height: Sp.md),
-        const Text('Restoring brings an account back with its balance and entries. Deleting for good removes its entries too.', style: T.small),
+        Text('Restoring brings an account back with its balance and entries. Deleting for good removes its entries too.', style: T.small),
       ]),
     );
   }
