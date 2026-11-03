@@ -1182,17 +1182,31 @@ class MoneeIcon extends StatelessWidget {
 void _paintM(Canvas canvas, double s, double scale, Color c) {
   canvas.save();
   final t = s * (1 - scale) / 2;
-  canvas.translate(t, t + moneeShift * s * scale / 1000);
+  canvas.translate(t, t + purseeShift * s * scale / 1000);
   canvas.scale(s * scale / 1000);
+  // The purse goes on its own layer so the frame line and the P can be cut
+  // out of it, letting whatever is behind show through.
+  canvas.saveLayer(const Rect.fromLTWH(0, 0, 1000, 1000), Paint());
+  final fill = Paint()..color = c;
+  canvas.drawPath(purseeBody(), fill);
   canvas.drawPath(
-      moneeM(),
+      purseePosts(),
       Paint()
         ..color = c
         ..style = PaintingStyle.stroke
-        ..strokeWidth = moneeStroke
-        ..strokeCap = StrokeCap.round
-        ..strokeJoin = StrokeJoin.round);
-  canvas.drawCircle(moneeCoin, moneeCoinRadius, Paint()..color = c);
+        ..strokeWidth = purseePostStroke
+        ..strokeCap = StrokeCap.round);
+  for (final b in purseeBalls) {
+    canvas.drawCircle(b, purseeBallRadius, fill);
+  }
+  final cut = Paint()
+    ..blendMode = BlendMode.clear
+    ..style = PaintingStyle.stroke
+    ..strokeCap = StrokeCap.round
+    ..strokeJoin = StrokeJoin.round;
+  canvas.drawPath(purseeFrame(), cut..strokeWidth = purseeFrameStroke);
+  canvas.drawPath(purseeP(), cut..strokeWidth = purseePStroke);
+  canvas.restore();
   canvas.restore();
 }
 
@@ -1207,17 +1221,17 @@ class _TilePainter extends CustomPainter {
         RRect.fromRectAndRadius(rect, Radius.circular(s * 0.24)),
         Paint()
           ..shader = const LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight,
-              colors: [Color(moneeMainColour), Color(moneeDeepColour)]).createShader(rect));
-    _paintM(canvas, s, 0.68, Colors.white);
+              colors: [Color(purseeMainColour), Color(purseeDeepColour)]).createShader(rect));
+    _paintM(canvas, s, 0.74, Colors.white);
   }
 
   @override
   bool shouldRepaint(covariant _TilePainter old) => false;
 }
 
-/// The m and its coin alone, in violet.
+/// The purse alone, in violet.
 class MoneeMark extends StatelessWidget {
-  const MoneeMark({super.key, this.size = 40, this.color = const Color(moneeMainColour)});
+  const MoneeMark({super.key, this.size = 40, this.color = const Color(purseeMainColour)});
   final double size;
   final Color color;
 
