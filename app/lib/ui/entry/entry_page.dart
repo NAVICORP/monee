@@ -1488,7 +1488,10 @@ class _EntryPageState extends State<_EntryPage> {
     final l = payLeft;
     final done = payDone;
     final income = kind == 'income';
-    final status = done ? (income ? 'All received' : 'All paid') : (l > 0 ? 'Left ${cur.format(l)}' : 'Over by ${cur.format(-l)}');
+    final none = amount <= 0;
+    final status = none
+        ? 'Enter the amount first'
+        : (done ? (income ? 'All received' : 'All paid') : (l > 0 ? 'Left ${cur.format(l)}' : 'Over by ${cur.format(-l)}'));
     return Container(
       padding: const EdgeInsetsDirectional.fromSTEB(12, 10, 8, 4),
       decoration: BoxDecoration(color: K.surface, borderRadius: BorderRadius.circular(K.r), border: Border.all(color: K.border2)),
@@ -1503,7 +1506,7 @@ class _EntryPageState extends State<_EntryPage> {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.end,
-                style: T.tiny.copyWith(color: done ? K.income : K.bad).merge(T.tabular)),
+                style: T.tiny.copyWith(color: none ? K.muted : (done ? K.income : K.bad)).merge(T.tabular)),
           ),
           const SizedBox(width: 4),
         ]),
@@ -1553,7 +1556,8 @@ class _EntryPageState extends State<_EntryPage> {
   Widget _splitCard(bool can, Currency cur) {
     final l = left;
     final done = splitDone;
-    final status = done ? 'All split' : (l > 0 ? 'Left to split ${cur.format(l)}' : 'Over by ${cur.format(-l)}');
+    final none = amount <= 0;
+    final status = none ? 'Enter the amount first' : (done ? 'All split' : (l > 0 ? 'Left to split ${cur.format(l)}' : 'Over by ${cur.format(-l)}'));
     return Container(
       padding: const EdgeInsetsDirectional.fromSTEB(12, 10, 8, 4),
       decoration: BoxDecoration(color: K.surface, borderRadius: BorderRadius.circular(K.r), border: Border.all(color: K.border2)),
@@ -1568,7 +1572,7 @@ class _EntryPageState extends State<_EntryPage> {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.end,
-                style: T.tiny.copyWith(color: done ? K.income : K.bad).merge(T.tabular)),
+                style: T.tiny.copyWith(color: none ? K.muted : (done ? K.income : K.bad)).merge(T.tabular)),
           ),
           const SizedBox(width: 4),
         ]),
