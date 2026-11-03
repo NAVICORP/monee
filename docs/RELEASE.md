@@ -1,5 +1,15 @@
 # Putting Monee on the server and the stores
 
+## 0. The sitting at the Mac (Ishaque and Claude, about 45 minutes)
+
+Ready before it: the store texts (`docs/STORE.md`), the store pictures and Play feature graphic (`store-pictures` branch: `store/ios`, `store/play`), the review book for contact@skifi.co (live), the Android upload key (`monee-signing.zip`, sent in chat), and the App Store page filler (Actions > App Store page).
+
+1. **Name (decide first).** An app called Monee already exists in Finance on both stores (Budget & Expense Tracker Monee, Stephan Lerner, App Store since 2022, Google Play package `app.monee`), plus Monee.ae in Dubai. Keep the name, or pick another before anything is created in the stores.
+2. **GitHub secrets (you, 5 min).** NAVICORP/monee > Settings > Secrets and variables > Actions: the four `ANDROID_*` values from `github-secrets.txt`, and `APP_STORE_CONNECT_KEY_P8` (the same .p8 text Kuree and Dairee use) unless it is already an organisation secret. The team, key and issuer ids already default to Kuree's in the workflows.
+3. **Google Play (you 5 min, then Claude).** Play Console > Create app: the name, English (United States), App, Free, tick the two declarations. Claude then fills the store listing, graphics, app access (you type the review password), ads, content rating, target audience, data safety, financial features and privacy policy; runs Actions > App with **play_bundle**; and uploads the bundle to a testing track, then production.
+4. **App Store (you 5 min, then Claude).** Actions > App > Run workflow with **testflight** registers the bundle id `co.skifi.monee` by itself. Then App Store Connect > New App: iOS, the name, English (U.S.), bundle `co.skifi.monee`, SKU `monee`, full access. Run **testflight** again for the first build, then Actions > App Store page (version 1.0.0) fills the text, screenshots, categories and review details. Claude fills age rating and App Privacy; you type the review password, then Add for Review and Submit.
+5. **After approval.** Put the App Store link in `STORE.ios` in `web/assets/home.js`, and check the Play link there.
+
 ## 1. The server (once)
 
 1. **SkAuth knows Monee (optional).** Sign-in works without it. Listing Monee in `SKAUTH_APPS` on the SkAuth service (Dokploy, Raw compose) brands its sign-in emails as Monee:
@@ -32,10 +42,11 @@ The database moves forward by itself: on start, the API applies any migration it
 
 No Mac needed: GitHub Actions builds the app and uploads it to TestFlight, the same way as Kuree.
 
-1. Apple Developer > Identifiers: register the bundle id `co.skifi.monee`.
-2. App Store Connect > Apps > New App: iOS, name **Monee**, bundle id `co.skifi.monee`, SKU `monee`.
-3. Repository secrets (the same values Kuree uses): `APPLE_TEAM_ID`, `APP_STORE_CONNECT_KEY_ID`, `APP_STORE_CONNECT_ISSUER_ID`, `APP_STORE_CONNECT_KEY_P8`.
-4. Actions > App > Run workflow, tick **testflight**. The build shows in TestFlight once Apple has processed it.
+1. Repository secret `APP_STORE_CONNECT_KEY_P8` (the same .p8 Kuree uses). `APPLE_TEAM_ID`, `APP_STORE_CONNECT_KEY_ID` and `APP_STORE_CONNECT_ISSUER_ID` default to Kuree's values in the workflows; set them only to use another key.
+2. Actions > App > Run workflow, tick **testflight**. The first run registers the bundle id `co.skifi.monee` with Apple by itself.
+3. App Store Connect > Apps > New App: iOS, the app's name, bundle id `co.skifi.monee`, SKU `monee`.
+4. Run **testflight** again. The build shows in TestFlight once Apple has processed it.
+5. Actions > App Store page > Run workflow (version 1.0.0): fills the page from `docs/STORE.md` and the `store-pictures` branch, and attaches the newest build.
 
 ## 4. The review account
 
