@@ -252,33 +252,36 @@ class _HomePageState extends State<HomePage> with ReloadOnChange<HomePage> {
     }
     if (own.length < 2) return null;
     final codes = own.keys.toList()..sort((x, y) => x == b.currency ? -1 : (y == b.currency ? 1 : x.compareTo(y)));
-    return SizedBox(
-      height: 96,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        clipBehavior: Clip.none,
-        itemCount: codes.length,
-        separatorBuilder: (_, __) => const SizedBox(width: Sp.md),
-        itemBuilder: (context, i) {
-          final c = codes[i];
-          final isMain = c == b.currency;
-          final inMain = main[c];
-          return KCard(
-            padding: const EdgeInsets.fromLTRB(14, 12, 16, 12),
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [
-              Row(mainAxisSize: MainAxisSize.min, children: [
-                Pill(c),
-                if (isMain) ...[const SizedBox(width: 6), Text('Main', style: T.tiny)],
-              ]),
-              const SizedBox(height: 6),
-              Text(money(own[c], c), style: T.h3.merge(T.tabular)),
-              if (!isMain)
-                Text(inMain == null ? 'No rate yet' : 'About ${money(inMain, b.currency)}', style: T.small.merge(T.tabular)),
-            ]),
-          );
-        },
-      ),
-    );
+    Widget card(String c) {
+      final isMain = c == b.currency;
+      final inMain = main[c];
+      return KCard(
+        padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Row(children: [
+            Pill(c),
+            if (isMain) ...[const SizedBox(width: 6), Text('Main', style: T.tiny)],
+          ]),
+          const SizedBox(height: 6),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: AlignmentDirectional.centerStart,
+            child: Text(money(own[c], c), maxLines: 1, style: T.h3.merge(T.tabular)),
+          ),
+          Text(isMain ? 'Main currency' : (inMain == null ? 'No rate yet' : 'About ${money(inMain, b.currency)}'),
+              maxLines: 1, overflow: TextOverflow.ellipsis, style: T.small.merge(T.tabular)),
+        ]),
+      );
+    }
+
+    // A grid, two to a row on phones and four on computers, so no card is cut off.
+    return LayoutBuilder(builder: (context, c) {
+      final cols = c.maxWidth >= 700 ? 4 : 2;
+      final w = (c.maxWidth - Sp.md * (cols - 1)) / cols;
+      return Wrap(spacing: Sp.md, runSpacing: Sp.md, children: [
+        for (final code in codes) SizedBox(width: w, child: card(code)),
+      ]);
+    });
   }
 
   /// Where this month's money went: a ring of the biggest categories.
