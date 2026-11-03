@@ -2,7 +2,8 @@
 #
 # 1. check: flutter analyze and the tests.
 # 2. screens: a picture of every main screen, pushed to the `screens` branch,
-#    so the design can be checked without a phone.
+#    so the design can be checked without a phone. The store pictures are
+#    made from them (tools/store/make.cjs, onto the `store-pictures` branch).
 # 3. web: the web app, as served at monee.skifi.co/app (Actions > the run >
 #    Artifacts). The server image is built by server.yml.
 # 4. android: a release APK to install on a phone. With the signing secrets
