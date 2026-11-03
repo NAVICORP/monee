@@ -1,4 +1,4 @@
-# The Monee server: the database rules (with their tests), the demo book and
+# The Pursee server: the database rules (with their tests), the demo book and
 # the site, checked on every push that touches them. The server image itself
 # is built by Dokploy from GitHub (see the Dockerfile).
 name: Server

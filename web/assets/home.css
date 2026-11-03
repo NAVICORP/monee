@@ -1,4 +1,4 @@
-/* monee.skifi.co: the landing page. Kuree's layout in Monee's violet,
+/* monee.skifi.co: the landing page. Kuree's layout in Pursee's violet,
    Manrope and Bricolage. No letter spacing anywhere. */
 @font-face{font-family:"Manrope";font-weight:400 800;font-style:normal;font-display:swap;src:url(/assets/fonts/manrope.woff2) format("woff2")}
 @font-face{font-family:"Bricolage Grotesque";font-weight:500 800;font-style:normal;font-display:swap;src:url(/assets/fonts/bricolage.woff2) format("woff2")}
@@ -302,7 +302,7 @@ svg{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-lin
 .fbar u{position:absolute;top:-4px;bottom:-4px;width:2px;margin-left:-1px;border-radius:2px;background:var(--ink)}
 .float__foot{display:flex;justify-content:space-between;font-size:12.5px;font-weight:700;color:var(--muted)}
 
-/* coins: the dot of Monee's m, round and shiny. Decoration only. */
+/* coins: the dot of Pursee's m, round and shiny. Decoration only. */
 .coin{position:absolute;z-index:2;display:grid;place-items:center;width:84px;aspect-ratio:1;border-radius:50%;pointer-events:none;color:#fff;
   background:radial-gradient(circle at 34% 28%,#A58CFF 0%,#7A58F0 38%,#5634C7 78%,#43259F 100%);
   box-shadow:inset 0 -.09em 0 rgba(20,8,60,.25),inset 0 0 0 .07em rgba(255,255,255,.2),0 22px 30px -14px rgba(8,4,24,.6);

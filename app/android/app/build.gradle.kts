@@ -14,7 +14,7 @@ val keyProps = Properties().apply {
 }
 
 android {
-    namespace = "co.skifi.monee"
+    namespace = "co.skifi.pursee"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -24,7 +24,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "co.skifi.monee"
+        applicationId = "co.skifi.pursee"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion

@@ -7,7 +7,7 @@ import 'package:monee/ui/theme.dart';
 void main() {
   testWidgets('the welcome screen offers WhatsApp and email', (tester) async {
     await tester.pumpWidget(MaterialApp(theme: moneeTheme(), home: const Welcome()));
-    expect(find.text('Monee'), findsOneWidget);
+    expect(find.text('Pursee'), findsOneWidget);
     expect(find.text('Continue with WhatsApp'), findsOneWidget);
     await tester.tap(find.text('Use email instead'));
     await tester.pumpAndSettle();

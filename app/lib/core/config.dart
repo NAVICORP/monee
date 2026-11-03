@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart' show kIsWeb;
 
-/// Where the Monee server lives. In the browser it is the address the app
+/// Where the Pursee server lives. In the browser it is the address the app
 /// was opened from; on the phones it is monee.skifi.co, or whatever a build
 /// names with --dart-define=MONEE_API=https://example.com
 const String _built = String.fromEnvironment('MONEE_API', defaultValue: 'https://monee.skifi.co');

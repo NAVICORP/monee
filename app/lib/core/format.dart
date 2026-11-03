@@ -1,4 +1,4 @@
-/// Numbers, money, dates and names the way Monee writes them.
+/// Numbers, money, dates and names the way Pursee writes them.
 library;
 
 const List<String> kMonths = [
@@ -38,7 +38,7 @@ String groupThousands(num value) {
   return negative ? '-$b' : b.toString();
 }
 
-/// A currency as Monee writes it: its sign, how many decimals it keeps, and
+/// A currency as Pursee writes it: its sign, how many decimals it keeps, and
 /// whether its digits group the Indian way (1,50,000).
 class Currency {
   const Currency(this.code, this.symbol, this.name, {this.decimals = 2, this.indian = false, this.spaced = false});

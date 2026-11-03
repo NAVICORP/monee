@@ -3,7 +3,7 @@
 Connect API key, so no certificate or profile has to be kept anywhere.
 
   setup   <dir>  makes an Apple Distribution certificate and an App Store
-                 profile for co.skifi.monee, writes cert.p12, the profile,
+                 profile for co.skifi.pursee, writes cert.p12, the profile,
                  ExportOptions.plist and state.json into <dir>, and points the
                  Runner target at them (manual signing, Release and Profile)
   cleanup <dir>  revokes that certificate and deletes the profile
@@ -32,7 +32,7 @@ from cryptography.hazmat.primitives.serialization import pkcs12
 from cryptography.x509.oid import NameOID
 
 API = 'https://api.appstoreconnect.apple.com/v1'
-BUNDLE_ID = 'co.skifi.monee'
+BUNDLE_ID = 'co.skifi.pursee'
 PROJECT = 'app/ios/Runner.xcodeproj/project.pbxproj'
 
 
@@ -79,7 +79,7 @@ def bundle_id():
         if b['attributes']['identifier'] == BUNDLE_ID:
             return b['id']
     made = call('POST', '/bundleIds', {'data': {'type': 'bundleIds', 'attributes': {
-        'identifier': BUNDLE_ID, 'name': 'Monee', 'platform': 'IOS'}}})
+        'identifier': BUNDLE_ID, 'name': 'Pursee', 'platform': 'IOS'}}})
     print(f'Registered the bundle id {BUNDLE_ID}.')
     return made['data']['id']
 
@@ -137,7 +137,7 @@ def setup(out):
 
     key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
     csr = (x509.CertificateSigningRequestBuilder()
-           .subject_name(x509.Name([x509.NameAttribute(NameOID.COMMON_NAME, 'Monee CI')]))
+           .subject_name(x509.Name([x509.NameAttribute(NameOID.COMMON_NAME, 'Pursee CI')]))
            .sign(key, hashes.SHA256()))
     try:
         made = call('POST', '/certificates', {'data': {'type': 'certificates', 'attributes': {
@@ -157,9 +157,9 @@ def setup(out):
            .hmac_hash(hashes.SHA1())
            .build(password))
     open(os.path.join(out, 'cert.p12'), 'wb').write(
-        pkcs12.serialize_key_and_certificates(b'Monee CI', key, cert, None, enc))
+        pkcs12.serialize_key_and_certificates(b'Pursee CI', key, cert, None, enc))
 
-    name = f"Monee CI {os.environ.get('GITHUB_RUN_NUMBER', int(time.time()))}"
+    name = f"Pursee CI {os.environ.get('GITHUB_RUN_NUMBER', int(time.time()))}"
     prof = call('POST', '/profiles', {'data': {
         'type': 'profiles',
         'attributes': {'name': name, 'profileType': 'IOS_APP_STORE'},

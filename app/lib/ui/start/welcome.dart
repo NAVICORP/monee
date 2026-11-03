@@ -94,7 +94,7 @@ class PhoneField extends StatelessWidget {
   }
 }
 
-/// The first screen: what Monee is, and signing in.
+/// The first screen: what Pursee is, and signing in.
 class Welcome extends StatelessWidget {
   const Welcome({super.key});
 
@@ -120,7 +120,7 @@ class Welcome extends StatelessWidget {
                 child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
                   const Center(child: MoneeIcon(size: 84, shadow: true)),
                   const SizedBox(height: 16),
-                  const Text('Monee', textAlign: TextAlign.center, style: T.display),
+                  const Text('Pursee', textAlign: TextAlign.center, style: T.display),
                   const SizedBox(height: 4),
                   Text('Your money, accounts, budgets and stats.\nThe same book on your phone and computer.',
                       textAlign: TextAlign.center, style: T.body.copyWith(color: K.muted)),

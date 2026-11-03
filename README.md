@@ -1,4 +1,4 @@
-# Monee
+# Pursee
 
 Your money in one book, on every device: income, expenses and transfers; daily, calendar, monthly and total views; stats by category; accounts with cash, bank, wallets, credit and debit cards, savings, investments and loans; budgets; repeats and instalments; many currencies; tags, notes and receipt photos; a passcode; Excel export and import. A rebuild of Realbyte's Money Manager in SkiFi's own style, with sync and shared books (see `docs/SPEC.md`).
 
@@ -15,7 +15,7 @@ One Flutter app for Android, iPhone and the web (monee.skifi.co/app), on SkiFi's
 | `web/` | The plain pages: home, privacy, terms, support, delete account. |
 | `deploy/` | The Dokploy compose file. |
 | `tools/` | `demo.sql` (a year in a demo book), `dbtest.sh` (the database tests on any Postgres), `brand/brand.py` (the logo and every icon). |
-| `docs/` | `SPEC.md` (what Monee is), `APP_CONTRACT.md` (the app's shared code and the database calls), `RELEASE.md` (server and stores). |
+| `docs/` | `SPEC.md` (what Pursee is), `APP_CONTRACT.md` (the app's shared code and the database calls), `RELEASE.md` (server and stores). |
 
 ## How it fits together
 

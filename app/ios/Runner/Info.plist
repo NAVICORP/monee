@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Monee</string>
+	<string>Pursee</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -15,7 +15,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>Monee</string>
+	<string>Pursee</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -66,8 +66,8 @@
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
 	<key>NSCameraUsageDescription</key>
-	<string>Monee uses the camera to take a photo of a receipt for a transaction.</string>
+	<string>Pursee uses the camera to take a photo of a receipt for a transaction.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Monee lets you attach a receipt or photo from your library to a transaction.</string>
+	<string>Pursee lets you attach a receipt or photo from your library to a transaction.</string>
 </dict>
 </plist>

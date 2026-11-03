@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Where Monee stands on the App Store, read only: each version and its
+"""Where Pursee stands on the App Store, read only: each version and its
 state, the build on it, the newest builds and any review submissions.
 
   asc_status.py

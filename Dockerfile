@@ -1,4 +1,4 @@
-# Monee on SkiFi's own server (monee.skifi.co), on the shared SkiFi app base:
+# Pursee on SkiFi's own server (monee.skifi.co), on the shared SkiFi app base:
 # the database API and sign-in through SkAuth.
 #
 # Dokploy builds this image itself from GitHub on every push to main (the repo

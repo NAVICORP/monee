@@ -1,4 +1,4 @@
-# The Monee app (Android, iPhone and the web): checks and builds on every push.
+# The Pursee app (Android, iPhone and the web): checks and builds on every push.
 #
 # 1. check: flutter analyze and the tests.
 # 2. screens: a picture of every main screen, pushed to the `screens` branch,
@@ -349,10 +349,10 @@ jobs:
           app_id=$(python3 -c "import json; print(json.load(open('$SIGNING_DIR/state.json'))['app_id'])")
           version=$(grep '^version:' app/pubspec.yaml | sed 's/version: *//; s/+.*//')
           API_PRIVATE_KEYS_DIR="$RUNNER_TEMP/keys" xcrun altool --upload-package "$ipa" -t ios \
-            --apple-id "$app_id" --bundle-id co.skifi.monee \
+            --apple-id "$app_id" --bundle-id co.skifi.pursee \
             --bundle-short-version-string "$version" --bundle-version "${{ github.run_number }}" \
             --apiKey "$KEY_ID" --apiIssuer "$ISSUER_ID" --output-format normal
-          echo "Uploaded Monee $version (${{ github.run_number }}). It shows in App Store Connect > TestFlight once Apple has processed it, usually 10 to 30 minutes." >> "$GITHUB_STEP_SUMMARY"
+          echo "Uploaded Pursee $version (${{ github.run_number }}). It shows in App Store Connect > TestFlight once Apple has processed it, usually 10 to 30 minutes." >> "$GITHUB_STEP_SUMMARY"
 
       - uses: actions/upload-artifact@v4
         if: env.TESTFLIGHT == 'true' && success()

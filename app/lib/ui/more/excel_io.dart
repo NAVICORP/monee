@@ -123,14 +123,14 @@ class _ExportSheetState extends State<_ExportSheet> {
       final bytes = await compute(_encodeXlsx, rows);
       if (bytes == null) throw StateError('no bytes');
       if (!mounted) return;
-      final name = 'Monee ${isoDay(from)} to ${isoDay(to)}.xlsx';
+      final name = 'Pursee ${isoDay(from)} to ${isoDay(to)}.xlsx';
       final box = context.findRenderObject() as RenderBox?;
       final origin = box == null || !box.hasSize ? null : box.localToGlobal(Offset.zero) & box.size;
       Passcode.holdBriefly();
       await SharePlus.instance.share(ShareParams(
         files: [XFile.fromData(bytes, name: name, mimeType: _xlsxMime)],
         fileNameOverrides: [name],
-        subject: 'Monee export, $label',
+        subject: 'Pursee export, $label',
         sharePositionOrigin: origin,
       ));
       if (!mounted) return;
@@ -213,9 +213,9 @@ Uint8List? _encodeXlsx(List<List<Object?>> rows) {
   final first = book.getDefaultSheet() ?? 'Sheet1';
   var name = first;
   try {
-    if (first != 'Monee') {
-      book.rename(first, 'Monee');
-      name = 'Monee';
+    if (first != 'Pursee') {
+      book.rename(first, 'Pursee');
+      name = 'Pursee';
     }
   } catch (_) {
     name = first;
@@ -246,7 +246,7 @@ Uint8List? _encodeXlsx(List<List<Object?>> rows) {
 
 // ================================================================ import
 
-/// More > Import from Excel: pick an .xlsx (Monee's own export, Money
+/// More > Import from Excel: pick an .xlsx (Pursee's own export, Money
 /// Manager's backup, or any sheet with Date and Amount columns), check a
 /// preview, then add every row to the book.
 Future<void> importFromExcel(BuildContext context) async {

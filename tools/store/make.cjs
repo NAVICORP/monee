@@ -1,4 +1,4 @@
-/* The store pictures: each app screen in a phone on Monee's deep violet with a
+/* The store pictures: each app screen in a phone on Pursee's deep violet with a
    short caption, for the App Store (1290 x 2796) and Google Play
    (1080 x 1920), plus the Play feature graphic (1024 x 500) and icon.
 
@@ -132,7 +132,7 @@ function featurePage(shot) {
   p b{color:#C4B2FF;font-weight:700}
   ${d.css}
   </style></head><body><div class="glow"></div>
-  <div class="copy"><div class="mark"><img src="${url(ICON)}"><span>Monee</span></div><p>Your money, <b>in one book</b></p></div>
+  <div class="copy"><div class="mark"><img src="${url(ICON)}"><span>Pursee</span></div><p>Your money, <b>in one book</b></p></div>
   ${d.html}</body></html>`;
 }
 

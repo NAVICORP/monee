@@ -10,7 +10,7 @@ import 'more_common.dart';
 
 /// More > People in this book (the owner's page): who can open the book and
 /// what they may do. A person added by email or WhatsApp number joins when
-/// they sign in to Monee with it.
+/// they sign in to Pursee with it.
 class PeoplePage extends StatefulWidget {
   const PeoplePage({super.key});
 
@@ -93,7 +93,7 @@ class _PeoplePageState extends State<PeoplePage> with ReloadOnChange<PeoplePage>
     final owner = b.isOwner;
     return PageBody(onRefresh: reload, children: [
       const Notice(
-          'Monee keeps one copy of this book on the server, so everyone in it sees the same accounts and entries on every device. '
+          'Pursee keeps one copy of this book on the server, so everyone in it sees the same accounts and entries on every device. '
           'Editors can add and change entries; viewers can only look.',
           bad: false),
       const SizedBox(height: Sp.md),
@@ -118,7 +118,7 @@ class _PeoplePageState extends State<PeoplePage> with ReloadOnChange<PeoplePage>
         const SizedBox(height: Sp.md),
         Center(child: KButton(label: 'Add a person', icon: Icons.person_add_alt_rounded, kind: KButtonKind.secondary, small: true, onPressed: _add)),
         const SizedBox(height: Sp.md),
-        const Text('They join when they sign in to Monee with that email or WhatsApp number. Only you, the owner, can add or remove people.', style: T.small),
+        const Text('They join when they sign in to Pursee with that email or WhatsApp number. Only you, the owner, can add or remove people.', style: T.small),
       ] else
         const Padding(padding: EdgeInsets.only(top: Sp.md), child: Text('Only the book\'s owner can add or remove people.', style: T.small)),
     ]);

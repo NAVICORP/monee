@@ -1,4 +1,4 @@
--- A demo book for the screen pictures, the store listing and trying Monee:
+-- A demo book for the screen pictures, the store listing and trying Pursee:
 -- a year in the life of someone working in Riyadh who sends money home to
 -- Kerala. Main currency SAR, with INR and BHD accounts, wallets, a bank, a
 -- credit card, a debit card, savings, gold and a car loan. Dates follow

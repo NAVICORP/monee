@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fill in Monee's App Store page for a version that is still being prepared.
+"""Fill in Pursee's App Store page for a version that is still being prepared.
 
   asc_listing.py <screenshot folder> [version]
 
@@ -30,10 +30,10 @@ sys.path.insert(0, os.path.dirname(__file__))
 from p8 import pem  # noqa: E402
 
 API = 'https://api.appstoreconnect.apple.com/v1'
-BUNDLE_ID = 'co.skifi.monee'
+BUNDLE_ID = 'co.skifi.pursee'
 LOCALE = 'en-US'
 EDITABLE = {'PREPARE_FOR_SUBMISSION', 'DEVELOPER_REJECTED', 'REJECTED', 'METADATA_REJECTED', 'INVALID_BINARY'}
-SITE = 'https://monee.skifi.co'
+SITE = 'https://pursee.skifi.co'
 SHOT_TYPES = {(1290, 2796): 'APP_IPHONE_67', (1320, 2868): 'APP_IPHONE_67', (1284, 2778): 'APP_IPHONE_65', (1242, 2688): 'APP_IPHONE_65'}
 
 
@@ -264,7 +264,7 @@ def main():
     summary = os.environ.get('GITHUB_STEP_SUMMARY')
     if summary:
         with open(summary, 'a') as fh:
-            fh.write(f'Filled in the App Store page of Monee {version}. Type the review account password under App Review in App Store Connect.\n')
+            fh.write(f'Filled in the App Store page of Pursee {version}. Type the review account password under App Review in App Store Connect.\n')
 
 
 if __name__ == '__main__':

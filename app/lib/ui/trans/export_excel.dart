@@ -68,7 +68,7 @@ Future<bool> trExportExcel(BuildContext context, {required Period period, requir
   final bytes = book.encode();
   if (bytes == null) throw ApiError('The Excel file could not be made.');
 
-  final name = 'Monee ${label.replaceAll(RegExp(r'[^A-Za-z0-9 ._-]'), '-')}.xlsx';
+  final name = 'Pursee ${label.replaceAll(RegExp(r'[^A-Za-z0-9 ._-]'), '-')}.xlsx';
   await SharePlus.instance.share(ShareParams(
     files: [XFile.fromData(Uint8List.fromList(bytes), name: name, mimeType: _xlsxType)],
     fileNameOverrides: [name],

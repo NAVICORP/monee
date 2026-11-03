@@ -6,7 +6,7 @@ document.documentElement.classList.add("js");
 /* where the store buttons go. The App Store link goes in once Apple has
    approved the app, as https://apps.apple.com/app/id... */
 var STORE = {
-  play: "https://play.google.com/store/apps/details?id=co.skifi.monee",
+  play: "https://play.google.com/store/apps/details?id=co.skifi.pursee",
   ios: ""
 };
 

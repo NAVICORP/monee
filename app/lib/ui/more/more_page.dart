@@ -70,7 +70,7 @@ class _MorePageState extends State<MorePage> {
   Future<void> _feedback() async {
     var ok = false;
     try {
-      ok = await launchUrl(Uri.parse('mailto:$kSupportEmail?subject=${Uri.encodeComponent('Monee feedback')}'));
+      ok = await launchUrl(Uri.parse('mailto:$kSupportEmail?subject=${Uri.encodeComponent('Pursee feedback')}'));
     } catch (_) {
       ok = false;
     }
@@ -83,8 +83,8 @@ class _MorePageState extends State<MorePage> {
     Passcode.holdBriefly();
     try {
       await SharePlus.instance.share(ShareParams(
-        text: 'I keep track of my money with Monee: accounts, budgets and stats on my phone and my computer. $kSite',
-        subject: 'Monee',
+        text: 'I keep track of my money with Pursee: accounts, budgets and stats on my phone and my computer. $kSite',
+        subject: 'Pursee',
         sharePositionOrigin: origin,
       ));
     } catch (_) {
@@ -203,7 +203,7 @@ class _MorePageState extends State<MorePage> {
         LinkGroup([
           LinkRow(Icons.calculate_outlined, 'Calculator', _calculator, sub: 'The answer is copied for you'),
           LinkRow(Icons.ios_share_rounded, 'Export to Excel', () => exportToExcel(context)),
-          if (b.canEdit) LinkRow(Icons.upload_file_rounded, 'Import from Excel', () => importFromExcel(context), sub: 'A Monee or Money Manager sheet'),
+          if (b.canEdit) LinkRow(Icons.upload_file_rounded, 'Import from Excel', () => importFromExcel(context), sub: 'A Pursee or Money Manager sheet'),
           LinkRow(Icons.computer_rounded, 'Open on your computer', _computer, sub: 'The same books in your browser'),
         ]),
         const GroupLabel('Sharing'),
@@ -217,7 +217,7 @@ class _MorePageState extends State<MorePage> {
         LinkGroup([
           LinkRow(Icons.support_agent_rounded, 'Help and support', () => _link(kSupportUrl)),
           LinkRow(Icons.mail_outline_rounded, 'Send feedback', _feedback),
-          LinkRow(Icons.favorite_border_rounded, 'Share Monee', _share),
+          LinkRow(Icons.favorite_border_rounded, 'Share Pursee', _share),
           LinkRow(Icons.privacy_tip_outlined, 'Privacy', () => _link(kPrivacyUrl)),
           LinkRow(Icons.description_outlined, 'Terms', () => _link(kTermsUrl)),
         ]),
@@ -229,7 +229,7 @@ class _MorePageState extends State<MorePage> {
           LinkRow(Icons.delete_outline_rounded, 'Delete my account', _deleteAccount, bad: true),
         ]),
         const SizedBox(height: Sp.xl),
-        const Center(child: Text('Monee $kAppVersion', style: T.small)),
+        const Center(child: Text('Pursee $kAppVersion', style: T.small)),
       ]),
     );
   }
@@ -263,7 +263,7 @@ class _ComputerSheetState extends State<_ComputerSheet> {
   Widget build(BuildContext context) {
     final how = Me.instance.email != null ? 'email' : 'WhatsApp number';
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-      Text('Monee works in any browser. Open this address on your computer and sign in with the same $how: '
+      Text('Pursee works in any browser. Open this address on your computer and sign in with the same $how: '
           'your books, accounts and entries are the same there, and changes show on both.',
           style: T.body.copyWith(color: K.ink2)),
       const SizedBox(height: Sp.md),

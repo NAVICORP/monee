@@ -185,7 +185,7 @@ class _StartBookState extends State<StartBook> {
   }
 }
 
-/// A currency to pick, from the list Monee knows, searchable.
+/// A currency to pick, from the list Pursee knows, searchable.
 Future<String?> pickCurrency(BuildContext context, {String? selected, String title = 'Currency', Set<String> except = const {}}) async {
   final p = await showPicker<String>(context, title: title, selected: selected, search: true, options: [
     for (final c in kCurrencies)

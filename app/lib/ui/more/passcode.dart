@@ -86,7 +86,7 @@ class Passcode {
     }
   }
 
-  /// Monee itself is about to leave the screen for a moment (the file
+  /// Pursee itself is about to leave the screen for a moment (the file
   /// picker, the share sheet): coming back from that does not ask.
   static void holdBriefly() => _holdUntil = DateTime.now().add(const Duration(seconds: 20));
 
@@ -264,7 +264,7 @@ class _LockScreenState extends State<_LockScreen> {
   Future<void> _forgot() async {
     final ok = await confirm(context,
         title: 'Sign out?',
-        text: 'The passcode is removed from this device. Sign in again to open Monee; your books stay safe on the server.',
+        text: 'The passcode is removed from this device. Sign in again to open Pursee; your books stay safe on the server.',
         yes: 'Sign out');
     if (!ok) return;
     await Passcode.clear();
@@ -288,7 +288,7 @@ class _LockScreenState extends State<_LockScreen> {
                   const SizedBox(height: Sp.lg),
                   const Text('Enter your passcode', style: T.h2, textAlign: TextAlign.center),
                   const SizedBox(height: 4),
-                  Text(error ?? 'Monee is locked on this device.',
+                  Text(error ?? 'Pursee is locked on this device.',
                       textAlign: TextAlign.center, style: T.small.copyWith(color: error == null ? K.muted : K.bad)),
                   const SizedBox(height: Sp.xl),
                   PinDots(count: typed.length, bad: error != null),
@@ -501,7 +501,7 @@ class _PasscodeSettingsPageState extends State<PasscodeSettingsPage> {
   Future<void> _after() async {
     final p = await showPicker<int>(context, title: 'Ask again', selected: Passcode.after, options: [
       for (final s in const [0, 60, 300])
-        PickOption(s, Passcode.afterLabel(s), sub: s == 0 ? 'Every time Monee comes back on screen' : 'When Monee was away that long'),
+        PickOption(s, Passcode.afterLabel(s), sub: s == 0 ? 'Every time Pursee comes back on screen' : 'When Pursee was away that long'),
     ]);
     if (p == null) return;
     await Passcode.setAfter(p.value);
@@ -516,10 +516,10 @@ class _PasscodeSettingsPageState extends State<PasscodeSettingsPage> {
       body: !loaded
           ? const Loading()
           : PageBody(children: [
-              const Notice('The passcode guards Monee on this device. Your other phones and the web app keep their own.', bad: false),
+              const Notice('The passcode guards Pursee on this device. Your other phones and the web app keep their own.', bad: false),
               const SizedBox(height: Sp.md),
               LinkGroup([
-                SwitchTile(title: 'Passcode', sub: on ? 'Asked when Monee opens' : 'Off', value: on, onChanged: _turn),
+                SwitchTile(title: 'Passcode', sub: on ? 'Asked when Pursee opens' : 'Off', value: on, onChanged: _turn),
                 if (on) LinkRow(Icons.pin_outlined, 'Change the passcode', _change),
                 if (on) LinkRow(Icons.timer_outlined, 'Ask again', _after, value: Passcode.afterLabel(Passcode.after)),
               ]),

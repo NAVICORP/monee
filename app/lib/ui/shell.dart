@@ -136,7 +136,7 @@ class _SideBar extends StatelessWidget {
             child: Row(children: [
               const MoneeIcon(size: 32),
               const SizedBox(width: 10),
-              Text('Monee', style: T.h2.copyWith(fontSize: 21)),
+              Text('Pursee', style: T.h2.copyWith(fontSize: 21)),
             ]),
           ),
           if (book != null)

@@ -1167,7 +1167,7 @@ class MoneeIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tile = Semantics(label: 'Monee', image: true, child: CustomPaint(size: Size.square(size), painter: const _TilePainter()));
+    final tile = Semantics(label: 'Pursee', image: true, child: CustomPaint(size: Size.square(size), painter: const _TilePainter()));
     if (!shadow) return tile;
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -1208,7 +1208,7 @@ class _TilePainter extends CustomPainter {
         Paint()
           ..shader = const LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight,
               colors: [Color(moneeMainColour), Color(moneeDeepColour)]).createShader(rect));
-    _paintM(canvas, s, 0.62, Colors.white);
+    _paintM(canvas, s, 0.68, Colors.white);
   }
 
   @override
@@ -1223,7 +1223,7 @@ class MoneeMark extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-      Semantics(label: 'Monee', image: true, child: CustomPaint(size: Size.square(size), painter: _MarkPainter(color)));
+      Semantics(label: 'Pursee', image: true, child: CustomPaint(size: Size.square(size), painter: _MarkPainter(color)));
 }
 
 class _MarkPainter extends CustomPainter {

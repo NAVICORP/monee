@@ -37,7 +37,7 @@ class MoneeApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Monee',
+      title: 'Pursee',
       debugShowCheckedModeBanner: false,
       theme: moneeTheme(),
       navigatorKey: navigatorKey,

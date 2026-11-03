@@ -82,7 +82,7 @@ class Session {
   }
 }
 
-/// Talks to the Monee server.
+/// Talks to the Pursee server.
 ///
 /// People sign in through /auth/v1 (the SkiFi login) and read and write
 /// through /rest/v1, as themselves, so the database's row rules decide what
@@ -167,7 +167,7 @@ class Api {
         'Accept': 'application/json',
         'X-Client-Info': 'monee-app/1.0',
         'Authorization': 'Bearer ${withUser && _session != null ? _session!.accessToken : 'public'}',
-        // The app base passes x-farm-id through to the database; Monee's
+        // The app base passes x-farm-id through to the database; Pursee's
         // database reads the book from it (requested_book).
         if (withUser && bookId != null) 'x-farm-id': bookId!,
         ...?extra,
@@ -330,7 +330,7 @@ class Api {
   }
 
   /// Deletes every book this person owns, leaves the ones they share, and
-  /// deletes their Monee account. The SkiFi login itself (shared with other
+  /// deletes their Pursee account. The SkiFi login itself (shared with other
   /// SkiFi apps) stays.
   Future<void> deleteAccount() async {
     await rpc('delete_my_data');

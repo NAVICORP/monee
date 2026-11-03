@@ -1,4 +1,4 @@
-# Monee on one server: Postgres, the Monee API (with receipt photos on disk),
+# Pursee on one server: Postgres, the Pursee API (with receipt photos on disk),
 # and the site in front of it.
 # Deployed with Dokploy as a Docker Compose service built from GitHub
 # (NAVICORP/monee, branch main, compose path ./deploy/docker-compose.yml,
@@ -10,7 +10,7 @@
 #
 # Passwords: the first start makes random ones inside the `secrets` volume.
 # Sign-in (WhatsApp codes, email codes, passwords) is SkAuth at
-# account.skifi.co, where Monee has to be listed as an app (id "monee").
+# account.skifi.co, where Pursee has to be listed as an app (id "monee").
 
 services:
   secrets:

@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-/// The Monee violets: the tile of the logo, a deep aubergine for the big
+/// The Pursee violets: the tile of the logo, a deep aubergine for the big
 /// cards and buttons, and light violets for progress and selection, on a
 /// soft white. Money has three fixed colours everywhere: income green,
 /// expense red, transfers grey.

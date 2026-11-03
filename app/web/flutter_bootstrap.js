@@ -1,7 +1,7 @@
 {{flutter_js}}
 {{flutter_build_config}}
 
-// Monee's own service worker keeps the app's shell (see server/site.mjs), so
+// Pursee's own service worker keeps the app's shell (see server/site.mjs), so
 // the app opens without a signal and says so. It never keeps API answers.
 // It is set up once the app is running, so a first visit spends its
 // connection on the app alone, and is then told which files this browser

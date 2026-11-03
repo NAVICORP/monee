@@ -1,4 +1,4 @@
-# Fills in Monee's App Store page for a version still being prepared: the
+# Fills in Pursee's App Store page for a version still being prepared: the
 # text and links from docs/STORE.md, the screenshots from the store-pictures
 # branch (store/ios/1.png, 2.png, ...) and the newest processed build.
 # Runs by hand: Actions > App Store page > Run workflow.

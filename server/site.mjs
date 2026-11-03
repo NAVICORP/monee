@@ -1,5 +1,5 @@
 /*
- * monee.skifi.co: the plain pages, the Monee web app, and the door to the API.
+ * monee.skifi.co: the plain pages, the Pursee web app, and the door to the API.
  *
  * /                         the front page
  * /privacy, /terms, /support, /delete-account
@@ -137,7 +137,7 @@ function sendFile(req, res, file, cache, extra = {}) {
   res.end(req.method === 'HEAD' ? undefined : e.body);
 }
 
-/** A plain page (privacy, terms, support) in the Monee shell. */
+/** A plain page (privacy, terms, support) in the Pursee shell. */
 function shell(title, body) {
   return stampAssets(`<!doctype html>
 <html lang="en">
@@ -145,14 +145,14 @@ function shell(title, body) {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>${esc(title)}</title>
-<meta name="description" content="Monee: your money, accounts, budgets and stats, on every device.">
+<meta name="description" content="Pursee: your money, accounts, budgets and stats, on every device.">
 <meta name="theme-color" content="#F8F7FC">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="/assets/brand/touch-180.png">
 <link rel="stylesheet" href="/assets/site.css">
 </head>
 <body class="plain">
-<header class="bar"><a class="brand" href="/"><img src="/assets/brand/icon-64.png" alt="" width="34" height="34">Monee</a><a class="btn btn--small" href="/app/">Open Monee</a></header>
+<header class="bar"><a class="brand" href="/"><img src="/assets/brand/icon-64.png" alt="" width="34" height="34">Pursee</a><a class="btn btn--small" href="/app/">Open Pursee</a></header>
 <main class="doc">
 ${body}
 </main>
@@ -163,10 +163,10 @@ ${footer()}
 const footer = () => `<footer class="foot"><p><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/support">Support</a><a href="/delete-account">Delete an account</a></p><p>Made by <a href="https://skifi.co" target="_blank" rel="noopener">SkiFi</a></p></footer>`;
 
 const PAGES = {
-  '/privacy': ['Privacy | Monee', 'pages/privacy.html'],
-  '/terms': ['Terms | Monee', 'pages/terms.html'],
-  '/support': ['Support | Monee', 'pages/support.html'],
-  '/delete-account': ['Deleting an account | Monee', 'pages/delete-account.html'],
+  '/privacy': ['Privacy | Pursee', 'pages/privacy.html'],
+  '/terms': ['Terms | Pursee', 'pages/terms.html'],
+  '/support': ['Support | Pursee', 'pages/support.html'],
+  '/delete-account': ['Deleting an account | Pursee', 'pages/delete-account.html'],
 };
 
 // ---------------------------------------------------------------- the web app
@@ -207,7 +207,7 @@ function serviceWorker() {
   const known = ['/app/', ...files.filter((f) => f !== '/app/index.html')];
   // Every visit needs these. The engine is kept once the browser has used it.
   const core = known.filter((f) => !f.startsWith('/app/canvaskit/'));
-  const body = `// Monee's service worker, build ${version}.
+  const body = `// Pursee's service worker, build ${version}.
 const CACHE = 'monee-shell-${version}';
 const KNOWN = new Set(${JSON.stringify(known)});
 const CORE = ${JSON.stringify(core)};
@@ -264,7 +264,7 @@ self.addEventListener('fetch', (e) => {
 
 function serveApp(req, res, p) {
   if (!existsSync(path.join(APP, 'index.html'))) {
-    return sendBody(req, res, 503, TYPES['.html'], shell('Monee', '<h1>One moment</h1><p>The app is being updated. Try again in a minute.</p>'),
+    return sendBody(req, res, 503, TYPES['.html'], shell('Pursee', '<h1>One moment</h1><p>The app is being updated. Try again in a minute.</p>'),
       { 'cache-control': 'no-store', 'retry-after': '30' });
   }
   if (p === '/app/sw.js') {
@@ -308,7 +308,7 @@ async function proxy(req, res) {
   } catch (e) {
     console.error('api unreachable', e.message);
     res.writeHead(502, { 'content-type': 'application/json', 'cache-control': 'no-store' });
-    return res.end('{"message":"The Monee server is starting up. Try again in a moment."}');
+    return res.end('{"message":"The Pursee server is starting up. Try again in a moment."}');
   }
   const out = { 'cache-control': 'no-store' };
   up.headers.forEach((v, k) => { if (!HOP.has(k) && k !== 'content-encoding') out[k] = v; });
@@ -330,7 +330,7 @@ async function proxy(req, res) {
 // ---------------------------------------------------------------- the server
 
 function notFound(req, res) {
-  sendBody(req, res, 404, TYPES['.html'], shell('Not found | Monee', '<h1>Nothing here</h1><p><a href="/">Back to Monee</a></p>'),
+  sendBody(req, res, 404, TYPES['.html'], shell('Not found | Pursee', '<h1>Nothing here</h1><p><a href="/">Back to Pursee</a></p>'),
     { 'cache-control': 'no-store', 'x-robots-tag': 'noindex', 'content-security-policy': CSP });
 }
 function redirect(res, to, permanent = false) {

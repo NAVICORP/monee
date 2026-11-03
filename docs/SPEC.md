@@ -1,16 +1,16 @@
-# Monee: our money manager, rebuilt from Realbyte's Money Manager
+# Pursee: our money manager, rebuilt from Realbyte's Money Manager
 
-Monee is SkiFi's own personal money app, modelled feature for feature on Realbyte's Money Manager (Google Play id com.realbyteapps.moneymanagerfree). Same features, our stack, our Kuree/Dairee style, in violet.
+Pursee is SkiFi's own personal money app, modelled feature for feature on Realbyte's Money Manager (Google Play id com.realbyteapps.moneymanagerfree). Same features, our stack, our Kuree/Dairee style, in violet.
 
 ## Decisions (2 Nov 2026)
 
-- **Name:** Monee.
+- **Name:** Pursee.
 - **Colour:** violet.
 - **Data:** on our server, sign-in through SkAuth (account.skifi.co). Same data on Android, iPhone and web.
 - **1.0 scope:** everything Money Manager has. Our web app takes the place of their PC Manager.
 - **Pricing:** free, no ads for now. Pro can come later.
 - **Built like Dairee:** one Flutter app for Android, iPhone and web, Postgres, the shared SkiFi app base, Dokploy.
-- **Proposed, not yet confirmed:** monee.skifi.co for now, bundle id co.skifi.monee, repo NAVICORP/monee.
+- **Proposed, not yet confirmed:** monee.skifi.co for now, bundle id co.skifi.pursee, repo NAVICORP/monee.
 
 Don't copy their name, logo, icons, colours, help text or screenshots. Same features, our own design.
 
@@ -80,7 +80,7 @@ Grid: Configuration, Accounts, Passcode, CalcBox, PC Manager, Backup, Feedback, 
 - **Accounts:** Account Group, Accounts Setting, Deleted account group, Deleted accounts, Transfer-Expense setting, Card expenses display config ("At the time" or lump sum).
 - **Passcode:** with a delay before it asks again.
 - **Backup:** Excel backup and restore, automatic backup, moving to a new phone, bulk import from Excel (also with sub currencies), photo backup.
-- **PC Manager:** the phone serves a web page over the same Wi-Fi; edit and sort by date, category or account group, with charts. (Monee's web app replaces this.)
+- **PC Manager:** the phone serves a web page over the same Wi-Fi; edit and sort by date, category or account group, with charts. (Pursee's web app replaces this.)
 
 ### Rules worth copying exactly
 
@@ -95,9 +95,9 @@ Grid: Configuration, Accounts, Passcode, CalcBox, PC Manager, Backup, Feedback, 
 9. Accounts can be **hidden**, **left out of totals**, deleted and **restored**.
 10. **Budgets** per category and in total; weekly, monthly or yearly.
 
-### What their users complain about (Monee's edge)
+### What their users complain about (Pursee's edge)
 
-| Complaint | Monee |
+| Complaint | Pursee |
 |---|---|
 | No sync between devices; a partner can't see the same book | Server sync through SkAuth; shared books with family later |
 | No split transactions (one shop, several categories) | Split a transaction across categories |
@@ -108,7 +108,7 @@ Grid: Configuration, Accounts, Passcode, CalcBox, PC Manager, Backup, Feedback, 
 
 ---
 
-## 2. Monee: what we build
+## 2. Pursee: what we build
 
 ### Look and feel (as Kuree and Dairee)
 

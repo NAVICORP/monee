@@ -1,5 +1,5 @@
-"""Monee's logo: a rounded lowercase m with a coin for its dot, in white on a
-violet tile. Drawn here once as strokes in a 1000 x 1000 box, then written out
+"""Pursee's logo: a rounded lowercase p with a coin in its bowl, like a coin in
+a purse, in white on a violet tile. Drawn here once as strokes in a 1000 x 1000 box, then written out
 as every icon the app, the stores and the site use, so a change here reaches
 all of them at once.
 
@@ -8,7 +8,7 @@ all of them at once.
 
 Writes:
 - web/assets/brand/monee-icon.svg   the logo as it is shown: white on a violet tile
-- web/assets/brand/monee-mark.svg   the m and the coin alone, in violet (for print)
+- web/assets/brand/monee-mark.svg   the p and the coin alone, in violet (for print)
 - app/lib/ui/brand_mark.dart        the same strokes as Flutter paths
 - the app, Android, iPhone, web app and site icons (PNG and favicon.ico)
 """
@@ -26,13 +26,13 @@ MAIN = '#6D4AE8'     # the tile
 DEEP = '#5634C7'     # the tile's lower corner
 WHITE = '#FFFFFF'
 
-# The m: three stems joined by two arches, drawn as one stroke with round
-# ends. The coin sits above the right stem, like the dot of an i.
+# The p: a stem from the top of the bowl down to the descender, and a round
+# bowl, drawn as strokes with round ends. The coin sits in the bowl.
 STROKE = 112
-M_PATH = ('M 245 760 L 245 488 '
-          'C 245 392 305 338 372 338 C 442 338 500 392 500 488 L 500 760 '
-          'M 500 488 C 500 392 560 338 628 338 C 696 338 755 392 755 488 L 755 760')
-COIN = (755, 196, 64)   # x, y, radius
+M_PATH = ('M 290 770 L 290 230 '
+          'M 290 440 C 290 324 384 230 500 230 C 616 230 710 324 710 440 '
+          'C 710 556 616 650 500 650 C 384 650 290 556 290 440')
+COIN = (500, 440, 70)   # x, y, radius
 SHIFT = 22              # the whole mark sits a little lower than centre, for balance
 
 
@@ -55,33 +55,35 @@ def svg(size, bg=None, fg=WHITE, scale=0.78, radius=0.0):
             f'{tile}{mark(fg, scale)}</svg>')
 
 
-TILE = dict(bg='tile', fg=WHITE, scale=0.62)
+TILE = dict(bg='tile', fg=WHITE, scale=0.68)
 ROUND = 0.24
 
 
 def dart():
-    return '''// Written by tools/brand/brand.py. Do not edit by hand.
+    """The same strokes as Flutter path calls, read from M_PATH."""
+    toks = M_PATH.split()
+    calls, i = [], 0
+    while i < len(toks):
+        op = toks[i]
+        n = {'M': 2, 'L': 2, 'C': 6}[op]
+        args = ', '.join(toks[i + 1:i + 1 + n])
+        calls.append({'M': 'moveTo', 'L': 'lineTo', 'C': 'cubicTo'}[op] + f'({args})')
+        i += 1 + n
+    body = '\n'.join(f'  ..{c}' for c in calls)
+    return f'''// Written by tools/brand/brand.py. Do not edit by hand.
 import 'dart:ui';
 
-/// The m of the logo in a 1000 x 1000 box, as one stroke with round ends.
+/// The p of the logo in a 1000 x 1000 box, as strokes with round ends.
 Path moneeM() => Path()
-  ..moveTo(245, 760)
-  ..lineTo(245, 488)
-  ..cubicTo(245, 392, 305, 338, 372, 338)
-  ..cubicTo(442, 338, 500, 392, 500, 488)
-  ..lineTo(500, 760)
-  ..moveTo(500, 488)
-  ..cubicTo(500, 392, 560, 338, 628, 338)
-  ..cubicTo(696, 338, 755, 392, 755, 488)
-  ..lineTo(755, 760);
+{body};
 
-const double moneeStroke = %d;
-const Offset moneeCoin = Offset(%d, %d);
-const double moneeCoinRadius = %d;
-const double moneeShift = %d;
+const double moneeStroke = {STROKE};
+const Offset moneeCoin = Offset({COIN[0]}, {COIN[1]});
+const double moneeCoinRadius = {COIN[2]};
+const double moneeShift = {SHIFT};
 const int moneeMainColour = 0xFF6D4AE8;
 const int moneeDeepColour = 0xFF5634C7;
-''' % (STROKE, COIN[0], COIN[1], COIN[2], SHIFT)
+'''
 
 
 def main():

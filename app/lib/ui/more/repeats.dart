@@ -130,7 +130,7 @@ class _RepeatsPageState extends State<RepeatsPage> with ReloadOnChange<RepeatsPa
         try {
           await Api.instance.rpc('catch_up');
         } on ApiError {
-          // Recorded the next time Monee opens.
+          // Recorded the next time Pursee opens.
         }
       }
       await Me.instance.changed();

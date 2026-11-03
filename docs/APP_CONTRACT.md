@@ -1,4 +1,4 @@
-# Monee app: how the pieces fit (for everyone writing screens)
+# Pursee app: how the pieces fit (for everyone writing screens)
 
 Read `docs/SPEC.md` first: it is the full feature list (a rebuild of Realbyte's Money Manager) and the style rules.
 

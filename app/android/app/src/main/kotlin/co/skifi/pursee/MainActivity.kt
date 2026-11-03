@@ -1,4 +1,4 @@
-package co.skifi.monee
+package co.skifi.pursee
 
 import io.flutter.embedding.android.FlutterActivity
 

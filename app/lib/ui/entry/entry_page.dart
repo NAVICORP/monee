@@ -725,7 +725,7 @@ class _EntryPageState extends State<_EntryPage> {
       if (!mounted || fresh.isEmpty) return;
       setState(() => photos.addAll(fresh));
     } catch (_) {
-      if (mounted) toast(context, 'The photo could not be added. Check that Monee may use the camera and photos.', bad: true);
+      if (mounted) toast(context, 'The photo could not be added. Check that Pursee may use the camera and photos.', bad: true);
     }
   }
 
@@ -1424,7 +1424,7 @@ class _EntryPageState extends State<_EntryPage> {
       ),
       if (!known && can) ...[
         const SizedBox(height: 6),
-        Notice('There is no rate for $currency yet. Enter how much 1 $currency is in ${book.currency}; Monee keeps it for next time.', bad: false),
+        Notice('There is no rate for $currency yet. Enter how much 1 $currency is in ${book.currency}; Pursee keeps it for next time.', bad: false),
       ],
     ]);
   }
