@@ -934,8 +934,8 @@ svg{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-lin
   .coin--w2{width:40px;font-size:40px;left:-6px;bottom:-4px}
   .coin--m1{width:52px;font-size:52px;right:max(8px,calc(50% - 176px));top:2%}
   .coin--m2{width:44px;font-size:44px;left:max(8px,calc(50% - 176px));bottom:6%}
-  .coin--c1{width:64px;font-size:64px;left:-14px;bottom:-10px}
-  .coin--c2{width:52px;font-size:52px;right:-10px;top:18px}
+  .coin--c1{display:none}
+  .coin--c2{width:46px;font-size:46px;right:16px;top:20px}
   .coin--c3{display:none}
   .coin--c4{width:38px;font-size:38px;left:8px;top:22px}
 }
