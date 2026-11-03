@@ -1,5 +1,5 @@
 /*
- * monee.skifi.co: the plain pages, the Pursee web app, and the door to the API.
+ * pursee.skifi.co: the plain pages, the Pursee web app, and the door to the API.
  *
  * /                         the front page
  * /privacy, /terms, /support, /delete-account
@@ -22,7 +22,7 @@ const ROOT = path.resolve(process.env.SITE_ROOT || path.join(import.meta.dirname
 const APP = path.resolve(process.env.APP_ROOT || path.join(import.meta.dirname, '..', 'app', 'build', 'web'));
 const API = (process.env.API_INTERNAL || 'http://monee-api:8000').replace(/\/$/, '');
 const PORT = Number(process.env.PORT || 8000);
-const ORIGIN = (process.env.SITE_URL || 'https://monee.skifi.co').replace(/\/$/, '');
+const ORIGIN = (process.env.SITE_URL || 'https://pursee.skifi.co').replace(/\/$/, '');
 const HOST = new URL(ORIGIN).host;
 const MOVED = new Set([`www.${HOST}`, ...(process.env.OLD_HOSTS || '').split(',')]
   .map((h) => h.trim().toLowerCase()).filter((h) => h && h !== HOST));

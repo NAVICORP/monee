@@ -2,8 +2,9 @@
 # and the site in front of it.
 # Deployed with Dokploy as a Docker Compose service built from GitHub
 # (NAVICORP/monee, branch main, compose path ./deploy/docker-compose.yml,
-# autodeploy on push). The domain monee.skifi.co goes to service `site`,
-# port 8000.
+# autodeploy on push). The domains pursee.skifi.co and monee.skifi.co (the
+# first address, which now redirects to pursee.skifi.co) go to service
+# `site`, port 8000.
 #
 # The image is built here from the Dockerfile (the Flutter web app first);
 # `api` builds it and `site` runs the same image.
@@ -66,8 +67,8 @@ services:
         condition: service_healthy
     environment:
       DB_NAME: monee
-      API_URL: https://monee.skifi.co
-      SITE_URL: https://monee.skifi.co
+      API_URL: https://pursee.skifi.co
+      SITE_URL: https://pursee.skifi.co
       AUTH_MODE: app
       AUTH_PROVIDER_URL: https://account.skifi.co
       APP_ID: monee
@@ -96,7 +97,9 @@ services:
       - "8000"
     environment:
       API_INTERNAL: http://monee-api:8000
-      SITE_URL: https://monee.skifi.co
+      SITE_URL: https://pursee.skifi.co
+      # Pursee's first address: pages open on pursee.skifi.co instead.
+      OLD_HOSTS: monee.skifi.co
     depends_on:
       - api
     healthcheck:

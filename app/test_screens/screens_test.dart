@@ -80,7 +80,7 @@ String canonical(Object? v) {
   return jsonEncode(v);
 }
 
-/// A stand-in for monee.skifi.co that answers from the recorded demo book.
+/// A stand-in for pursee.skifi.co that answers from the recorded demo book.
 /// Functions answer what the real function answered for the same
 /// arguments; table reads honour the filters, order and range the app sends,
 /// the way the database API does. Writes answer as if saved.

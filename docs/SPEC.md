@@ -10,7 +10,7 @@ Pursee is SkiFi's own personal money app, modelled feature for feature on Realby
 - **1.0 scope:** everything Money Manager has. Our web app takes the place of their PC Manager.
 - **Pricing:** free, no ads for now. Pro can come later.
 - **Built like Dairee:** one Flutter app for Android, iPhone and web, Postgres, the shared SkiFi app base, Dokploy.
-- **Proposed, not yet confirmed:** monee.skifi.co for now, bundle id co.skifi.pursee, repo NAVICORP/monee.
+- **Proposed, not yet confirmed:** pursee.skifi.co (first monee.skifi.co), bundle id co.skifi.pursee, repo NAVICORP/monee.
 
 Don't copy their name, logo, icons, colours, help text or screenshots. Same features, our own design.
 
@@ -151,7 +151,7 @@ Balances, card payable and outstanding, carry-over and budgets are worked out in
 
 ### Stack (same as Dairee)
 
-- Flutter app in `app/` for Android, iPhone and web; web app at monee.skifi.co/app.
+- Flutter app in `app/` for Android, iPhone and web; web app at pursee.skifi.co/app (first at monee.skifi.co, which now redirects there).
 - Postgres migrations in `supabase/migrations`, DB tests on every push.
 - Shared SkiFi app base image, sign-in through SkAuth, Dokploy compose `monee` on deploy.skifi.co.
 - CI: analyse, tests, screen pictures from a demo book, web build, Android APK, iOS on request.

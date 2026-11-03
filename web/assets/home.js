@@ -1,4 +1,4 @@
-/* monee.skifi.co: the landing page. The phone in the hero fills in today's
+/* pursee.skifi.co: the landing page. The phone in the hero fills in today's
    entries, the feature cards come in as they scroll into view, the web app on
    the laptop takes one more entry, and the import fills a book. */
 document.documentElement.classList.add("js");

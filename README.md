@@ -2,7 +2,7 @@
 
 Your money in one book, on every device: income, expenses and transfers; daily, calendar, monthly and total views; stats by category; accounts with cash, bank, wallets, credit and debit cards, savings, investments and loans; budgets; repeats and instalments; many currencies; tags, notes and receipt photos; a passcode; Excel export and import. A rebuild of Realbyte's Money Manager in SkiFi's own style, with sync and shared books (see `docs/SPEC.md`).
 
-One Flutter app for Android, iPhone and the web (monee.skifi.co/app), on SkiFi's own server.
+One Flutter app for Android, iPhone and the web (pursee.skifi.co/app), on SkiFi's own server.
 
 ## What is where
 
