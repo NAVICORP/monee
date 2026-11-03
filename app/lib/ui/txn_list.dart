@@ -26,6 +26,7 @@ class TxnRow extends StatelessWidget {
     final extra = <String>[
       if (t.planNo != null && t.planMonths != null) '${t.planNo}/${t.planMonths}',
       if (t.repeatId != null) 'Repeats',
+      if (t.payParts > 1) 'Split pay',
       ...t.tags.map((g) => '#$g'),
     ];
     final note = (t.note ?? '').trim();

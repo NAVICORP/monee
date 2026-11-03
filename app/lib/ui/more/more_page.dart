@@ -16,6 +16,7 @@ import 'categories.dart';
 import 'configuration.dart';
 import 'currencies.dart';
 import 'excel_io.dart';
+import 'feature_request.dart';
 import 'more_common.dart';
 import 'passcode.dart';
 import 'people.dart';
@@ -35,11 +36,17 @@ class MorePage extends StatefulWidget {
 }
 
 class _MorePageState extends State<MorePage> {
+  /// On the Pursee team: the feature request inbox shows.
+  bool owner = false;
+
   @override
   void initState() {
     super.initState();
     Passcode.load().then((_) {
       if (mounted) setState(() {});
+    });
+    FeatureRequests.isOwner().then((v) {
+      if (mounted && v) setState(() => owner = true);
     });
   }
 
@@ -216,6 +223,9 @@ class _MorePageState extends State<MorePage> {
         const GroupLabel('Help'),
         LinkGroup([
           LinkRow(Icons.support_agent_rounded, 'Help and support', () => _link(kSupportUrl)),
+          LinkRow(Icons.lightbulb_outline_rounded, 'Request a feature', () => _open(const FeatureRequestPage()),
+              sub: 'Tell us what would help'),
+          if (owner) LinkRow(Icons.inbox_outlined, 'Feature requests', () => _open(const FeatureInboxPage()), sub: 'Every request, for the Pursee team'),
           LinkRow(Icons.mail_outline_rounded, 'Send feedback', _feedback),
           LinkRow(Icons.favorite_border_rounded, 'Share Pursee', _share),
           LinkRow(Icons.privacy_tip_outlined, 'Privacy', () => _link(kPrivacyUrl)),

@@ -236,6 +236,36 @@ select pg_temp.ok((public.import_rows(jsonb_build_array(
 )) ->> 'imported')::int = 2, 'rows import by name');
 select pg_temp.ok((select count(*) from public.accounts where name = 'Old wallet') = 1, 'a new account is made for an unknown name');
 select pg_temp.ok((select count(*) from public.categories where name in ('Coffee', 'Beans')) = 2, 'and its category and subcategory');
+-- ---------------------------------------------------------------- one entry paid from several accounts
+select pg_temp.put('cash0', pg_temp.bal('Cash')::text);
+select pg_temp.put('bank0', pg_temp.bal('Bank account')::text);
+select pg_temp.put('pay', public.save_txn_group(jsonb_build_array(
+  jsonb_build_object('kind', 'expense', 'account_id', pg_temp.acc('Cash'), 'category_id', pg_temp.cat('Food'), 'amount', 30,
+                     'note', 'Paid two ways', 'at', pg_temp.today() + time '09:00'),
+  jsonb_build_object('kind', 'expense', 'account_id', pg_temp.acc('Bank account'), 'category_id', pg_temp.cat('Food'), 'amount', 70,
+                     'note', 'Paid two ways', 'at', pg_temp.today() + time '09:00'))) ->> 'group');
+select pg_temp.ok(pg_temp.get('pay') is not null, 'an expense paid from two accounts is one group');
+select pg_temp.ok((select count(*) from public.txns where pay_group = pg_temp.id('pay')) = 2, 'with a transaction for each account');
+select pg_temp.ok(pg_temp.bal('Cash') = pg_temp.get('cash0')::numeric - 30, 'cash pays its part');
+select pg_temp.ok(pg_temp.bal('Bank account') = pg_temp.get('bank0')::numeric - 70, 'and the bank its part');
+select pg_temp.ok((select max((r ->> 'pay_parts')::int) from jsonb_array_elements(
+    public.txn_list(pg_temp.today() - 1, pg_temp.today(), '{"q":"paid two ways"}')) r) = 2, 'the list says how many parts it has');
+select public.save_txn_group(jsonb_build_array(jsonb_build_object(
+  'id', (select id from public.txns where pay_group = pg_temp.id('pay') and account_id = pg_temp.acc('Cash')),
+  'kind', 'expense', 'amount', 100)), pg_temp.id('pay'));
+select pg_temp.ok((select count(*) from public.txns where note = 'Paid two ways') = 1, 'back to one account, the other part goes');
+select pg_temp.ok((select pay_group from public.txns where note = 'Paid two ways') is null, 'and what is left is an ordinary entry');
+select pg_temp.ok(pg_temp.bal('Bank account') = pg_temp.get('bank0')::numeric, 'the bank has its money back');
+select pg_temp.fails($$select public.save_txn_group(jsonb_build_array(
+  jsonb_build_object('kind', 'expense', 'account_id', pg_temp.acc('Cash'), 'amount', 5),
+  jsonb_build_object('kind', 'expense', 'account_id', pg_temp.acc('Cash'), 'amount', 5)))$$,
+  'different account', 'each part needs its own account');
+select pg_temp.fails($$select public.save_txn_group(jsonb_build_array(
+  jsonb_build_object('kind', 'transfer', 'account_id', pg_temp.acc('Cash'), 'to_account_id', pg_temp.acc('Bank account'), 'amount', 5),
+  jsonb_build_object('kind', 'expense', 'account_id', pg_temp.acc('Bank account'), 'amount', 5)))$$,
+  'Only income and expenses', 'transfers are not split between accounts');
+delete from public.txns where note = 'Paid two ways';
+
 reset role;
 
 -- ---------------------------------------------------------------- receipt photos
@@ -262,6 +292,25 @@ select pg_temp.ok((select count(*) from public.txns) > 5, 'he can look');
 select pg_temp.fails($$select pg_temp.spend('Cash', 5)$$, 'only look', 'but not write');
 select pg_temp.ok(pg_temp.rows('delete from public.txns') = 0, 'or delete');
 select pg_temp.fails($$select public.delete_book('Asha''s money')$$, 'only the owner', 'or delete the book');
+reset role;
+
+-- ---------------------------------------------------------------- feature requests
+select pg_temp.as_user('a1111111-1111-1111-1111-111111111111', null, 'asha@example.com', pg_temp.id('b1'));
+select pg_temp.fails($$select public.request_feature('no')$$, 'short title', 'a request needs a title');
+select public.request_feature('Split one bill between cash and card', 'Some shops take part cash, part card.', 'must', '1.0.0', 'android', 'en');
+select pg_temp.ok(jsonb_array_length(public.my_feature_requests()) = 1, 'Asha sees her own request');
+select pg_temp.ok(not public.feature_owner(), 'she is not on the Pursee team');
+select pg_temp.fails($$select public.all_feature_requests()$$, 'Pursee team', 'so she cannot read everyone''s');
+select pg_temp.fails($$select count(*) from public.feature_requests$$, 'permission', 'or the table itself');
+reset role;
+select pg_temp.as_user('e5555555-5555-5555-5555-555555555555', null, 'contact@skifi.co');
+select pg_temp.ok(public.feature_owner(), 'contact@skifi.co is on the Pursee team');
+select pg_temp.ok((public.all_feature_requests() -> 'counts' ->> 'new')::int >= 1, 'and reads every request');
+select pg_temp.ok(public.set_feature_request_status((public.all_feature_requests() -> 'requests' -> 0 ->> 'id')::bigint, 'planned', 'Coming soon') ->> 'status' = 'planned',
+  'and can plan one with a note');
+reset role;
+select pg_temp.as_user('a1111111-1111-1111-1111-111111111111', null, 'asha@example.com', pg_temp.id('b1'));
+select pg_temp.ok(public.my_feature_requests() -> 0 ->> 'owner_note' = 'Coming soon', 'Asha reads the team''s note');
 reset role;
 
 -- ---------------------------------------------------------------- leaving

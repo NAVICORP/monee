@@ -465,6 +465,14 @@ void main() {
     await shot(tester, '09-new-expense');
   }, skip: skip);
 
+  testWidgets('split pay', (tester) async {
+    phone(tester);
+    await openApp(tester);
+    await tapOn(tester, find.byTooltip('Add'));
+    await tapOn(tester, find.text('Split pay'));
+    await shot(tester, '28-split-pay');
+  }, skip: skip);
+
   testWidgets('edit an expense', (tester) async {
     phone(tester);
     await openApp(tester);
@@ -545,6 +553,7 @@ void main() {
     ('Accounts settings', '23-account-settings'),
     ('Repeats', '24-repeats'),
     ('Passcode', '25-passcode'),
+    ('Request a feature', '29-request-feature'),
   ];
   for (final (row, name) in morePages) {
     testWidgets('more, $row', (tester) async {

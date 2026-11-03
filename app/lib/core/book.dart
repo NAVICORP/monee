@@ -322,6 +322,9 @@ class Txn {
   String? get repeatId => j['repeat_id'] as String?;
   String? get planId => j['plan_id'] as String?;
   int? get planNo => (j['plan_no'] as num?)?.toInt();
+
+  /// How many accounts the entry this belongs to is split between (1 when it is not).
+  int get payParts => (j['pay_parts'] as num?)?.toInt() ?? 1;
   int? get planMonths => (j['plan_months'] as num?)?.toInt();
 
   /// What the row counts as: income, expense, transfer, or card (card

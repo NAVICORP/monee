@@ -10,6 +10,15 @@ class _Part {
   final TextEditingController note;
 }
 
+/// One account an entry is paid from (or received in), with its share. `id`
+/// is the transaction already saved for it.
+class _Pay {
+  _Pay({this.id, this.accountId, this.amount = 0});
+  String? id;
+  String? accountId;
+  num amount;
+}
+
 /// A photo on the entry: a saved one (id and path; its bytes load for the
 /// thumbnail) or a new one (bytes, uploaded once the entry is saved).
 class _Photo {

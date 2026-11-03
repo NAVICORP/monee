@@ -109,6 +109,14 @@ class _EntryPageState extends State<_EntryPage> {
   final tags = <String>[];
   final photos = <_Photo>[];
 
+  /// Paid from (or received in) several accounts: a part for each. The first
+  /// part's account is also `accountId`, and sets the currency.
+  bool paying = false;
+  final pays = <_Pay>[];
+
+  /// The group an entry's parts share, when it has several.
+  String? payGroup;
+
   // A new entry's repeat or instalment.
   String? freq;
   int every = 1;
@@ -161,6 +169,11 @@ class _EntryPageState extends State<_EntryPage> {
   num get left => _round(_round(amount) - parts.fold<num>(0, (s, p) => s + _round(p.amount)));
 
   bool get splitDone => left.abs() < 0.5 / math.pow(10, currencyOf(currency).decimals);
+
+  /// What is still to be shared between the accounts.
+  num get payLeft => _round(_round(amount) - pays.fold<num>(0, (s, p) => s + _round(p.amount)));
+
+  bool get payDone => payLeft.abs() < 0.5 / math.pow(10, currencyOf(currency).decimals);
 
   String? get planText {
     final m = months;
@@ -218,6 +231,8 @@ class _EntryPageState extends State<_EntryPage> {
         tags.join('|'),
         splitting,
         for (final p in parts) '${p.categoryId}:${p.amount}:${p.note.text.trim()}',
+        paying,
+        for (final p in pays) '${p.accountId}:${p.amount}',
         photos.where((p) => p.id == null).length,
         freq,
         every,
@@ -284,11 +299,18 @@ class _EntryPageState extends State<_EntryPage> {
     try {
       final rows = await Api.instance.select('txns', where: {'id': 'eq.$id'});
       if (rows.isEmpty) throw ApiError('This entry is not here any more. It may have been deleted.');
-      final r = rows.first;
+      // Paid from several accounts: every part, the first one leading.
+      final group = rows.first['pay_group'] as String?;
+      final all = group == null ? rows : await Api.instance.select('txns', where: {'pay_group': 'eq.$group'}, order: 'created_at,id');
+      if (all.isEmpty) throw ApiError('This entry is not here any more. It may have been deleted.');
+      final r = all.first;
+      final lead = '${r['id']}';
+      final ids = [for (final x in all) '${x['id']}'];
+      final inIds = 'in.(${ids.join(',')})';
       final more = await Future.wait([
-        Api.instance.select('txn_splits', where: {'txn_id': 'eq.$id'}),
-        Api.instance.select('txn_tags', columns: 'tag_id', where: {'txn_id': 'eq.$id'}),
-        if (!widget.copy) Api.instance.select('txn_photos', where: {'txn_id': 'eq.$id'}, order: 'created_at'),
+        Api.instance.select('txn_splits', where: {'txn_id': inIds}),
+        Api.instance.select('txn_tags', columns: 'tag_id', where: {'txn_id': 'eq.$lead'}),
+        if (!widget.copy) Api.instance.select('txn_photos', where: {'txn_id': inIds}, order: 'created_at'),
       ]);
       final tagIds = [for (final l in more[1]) '${l['tag_id']}'];
       final tagRows = tagIds.isEmpty
@@ -305,14 +327,22 @@ class _EntryPageState extends State<_EntryPage> {
       final now = DateTime.now();
       final today = Me.instance.book?.today ?? now;
       setState(() {
-        editId = widget.copy ? null : id;
+        editId = widget.copy ? null : lead;
+        payGroup = widget.copy || all.length < 2 ? null : group;
         kind = _kindOk(r['kind'] as String?);
         at = widget.copy && !widget.keepDate ? DateTime(today.year, today.month, today.day, now.hour, now.minute) : stored;
         accountId = r['account_id'] as String?;
         toAccountId = kind == 'transfer' ? r['to_account_id'] as String? : null;
         categoryId = kind == 'transfer' ? null : r['category_id'] as String?;
-        amount = toNum(r['amount']);
+        amount = all.fold<num>(0, (s, x) => s + toNum(x['amount']));
         fee = kind == 'transfer' ? toNum(r['fee']) : 0;
+        pays.clear();
+        paying = all.length > 1;
+        if (paying) {
+          pays.addAll([
+            for (final x in all) _Pay(id: widget.copy ? null : '${x['id']}', accountId: x['account_id'] as String?, amount: toNum(x['amount'])),
+          ]);
+        }
         toAmount = twoCurrencies && r['to_amount'] != null ? toNum(r['to_amount']) : null;
         note.text = (r['note'] as String?) ?? '';
         description.text = (r['description'] as String?) ?? '';
@@ -323,9 +353,31 @@ class _EntryPageState extends State<_EntryPage> {
           _disposeLater(p.note);
         }
         parts.clear();
-        if (kind != 'transfer') {
+        if (kind != 'transfer' && all.length < 2) {
           for (final s in more[0]) {
             parts.add(_Part(categoryId: s['category_id'] as String?, amount: toNum(s['amount']), text: (s['note'] as String?) ?? ''));
+          }
+        } else if (kind != 'transfer') {
+          // The category lines of all the parts together: the same category
+          // and note across accounts is one line again.
+          final lines = <String, _Part>{};
+          for (final x in all) {
+            final own = [for (final s in more[0]) if (s['txn_id'] == x['id']) s];
+            final bits = own.isEmpty ? [{'category_id': x['category_id'], 'amount': x['amount'], 'note': null}] : own;
+            for (final s in bits) {
+              final c = s['category_id'] as String?;
+              final n = (s['note'] as String?) ?? '';
+              final line = lines.putIfAbsent('$c|$n', () => _Part(categoryId: c, text: n));
+              line.amount = _round(line.amount + toNum(s['amount']));
+            }
+          }
+          if (lines.length > 1) {
+            parts.addAll(lines.values);
+          } else {
+            for (final l in lines.values) {
+              _disposeLater(l.note);
+            }
+            categoryId = lines.values.firstOrNull?.categoryId ?? categoryId;
           }
         }
         splitting = parts.isNotEmpty;
@@ -431,6 +483,7 @@ class _EntryPageState extends State<_EntryPage> {
       if (_categoryOk(categoryId) == null) categoryId = null;
       if (k == 'transfer') {
         _dropParts();
+        _dropPays();
         if (toAccountId == accountId) toAccountId = null;
       } else {
         for (final p in parts) {
@@ -470,7 +523,7 @@ class _EntryPageState extends State<_EntryPage> {
   }
 
   Future<void> _tapRepeat() async {
-    if (splitting) {
+    if (splitting || paying) {
       toast(context, 'A split entry cannot repeat. Remove the split first.', bad: true);
       return;
     }
@@ -625,6 +678,86 @@ class _EntryPageState extends State<_EntryPage> {
   }
 
   void _addPart() => setState(() => parts.add(_Part()));
+
+  void _dropPays() {
+    pays.clear();
+    paying = false;
+  }
+
+  void _startPaySplit() {
+    setState(() {
+      paying = true;
+      pays
+        ..add(_Pay(accountId: accountId))
+        ..add(_Pay());
+    });
+  }
+
+  void _endPaySplit() {
+    setState(() {
+      final first = pays.isEmpty ? null : pays.first.accountId;
+      if (first != null) accountId = first;
+      _dropPays();
+    });
+  }
+
+  void _addPay() => setState(() => pays.add(_Pay()));
+
+  void _removePay(_Pay p) {
+    setState(() {
+      final before = currency;
+      pays.remove(p);
+      if (pays.isNotEmpty) accountId = pays.first.accountId ?? accountId;
+      if (currency != before) _resetRate();
+    });
+  }
+
+  Future<void> _tapPayAccount(_Pay p) async {
+    final first = pays.isNotEmpty && identical(pays.first, p);
+    final used = {for (final o in pays) if (!identical(o, p) && o.accountId != null) o.accountId};
+    final list = [
+      for (final a in _pickable(p.accountId))
+        if (!used.contains(a.id) && (first || a.currency == currency)) a,
+    ];
+    if (list.isEmpty) {
+      toast(context, 'There is no other account in $currency to split with.', bad: true);
+      return;
+    }
+    final picked = await showPicker<String>(
+      context,
+      title: kind == 'income' ? 'Received in' : 'Paid from',
+      selected: p.accountId,
+      search: true,
+      options: [for (final a in list) PickOption<String>(a.id, a.name, sub: a.group?.label ?? 'Accounts', trailing: a.currency)],
+    );
+    if (picked == null || !mounted) return;
+    setState(() {
+      p.accountId = picked.value;
+      if (first) {
+        final before = currency;
+        accountId = p.accountId;
+        if (currency != before) {
+          _resetRate();
+          // The other parts have to be in the same currency.
+          for (final o in pays.skip(1)) {
+            if (Me.instance.account(o.accountId)?.currency != currency) o.accountId = null;
+          }
+        }
+      }
+    });
+  }
+
+  Future<void> _tapPayAmount(_Pay p) async {
+    final rest = payLeft;
+    final v = await showCalculator(context,
+        start: p.amount > 0 ? p.amount : (rest > 0 ? rest : null), currency: currency, title: 'Amount from this account');
+    if (v == null || !mounted) return;
+    if (v < 0) {
+      toast(context, 'Enter an amount above 0.', bad: true);
+      return;
+    }
+    setState(() => p.amount = v);
+  }
 
   void _removePart(_Part p) {
     final wasFirst = parts.isNotEmpty && identical(parts.first, p);
@@ -797,6 +930,14 @@ class _EntryPageState extends State<_EntryPage> {
       if (parts.any((p) => p.amount <= 0)) return 'Give every part an amount above 0.';
       if (!splitDone) return 'The parts add up to ${money(_round(amount) - left, currency)}, not ${money(amount, currency)}.';
     }
+    if (!isTransfer && paying) {
+      if (pays.length < 2) return 'Split the payment between at least two accounts.';
+      if (pays.any((p) => Me.instance.account(p.accountId) == null)) return 'Pick an account for every part of the payment.';
+      if ({for (final p in pays) p.accountId}.length < pays.length) return 'Use a different account for each part.';
+      if (pays.any((p) => Me.instance.account(p.accountId)?.currency != currency)) return 'Every account in a split payment must be in $currency.';
+      if (pays.any((p) => p.amount <= 0)) return 'Give every account an amount above 0.';
+      if (!payDone) return 'The accounts add up to ${money(_round(amount) - payLeft, currency)}, not ${money(amount, currency)}.';
+    }
     final e = endsOn;
     if (freq != null && e != null && e.isBefore(dayOnly(at))) return 'The repeat ends before it starts.';
     return null;
@@ -831,6 +972,60 @@ class _EntryPageState extends State<_EntryPage> {
       ],
       'tags': List<String>.of(tags),
     };
+  }
+
+  /// The entry as save_txn_group takes it: a part for each account. The
+  /// category lines are shared out between the accounts in order, so every
+  /// part adds up and the totals per category stay the same.
+  List<Map<String, dynamic>> _groupPayloads() {
+    final base = _payload();
+    if (!paying) return [base];
+    final unit = math.pow(10, currencyOf(currency).decimals);
+    int minor(num v) => (v * unit).round();
+    num major(int v) => _round(v / unit);
+    final lines = <({String? cat, String? note, int amount})>[
+      if (splitting)
+        for (final p in parts)
+          (cat: p.categoryId, note: p.note.text.trim().isEmpty ? null : p.note.text.trim(), amount: minor(_round(p.amount)))
+      else
+        (cat: mainCategory, note: null, amount: minor(_round(amount))),
+    ];
+    final out = <Map<String, dynamic>>[];
+    var i = 0;
+    var rest = lines.isEmpty ? 0 : lines.first.amount;
+    for (final p in pays) {
+      var need = minor(_round(p.amount));
+      final share = need;
+      final cells = <int, int>{};
+      while (need > 0 && i < lines.length) {
+        final take = math.min(need, rest);
+        if (take > 0) cells[i] = (cells[i] ?? 0) + take;
+        need -= take;
+        rest -= take;
+        if (rest <= 0) {
+          i++;
+          if (i < lines.length) rest = lines[i].amount;
+        }
+      }
+      final q = Map<String, dynamic>.of(base)
+        ..remove('id')
+        ..['account_id'] = p.accountId
+        ..['amount'] = major(share);
+      final pid = p.id;
+      if (pid != null) q['id'] = pid;
+      final keys = cells.keys.toList()..sort();
+      if (keys.length < 2) {
+        q['category_id'] = keys.isEmpty ? mainCategory : lines[keys.first].cat;
+        q['splits'] = <Map<String, dynamic>>[];
+      } else {
+        q['category_id'] = lines[keys.first].cat;
+        q['splits'] = [
+          for (final k in keys) {'category_id': lines[k].cat, 'amount': major(cells[k]!), 'note': lines[k].note},
+        ];
+      }
+      out.add(q);
+    }
+    return out;
   }
 
   /// Saves, then closes; with `more` (Continue) it stays for the next entry,
@@ -897,6 +1092,11 @@ class _EntryPageState extends State<_EntryPage> {
         final r = await Api.instance.rpc('add_instalments', {'p': q, 'months': months});
         final ids = r is Map ? r['ids'] : null;
         id = ids is List && ids.isNotEmpty ? '${ids.first}' : null;
+      } else if (paying || payGroup != null) {
+        // Several accounts (or an entry that had several): every part at once.
+        final r = await Api.instance.rpc('save_txn_group', {'parts': _groupPayloads(), 'group_id': payGroup});
+        final ids = r is Map ? r['ids'] : null;
+        id = ids is List && ids.isNotEmpty ? '${ids.first}' : null;
       } else {
         final r = await Api.instance.rpc('save_txn', {'p': p});
         id = r is Map ? r['id'] as String? : null;
@@ -949,6 +1149,7 @@ class _EntryPageState extends State<_EntryPage> {
       tags.clear();
       tagCtl.clear();
       _dropParts();
+      _dropPays();
       photos.clear();
       _clearPlan();
       notesKey = null;
@@ -994,10 +1195,13 @@ class _EntryPageState extends State<_EntryPage> {
       if (p == null || !mounted) return;
       whole = p.value == 'all';
     }
+    final g = payGroup;
     final ok = await confirm(
       context,
       title: whole ? 'Delete the whole plan?' : 'Delete this entry?',
-      text: whole ? 'Every month of this instalment goes from every list and total.' : 'It goes from every list and total.',
+      text: whole
+          ? 'Every month of this instalment goes from every list and total.'
+          : (g != null ? 'It goes from every list and total, from every account it was split between.' : 'It goes from every list and total.'),
       yes: 'Delete',
       danger: true,
     );
@@ -1006,6 +1210,8 @@ class _EntryPageState extends State<_EntryPage> {
     try {
       if (whole && pid != null) {
         await Api.instance.delete('instalment_plans', where: {'id': 'eq.$pid'});
+      } else if (g != null) {
+        await Api.instance.delete('txns', where: {'pay_group': 'eq.$g'});
       } else {
         await Api.instance.delete('txns', where: {'id': 'eq.$id'});
       }
@@ -1249,7 +1455,20 @@ class _EntryPageState extends State<_EntryPage> {
           trailing: a == null ? null : Pill.grey(a.currency),
           onTap: onTap,
         );
-    if (!isTransfer) return row('Account', account, can ? () => _tapAccount() : null);
+    if (!isTransfer) {
+      if (paying) return _payCard(can, currencyOf(currency));
+      final a = account;
+      return _FieldRow(
+        label: 'Account',
+        value: a?.name ?? 'Pick an account',
+        muted: a == null,
+        icon: Icons.account_balance_wallet_outlined,
+        onTap: can ? () => _tapAccount() : null,
+        trailing: can && !hasPlan
+            ? _TinyButton('Split pay', icon: Icons.call_split_rounded, onTap: _startPaySplit)
+            : (a == null ? null : Pill.grey(a.currency)),
+      );
+    }
     return Row(children: [
       Expanded(
         child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
@@ -1263,6 +1482,63 @@ class _EntryPageState extends State<_EntryPage> {
         RoundIcon(Icons.swap_vert_rounded, tooltip: 'Swap From and To', onTap: _swap),
       ],
     ]);
+  }
+
+  Widget _payCard(bool can, Currency cur) {
+    final l = payLeft;
+    final done = payDone;
+    final income = kind == 'income';
+    final status = done ? (income ? 'All received' : 'All paid') : (l > 0 ? 'Left ${cur.format(l)}' : 'Over by ${cur.format(-l)}');
+    return Container(
+      padding: const EdgeInsetsDirectional.fromSTEB(12, 10, 8, 4),
+      decoration: BoxDecoration(color: K.surface, borderRadius: BorderRadius.circular(K.r), border: Border.all(color: K.border2)),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        Row(children: [
+          const Icon(Icons.account_balance_wallet_outlined, size: 18, color: K.ink2),
+          const SizedBox(width: 8),
+          Text(income ? 'Received in' : 'Paid from', style: T.label),
+          const SizedBox(width: Sp.sm),
+          Expanded(
+            child: Text(status,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.end,
+                style: T.tiny.copyWith(color: done ? K.income : K.bad).merge(T.tabular)),
+          ),
+          const SizedBox(width: 4),
+        ]),
+        const SizedBox(height: Sp.sm),
+        for (var i = 0; i < pays.length; i++) _payRow(i, can, cur),
+        if (can)
+          Row(children: [
+            if (pays.length < 10) _TinyButton('Add account', icon: Icons.add_rounded, onTap: _addPay),
+            const Spacer(),
+            _TinyButton('Remove split', color: K.muted, onTap: _endPaySplit),
+          ]),
+      ]),
+    );
+  }
+
+  Widget _payRow(int i, bool can, Currency cur) {
+    final p = pays[i];
+    final a = Me.instance.account(p.accountId);
+    return Padding(
+      key: ObjectKey(p),
+      padding: const EdgeInsetsDirectional.only(end: 4, bottom: Sp.sm),
+      child: Row(children: [
+        Expanded(
+          child: _FieldRow(
+            label: 'Account ${i + 1}',
+            value: a?.name ?? 'Pick an account',
+            muted: a == null,
+            onTap: can ? () => _tapPayAccount(p) : null,
+          ),
+        ),
+        const SizedBox(width: 6),
+        _FieldRow(label: 'Amount', value: cur.format(p.amount), compact: true, muted: p.amount <= 0, onTap: can ? () => _tapPayAmount(p) : null),
+        if (can && pays.length > 2) RoundIcon(Icons.close_rounded, size: 28, tooltip: 'Remove this account', onTap: () => _removePay(p)),
+      ]),
+    );
   }
 
   Widget _categoryRow(bool can) => _FieldRow(
