@@ -370,7 +370,9 @@ async function handle(req, res) {
     try { rel = decodeURIComponent(p); } catch { return notFound(req, res); }
     const f = path.resolve(ROOT, `.${rel}`);
     if (!f.startsWith(path.join(ROOT, 'assets') + path.sep) || !existsSync(f) || !statSync(f).isFile()) return notFound(req, res);
-    return sendFile(req, res, f, url.searchParams.has('v') ? 'public, max-age=31536000, immutable' : 'public, max-age=3600');
+    // Store pictures can be fetched from other sites (store consoles).
+    const open = rel.startsWith('/assets/store/') ? { 'access-control-allow-origin': '*', 'cross-origin-resource-policy': 'cross-origin' } : {};
+    return sendFile(req, res, f, url.searchParams.has('v') ? 'public, max-age=31536000, immutable' : 'public, max-age=3600', open);
   }
   return notFound(req, res);
 }
