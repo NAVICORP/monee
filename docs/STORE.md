@@ -124,6 +124,26 @@ The first release of Pursee: daily, calendar and monthly views, accounts and car
 - Export compliance: no non-exempt encryption (ITSAppUsesNonExemptEncryption is false in Info.plist).
 - Pricing: free, all countries and regions except China mainland.
 
+## YouTube intro video (for Play's Video field)
+
+Video (1920 x 1080, 37 s) and thumbnail (1280 x 720): `tools/store/video.cjs` and `tools/store/music.py` (the music is made from sine waves, nothing to license). Upload to the SkiFi Creative Hub channel as Public or Unlisted, not made for kids, then put the link in Play's store listing under Video.
+
+**YouTube title**
+
+```
+Pursee: your money, in one book
+```
+
+**YouTube description**
+
+```
+Pursee is a money book for everything you earn, spend and move: cash, bank, cards, wallets, savings and loans, in every currency you use.
+
+See your net worth and this month at a glance, add an entry in seconds, split a bill or pay part cash and part card, know what your card owes and when, and see where it all goes with budgets and charts. Night mode included.
+
+Free on Android, iPhone and the web: https://pursee.skifi.co
+```
+
 ## The review account
 
 Both stores sign in with the same account Kuree's and Dairee's reviewers use: **contact@skifi.co** with its review password (the owner types it in; it is never written down here). Sign in with Email > Use a password. That account owns a sample book, **My money**, with a year of made-up income, spending, cards and currencies (supabase/migrations/0009_review_book.sql). It is linked the first time that account signs in to Pursee. To delete the account: More > Delete my account (please don't, on the review account).
