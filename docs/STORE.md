@@ -1,6 +1,6 @@
 # Pursee: store listing
 
-Everything to paste into Google Play Console and App Store Connect. The screen pictures come from the `screens` branch (drawn in CI from the demo book, so no real names are shown).
+Everything to paste into Google Play Console and App Store Connect. The screen pictures come from the `store-pictures` branch and are also served at https://pursee.skifi.co/assets/store/play/ (so the store consoles can fetch them) (drawn in CI from the demo book, so no real names are shown).
 
 ## Both stores
 
@@ -53,6 +53,7 @@ Pursee is a money book for everything you earn, spend and move: cash, bank, card
 It keeps the record. Pursee never connects to your bank and never moves money.
 
 EVERY DAY IN ONE LOOK
+- A home page with your net worth, this month's income and spending, and where the money went.
 - Daily, Calendar, Monthly and Total views of the month.
 - Income, expenses and the total for every day, week and month.
 - Search by note, amount or tag, and filter by category or account.
@@ -60,7 +61,7 @@ EVERY DAY IN ONE LOOK
 ADD AN ENTRY IN SECONDS
 - Income, expense or transfer, with a calculator built in.
 - Categories with subcategories, notes, tags and photos of the receipt.
-- Split one bill across several categories.
+- Split one bill across several categories, or pay it partly in cash and partly by card.
 - Save frequent entries as bookmarks.
 
 CARDS THAT ADD UP
@@ -82,7 +83,7 @@ EVERY CURRENCY YOU USE
 ON YOUR PHONE AND YOUR COMPUTER
 - The same book on Android, iPhone and the web at pursee.skifi.co.
 - Share a book with your family: they can add entries or just look.
-- Lock the app with a passcode.
+- Lock the app with a passcode, and switch on night mode.
 - Export to Excel any time, and bring your records over from another money app's Excel backup.
 
 Sign in with a code on WhatsApp or by email. Delete your account any time from More.
