@@ -19,16 +19,16 @@ const REPO = path.resolve(__dirname, '..', '..');
 const FONTS = path.join(REPO, 'web', 'assets', 'fonts');
 const ICON = path.join(REPO, 'app', 'assets', 'brand', 'icon.png');
 
-/* order, screen, caption (the highlighted words in <b>) */
+/* order, screen, caption (the highlighted words in <b>); every caption is two lines, split by <br> */
 const FRAMES = [
-  ['02-trans-daily', 'Your money, <b>day by day</b>'],
-  ['09-new-expense', 'Add an entry <b>in seconds</b>'],
-  ['03-trans-calendar', 'Your month <b>on a calendar</b>'],
-  ['12-stats-pie', 'See where <b>it all goes</b>'],
-  ['05-trans-total', 'Budgets that <b>keep you on track</b>'],
-  ['15-accounts', 'Cash, bank and cards <b>in one place</b>'],
-  ['16-card', 'Know what your card <b>owes, and when</b>'],
-  ['22-currencies', 'Every currency <b>you use</b>'],
+  ['02-trans-daily', 'Your money,<br><b>day by day</b>'],
+  ['09-new-expense', 'Add an entry<br><b>in seconds</b>'],
+  ['03-trans-calendar', 'Your month<br><b>on a calendar</b>'],
+  ['12-stats-pie', 'See where<br><b>it all goes</b>'],
+  ['05-trans-total', 'Budgets that<br><b>keep you on track</b>'],
+  ['15-accounts', 'Cash, bank and<br>cards <b>in one place</b>'],
+  ['16-card', 'Know what your<br>card <b>owes, and when</b>'],
+  ['22-currencies', 'Every currency<br><b>you use</b>'],
 ];
 const FEATURE = '02-trans-daily';
 
@@ -111,7 +111,7 @@ function framePage(W, H, shot, caption) {
     background:radial-gradient(${1400 * s}px ${1200 * s}px at 80% 8%,#5634C7 0%,#2A1766 55%,#140B33 100%)}
   .glow{position:absolute;inset:0;background:radial-gradient(${700 * s}px ${600 * s}px at 10% 100%,rgba(255,170,130,.18),transparent 70%),radial-gradient(${600 * s}px ${500 * s}px at 85% 55%,rgba(155,123,255,.30),transparent 70%)}
   h1{position:absolute;left:${90 * s}px;right:${90 * s}px;top:${capTop}px;text-align:center;font-family:"Bricolage";font-weight:700;
-    font-size:${capSize}px;line-height:1.04;text-wrap:balance}
+    font-size:${capSize}px;line-height:1.04;white-space:nowrap}
   h1 b{color:#C4B2FF;font-weight:700}
   ${d.css}
   </style></head><body><div class="glow"></div><h1>${caption}</h1>${d.html}</body></html>`;
