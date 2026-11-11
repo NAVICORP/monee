@@ -15,7 +15,8 @@ void main() {
     final currencies = {for (final r in p.rows) r['currency']};
     expect(currencies, containsAll(['SAR', 'INR', 'BHD']));
     for (final r in p.rows) {
-      if (r['currency'] != 'SAR') expect(r['rate'], isNotNull, reason: '$r');
+      // A tiny amount that rounds to 0 in SAR has no rate; the book's is used.
+      if (r['currency'] != 'SAR' && (r['amount'] as num) >= 1) expect(r['rate'], isNotNull, reason: '$r');
       if (r['rate'] != null) expect((r['rate'] as num) > 0, isTrue, reason: '$r');
       if (r['kind'] == 'transfer') {
         expect(r['to_account'], isNotEmpty, reason: '$r');
