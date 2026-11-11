@@ -248,6 +248,12 @@ select pg_temp.ok((select rate from public.txns t join public.accounts a on a.id
                   'the rate of that day is kept');
 select pg_temp.ok((select to_amount from public.txns where to_account_id = pg_temp.acc('Dollar cash')) = 30, 'and what arrived');
 select pg_temp.ok((select count(*) from public.txn_tags tt join public.tags g on g.id = tt.tag_id where g.name = 'From the sheet') = 1, 'tags come along');
+update public.currency_rates set rate = 90 where currency = 'USD';
+select pg_temp.ok(public.balance_main_at(pg_temp.acc('Dollar cash'), public.book_today(public.current_book_id())) = 2250,
+                  'money in another currency keeps the value it had on its day');
+select pg_temp.ok((select (x ->> 'balance_main')::numeric from jsonb_array_elements(public.accounts_overview() -> 'groups') g,
+                          jsonb_array_elements(g -> 'accounts') x where x ->> 'name' = 'Dollar cash') = 2250,
+                  'and so do the totals, whatever today''s rate');
 -- ---------------------------------------------------------------- one entry paid from several accounts
 select pg_temp.put('cash0', pg_temp.bal('Cash')::text);
 select pg_temp.put('bank0', pg_temp.bal('Bank account')::text);

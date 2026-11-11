@@ -25,6 +25,7 @@ class AccountPage extends StatefulWidget {
 class _AccountPageState extends State<AccountPage> with ReloadOnChange<AccountPage> {
   Period? _period;
   num balance = 0;
+  num? balanceMain;
   Map<String, dynamic>? card;
   List<Map<String, dynamic>>? trend;
   List<Txn>? txns;
@@ -56,6 +57,7 @@ class _AccountPageState extends State<AccountPage> with ReloadOnChange<AccountPa
         Api.instance.rpc('balance_at', {'account': widget.accountId, 'until': isoDay(b.today)}),
         Api.instance.rpc('account_trend', {'account': widget.accountId, 'months': 12}),
         _txnCall(p),
+        Api.instance.rpc('balance_main_at', {'account': widget.accountId, 'until': isoDay(b.today)}),
         if (isCard) Api.instance.rpc('card_status', {'card': widget.accountId}),
       ]);
       if (!mounted || seq != _seq) return;
@@ -63,7 +65,8 @@ class _AccountPageState extends State<AccountPage> with ReloadOnChange<AccountPa
         balance = toNum(r[0]);
         trend = jsonRows(r[1]);
         if (txSeq == _txSeq) txns = jsonRows(r[2]).map(Txn.new).toList();
-        card = isCard ? jsonMap(r[3]) : null;
+        balanceMain = r[3] == null ? null : toNum(r[3]);
+        card = isCard ? jsonMap(r[4]) : null;
         error = null;
       });
     } on ApiError catch (e) {
@@ -196,7 +199,7 @@ class _AccountPageState extends State<AccountPage> with ReloadOnChange<AccountPa
         ]),
       );
     }
-    final inMain = a.currency == b.currency ? null : Me.instance.toMain(balance, a.currency);
+    final inMain = a.currency == b.currency ? null : balanceMain;
     return HeroCard(
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text(tags, maxLines: 1, overflow: TextOverflow.ellipsis, style: soft),
