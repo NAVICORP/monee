@@ -236,6 +236,18 @@ select pg_temp.ok((public.import_rows(jsonb_build_array(
 )) ->> 'imported')::int = 2, 'rows import by name');
 select pg_temp.ok((select count(*) from public.accounts where name = 'Old wallet') = 1, 'a new account is made for an unknown name');
 select pg_temp.ok((select count(*) from public.categories where name in ('Coffee', 'Beans')) = 2, 'and its category and subcategory');
+select pg_temp.ok((public.import_rows(jsonb_build_array(
+  jsonb_build_object('date', '2026-01-07 10:00', 'kind', 'expense', 'account', 'Dollar bank', 'currency', 'USD', 'rate', 83.5,
+                     'category', 'Coffee', 'amount', 1000, 'tags', jsonb_build_array('trip')),
+  jsonb_build_object('date', '2026-01-08 10:00', 'kind', 'transfer', 'account', 'Bank account', 'to_account', 'Dollar cash',
+                     'to_currency', 'USD', 'to_amount', 30, 'amount', 100)
+)) ->> 'imported')::int = 2, 'rows in another currency import');
+select pg_temp.ok((select currency from public.accounts where name = 'Dollar bank') = 'USD', 'a new account takes the currency of its rows');
+select pg_temp.ok((select currency from public.accounts where name = 'Dollar cash') = 'USD', 'and so does the other side of a transfer');
+select pg_temp.ok((select rate from public.txns t join public.accounts a on a.id = t.account_id where a.name = 'Dollar bank') = 83.5,
+                  'the rate of that day is kept');
+select pg_temp.ok((select to_amount from public.txns where to_account_id = pg_temp.acc('Dollar cash')) = 30, 'and what arrived');
+select pg_temp.ok((select count(*) from public.txn_tags tt join public.tags g on g.id = tt.tag_id where g.name = 'trip') = 1, 'tags come along');
 -- ---------------------------------------------------------------- one entry paid from several accounts
 select pg_temp.put('cash0', pg_temp.bal('Cash')::text);
 select pg_temp.put('bank0', pg_temp.bal('Bank account')::text);
