@@ -307,6 +307,9 @@ class _Row {
     required this.currency,
     required this.note,
     required this.description,
+    this.tags = const [],
+    this.accountAmount,
+    this.mainAmount,
   });
   final DateTime at;
   final String kind;
@@ -318,6 +321,21 @@ class _Row {
   final String currency;
   final String note;
   final String description;
+  final List<String> tags;
+
+  /// Money Manager's second Account column: the amount in the account's own
+  /// currency (the typed amount can be in another currency).
+  final num? accountAmount;
+
+  /// The amount in the main currency (Money Manager's column named after it).
+  final num? mainAmount;
+
+  /// Worked out from the whole file (see _settle).
+  String accountCurrency = '';
+  num bookedAmount = 0;
+  num? rate;
+  String toCurrency = '';
+  num? toAmount;
 
   Map<String, dynamic> toJson() => {
         'date': '${isoStamp(at).substring(0, 16)}:${at.second.toString().padLeft(2, '0')}',
@@ -326,10 +344,14 @@ class _Row {
         if (kind == 'transfer') 'to_account': toAccount,
         if (kind != 'transfer' && category.isNotEmpty) 'category': category,
         if (kind != 'transfer' && subcategory.isNotEmpty) 'subcategory': subcategory,
-        'amount': amount.abs(),
-        if (currency.isNotEmpty) 'currency': currency,
+        'amount': (bookedAmount > 0 ? bookedAmount : amount).abs(),
+        if (accountCurrency.isNotEmpty) 'currency': accountCurrency else if (currency.isNotEmpty) 'currency': currency,
+        if (rate != null) 'rate': rate,
+        if (kind == 'transfer' && toCurrency.isNotEmpty) 'to_currency': toCurrency,
+        if (kind == 'transfer' && toAmount != null) 'to_amount': toAmount,
         if (note.isNotEmpty) 'note': note,
         if (description.isNotEmpty) 'description': description,
+        if (tags.isNotEmpty) 'tags': tags,
       };
 }
 
@@ -361,6 +383,7 @@ const _names = <String, List<String>>{
   'currency': ['currency', 'currency code'],
   'note': ['note', 'notes', 'memo', 'title', 'payee'],
   'description': ['description', 'details', 'desc', 'remarks', 'comment', 'comments'],
+  'tags': ['tag', 'tags', 'labels'],
 };
 
 /// The text of a cell.
@@ -479,6 +502,13 @@ _Parsed _parseXlsx(_ParseInput input) {
         if (raw.isEmpty) continue;
         final n = _norm(raw);
         var matched = false;
+        // Money Manager has two Account columns: the name, then the amount
+        // in that account's own currency.
+        if (n == 'account' && col.containsKey('account') && !col.containsKey('acct_amount')) {
+          col['acct_amount'] = c;
+          found.add('$raw (amount in the account\'s currency)');
+          continue;
+        }
         for (final e in _names.entries) {
           if (!col.containsKey(e.key) && e.value.contains(n)) {
             col[e.key] = c;
@@ -493,13 +523,13 @@ _Parsed _parseXlsx(_ParseInput input) {
         if (matched) found.add(raw);
       }
       if (!col.containsKey('date') || (!col.containsKey('amount') && mainCol == null)) continue;
-      return _readRows(rows, h, col, mainCol, found, entry.key);
+      return _readRows(rows, h, col, mainCol, found, entry.key, input.mainCurrency);
     }
   }
   return const _Parsed(error: 'No sheet with a Date and an Amount column was found. Put the column names in the first row.');
 }
 
-_Parsed _readRows(List<List<xl.Data?>> rows, int h, Map<String, int> col, int? mainCol, List<String> found, String sheet) {
+_Parsed _readRows(List<List<xl.Data?>> rows, int h, Map<String, int> col, int? mainCol, List<String> found, String sheet, String main) {
   xl.Data? cell(List<xl.Data?> r, String key) {
     final c = col[key];
     return c == null || c >= r.length ? null : r[c];
@@ -554,6 +584,12 @@ _Parsed _readRows(List<List<xl.Data?>> rows, int h, Map<String, int> col, int? m
       currency: RegExp(r'^[A-Z]{3}$').hasMatch(cur) ? cur : '',
       note: _cut(text(r, 'note'), 120),
       description: _cut(text(r, 'description'), 2000),
+      tags: [
+        for (final t in text(r, 'tags').split(RegExp(r'[,#]')))
+          if (t.trim().isNotEmpty) _cut(t.trim(), 30),
+      ],
+      accountAmount: col.containsKey('acct_amount') ? _amount(cell(r, 'acct_amount'))?.abs() : null,
+      mainAmount: mainCol != null && mainCol < r.length ? _amount(r[mainCol])?.abs() : null,
     );
     if (row.account.isEmpty) row.account = 'Imported';
     if (kind == 'transfer_in') {
@@ -567,6 +603,15 @@ _Parsed _readRows(List<List<xl.Data?>> rows, int h, Map<String, int> col, int? m
   // Transfer-In rows repeat the Transfer-Out ones; only when a file has no
   // Transfer-Out rows are they read (the other way round).
   final hasOut = out.any((r) => r.kind == 'transfer');
+  // A Transfer-In row says how much arrived: keep it for its Transfer-Out.
+  final arrived = <String, num>{};
+  if (hasOut) {
+    for (final r in ins) {
+      final other = r.toAccount.isNotEmpty ? r.toAccount : r.category;
+      final got = r.accountAmount ?? r.amount;
+      arrived['${r.at.millisecondsSinceEpoch}|${other.toLowerCase()}|${r.account.toLowerCase()}'] = got;
+    }
+  }
   var transferIns = 0;
   if (!hasOut && ins.isNotEmpty) {
     for (final r in ins) {
@@ -594,7 +639,103 @@ _Parsed _readRows(List<List<xl.Data?>> rows, int h, Map<String, int> col, int? m
     kept.add(r);
   }
   kept.sort((a, b) => a.at.compareTo(b.at));
+  _settle(kept, main, arrived);
   return _Parsed(rows: kept, skipped: skipped, transferIns: transferIns, columns: found, sheet: sheet);
+}
+
+/// Works out each account's currency and the exact amounts, the way Money
+/// Manager's file has them: the amount in the account's own currency, the
+/// amount in the main currency (so the rate of that day), and for transfers
+/// what arrived in the other account.
+void _settle(List<_Row> rows, String main, Map<String, num> arrived) {
+  bool same(num a, num b) => (a - b).abs() < 0.005;
+  // An account's currency: the typed currency on rows where the typed amount
+  // is the account's own amount.
+  final votes = <String, Map<String, int>>{};
+  void vote(String acc, String cur) {
+    if (cur.isEmpty) return;
+    final v = votes.putIfAbsent(acc.toLowerCase(), () => {});
+    v[cur] = (v[cur] ?? 0) + 1;
+  }
+
+  for (final r in rows) {
+    final own = r.accountAmount;
+    if (own == null) {
+      vote(r.account, r.currency);
+    } else if (same(own, r.amount)) {
+      vote(r.account, r.currency);
+    }
+  }
+  final cur = <String, String>{};
+  votes.forEach((acc, v) {
+    final best = v.entries.reduce((a, b) => b.value > a.value ? b : a);
+    cur[acc] = best.key;
+  });
+  // Rates seen in the file: main currency per unit, by currency, in date order.
+  final seen = <String, List<(DateTime, num)>>{};
+  for (final r in rows) {
+    final c = cur[r.account.toLowerCase()];
+    final own = r.accountAmount ?? r.amount;
+    final m = r.mainAmount;
+    if (c != null && c != main && m != null && m > 0 && own > 0) {
+      seen.putIfAbsent(c, () => []).add((r.at, m / own));
+    }
+  }
+  num? rateNear(String c, DateTime at) {
+    if (c == main) return 1;
+    final list = seen[c];
+    if (list == null || list.isEmpty) return null;
+    var best = list.first;
+    for (final x in list) {
+      if ((x.$1.difference(at)).abs() < (best.$1.difference(at)).abs()) best = x;
+    }
+    return best.$2;
+  }
+
+  // Accounts the file names only as a transfer's other side: an account's
+  // own currency is not known, so it takes the sending account's.
+  for (final r in rows) {
+    final c = cur[r.account.toLowerCase()];
+    // An account seen only with rows in another currency: the main amount
+    // and the account amount say which currency it is.
+    if (c == null) {
+      final own = r.accountAmount;
+      final m = r.mainAmount;
+      if (own != null && m != null && same(own, m)) {
+        cur[r.account.toLowerCase()] = main;
+      } else {
+        cur[r.account.toLowerCase()] = r.currency.isNotEmpty ? r.currency : main;
+      }
+    }
+  }
+  for (final r in rows) {
+    final from = cur[r.account.toLowerCase()] ?? main;
+    r.accountCurrency = from;
+    r.bookedAmount = r.accountAmount ?? r.amount;
+    final m = r.mainAmount;
+    if (from == main) {
+      r.rate = 1;
+    } else if (m != null && m > 0 && r.bookedAmount > 0) {
+      r.rate = double.parse((m / r.bookedAmount).toStringAsFixed(10));
+    }
+    if (r.kind != 'transfer') continue;
+    final to = cur.putIfAbsent(r.toAccount.toLowerCase(), () => from);
+    r.toCurrency = to;
+    final got = arrived['${r.at.millisecondsSinceEpoch}|${r.account.toLowerCase()}|${r.toAccount.toLowerCase()}'];
+    if (got != null) {
+      r.toAmount = got;
+    } else if (to == from) {
+      r.toAmount = r.bookedAmount;
+    } else if (to == main && m != null && m > 0) {
+      r.toAmount = m;
+    } else {
+      final inMain = m ?? (r.rate == null ? null : r.bookedAmount * r.rate!);
+      final toRate = rateNear(to, r.at);
+      if (inMain != null && toRate != null && toRate > 0) {
+        r.toAmount = double.parse((inMain / toRate).toStringAsFixed(2));
+      }
+    }
+  }
 }
 
 /// The preview: how many rows, the first few, the totals, then Import.
@@ -618,8 +759,19 @@ class _ImportPageState extends State<_ImportPage> {
   int accountsMade = 0;
   int categoriesMade = 0;
 
+  /// Start the book over: its entries and accounts are replaced by the file's.
+  bool fresh = false;
+
   Future<void> _import() async {
     final rows = widget.data.rows;
+    if (fresh && sent == 0) {
+      final ok = await confirm(context,
+          title: 'Start this book over?',
+          text: 'Every entry and account in this book is deleted, then the file is imported. This cannot be undone.',
+          yes: 'Delete and import',
+          danger: true);
+      if (!ok || !mounted) return;
+    }
     setState(() {
       busy = true;
       error = null;
@@ -627,7 +779,10 @@ class _ImportPageState extends State<_ImportPage> {
     try {
       while (sent < rows.length) {
         final end = sent + _chunk < rows.length ? sent + _chunk : rows.length;
-        final r = await Api.instance.rpc('import_rows', {'rows': [for (final x in rows.sublist(sent, end)) x.toJson()]});
+        final r = await Api.instance.rpc('import_rows', {
+          'rows': [for (final x in rows.sublist(sent, end)) x.toJson()],
+          'fresh': fresh && sent == 0,
+        });
         if (r is Map) {
           imported += toNum(r['imported']).toInt();
           accountsMade += toNum(r['accounts_made']).toInt();
@@ -664,11 +819,12 @@ class _ImportPageState extends State<_ImportPage> {
     num income = 0, expense = 0;
     var transfers = 0;
     for (final r in rows) {
-      if (r.kind == 'income') income += r.amount;
-      if (r.kind == 'expense') expense += r.amount;
+      final inMain = r.mainAmount ?? (r.rate == null ? null : r.bookedAmount * r.rate!);
+      if (r.kind == 'income') income += inMain ?? r.amount;
+      if (r.kind == 'expense') expense += inMain ?? r.amount;
       if (r.kind == 'transfer') transfers++;
     }
-    final mixed = rows.any((r) => r.currency.isNotEmpty && r.currency != main);
+    final mixed = rows.any((r) => r.mainAmount == null && r.rate == null && r.accountCurrency != main);
     final left = rows.length - sent;
     final notes = <String>[
       if (d.skipped > 0) '${d.skipped} row${d.skipped == 1 ? '' : 's'} without a date or an amount ${d.skipped == 1 ? 'is' : 'are'} left out.',
@@ -704,7 +860,7 @@ class _ImportPageState extends State<_ImportPage> {
                       ? '${r.account} to ${r.toAccount}'
                       : (r.category.isEmpty ? 'Uncategorised' : (r.subcategory.isEmpty ? r.category : '${r.category} / ${r.subcategory}')),
                   sub: [dateLabel(r.at), if (r.kind != 'transfer') r.account, if (r.note.isNotEmpty) r.note].join(', '),
-                  trailing: MoneyText(r.amount, currency: r.currency.isEmpty ? main : r.currency, kind: r.kind),
+                  trailing: MoneyText(r.bookedAmount > 0 ? r.bookedAmount : r.amount, currency: r.accountCurrency.isEmpty ? main : r.accountCurrency, kind: r.kind),
                 ),
             ]),
           ],
@@ -712,8 +868,19 @@ class _ImportPageState extends State<_ImportPage> {
           Text(d.columns.join(', '), style: T.small),
           const SizedBox(height: Sp.md),
           const Notice(
-              'Accounts and categories that are not in this book yet are made for you: accounts go in Others, in the main currency unless the sheet says.',
+              'Accounts and categories that are not in this book yet are made for you: accounts go in Others, each in its own currency as the sheet shows it. Amounts keep the exchange rate of their own day.',
               bad: false),
+          if ((Me.instance.book?.isOwner ?? false) && sent == 0) ...[
+            const SizedBox(height: Sp.md),
+            KCard(
+              child: KSwitchRow(
+                title: 'Start this book over',
+                sub: 'Deletes every entry and account in this book first, so it matches the file exactly. Categories stay.',
+                value: fresh,
+                onChanged: busy ? null : (v) => setState(() => fresh = v),
+              ),
+            ),
+          ],
           if (error != null) ...[const SizedBox(height: Sp.md), Notice(error!)],
           if (busy && rows.isNotEmpty) ...[
             const SizedBox(height: Sp.md),
