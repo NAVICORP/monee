@@ -643,6 +643,14 @@ _Parsed _readRows(List<List<xl.Data?>> rows, int h, Map<String, int> col, int? m
   return _Parsed(rows: kept, skipped: skipped, transferIns: transferIns, columns: found, sheet: sheet);
 }
 
+/// Reads an .xlsx the way the import does, for tests: the error, if any,
+/// and the rows as they would be sent.
+@visibleForTesting
+({String? error, int skipped, List<Map<String, dynamic>> rows}) parseExcelForTest(Uint8List bytes, String mainCurrency) {
+  final p = _parseXlsx(_ParseInput(bytes, mainCurrency));
+  return (error: p.error, skipped: p.skipped, rows: [for (final r in p.rows) r.toJson()]);
+}
+
 /// Works out each account's currency and the exact amounts, the way Money
 /// Manager's file has them: the amount in the account's own currency, the
 /// amount in the main currency (so the rate of that day), and for transfers
